@@ -13,20 +13,59 @@ namespace Stats.ExtApi
         private readonly HttpClient _httpClient;
 
         //# GC API Endpoints
+        //Works with GWT token from website or IOS
         private readonly string TEAM_SEASON_STATS = "/teams/{0}/season-stats";
+        //Works with GWT token from website or IOS
         private readonly string TEAM_GAME_DATA = "/teams/{0}/schedule/batch-simple-scorekeeping-data/";
+        //Works with GWT token from website or IOS
         private readonly string TEAM_GAME_STATS = "/teams/{0}/schedule/events/{1}/player-stats";
+        //Works with GWT token from website or IOS
         private readonly string TEAM_INFO = "/teams/{0}";
+        //Works with GWT token from website or IOS
         private readonly string TEAM_AVATAR = "/teams/{0}/avatar-image";
-        private readonly string TEAM_PLAYERS = "/teams/{0}/players";
+        //Works with GWT token from website or IOS
         private readonly string TEAM_SCHEDULE = "/teams/{0}/schedule/?fetch_place_details=true";
+        //Works with GWT token from website or IOS
         private readonly string SEARCH = "/search/team?name={0}&sport=baseball&start_at=0";
-        
+        //Works with GWT token from website or IOS
+        private readonly string VIDEO_ASSETS = "/teams/{0}/schedule/events/{1}/video-stream/assets";
+        //Works with GWT token from website or IOS
+        private readonly string VIDEO_STREAM = "/teams/{0}/schedule/events/{1}/video-stream";
+        //Works with GWT token from website or IOS
+        private readonly string USERS = "/teams/{0}/users";
+        /**************  ONLY works with IOS GWT.  ******************/
+        private readonly string TEAM_PLAYERS = "/teams/{0}/players";
+        /**************  ONLY works when they allow?  ******************/
+        private readonly string VIDEO_ASSETS_PLAYBACK = "/teams/{0}/schedule/events/{1}/video-stream/assets/playback";
+
+
+
         //private readonly string GAME_RECAP_STORY = "/game-streams/gamestream-recap-story/{0}";
         //private readonly string GAME_RECAP_PAYLOAD = "/game-streams/gamestream-viewer-payload-lite/{0}?stream_id={1}";
+
         public GameChangerService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+        }
+
+        public async Task<VideoStream> GetTeamEventVideoStreamAsync(string teamId, string eventId)
+        {
+            var url = string.Format(VIDEO_STREAM, teamId, eventId);
+            var result = JsonSerializer.Deserialize<VideoStream>(await GetRequestAsync(url));
+            return result;
+        }
+        public async Task<IEnumerable<VideoAsset>> GetTeamEventVideoAssetsAsync(string teamId, string eventId)
+        {
+            var url = string.Format(VIDEO_ASSETS, teamId, eventId);
+            var result = JsonSerializer.Deserialize<IEnumerable<VideoAsset>>(await GetRequestAsync(url));
+            return result;
+        }
+
+        public async Task<IEnumerable<VideoPlayback>> GetTeamEventVideoAssetsPlaybackAsync(string teamId, string eventId)
+        {
+            var url = string.Format(VIDEO_ASSETS_PLAYBACK, teamId, eventId);
+            var result = JsonSerializer.Deserialize<IEnumerable<VideoPlayback>>(await GetRequestAsync(url));
+            return result;
         }
 
         /// <summary>

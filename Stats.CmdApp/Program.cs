@@ -16,14 +16,14 @@ namespace Stats.CmdApp
 
             var client = new HttpClient();
             client.BaseAddress = new Uri("https://api.team-manager.gc.com");
-            client.DefaultRequestHeaders.Add("gc-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ijk2MWM1YmM1LWJkM2EtNDg4MS1iMmI0LTgyM2YzOGM0YzBiYyJ9.eyJ0eXBlIjoidXNlciIsImNpZCI6IjY1NGM1ZWQ3LTU5MDgtNGZlZC1iOWRhLWYwMjRhMmExNWJjNiIsImVtYWlsIjoia3lsZS5yb2dlcnNAZ21haWwuY29tIiwidXNlcklkIjoiMzZiZTgwYWMtY2UwZC00OTE4LTgzMDYtY2M2MjMzOTZlMmMyIiwicnRrbiI6IjQ0Nzc4MDE2LWZiYmYtNDVlYy1iMjZhLTM0ODMyZGQ1NTJjYzo0ZmJmNjQxNC04MmM3LTQ2ZTktOGYxOC05MzVjMjYwZTA3MmMiLCJpYXQiOjE2ODIzNjYzMDgsImV4cCI6MTY4MjM2OTkwOH0.stWwyDKy2OyywtAlrgtoF5ahEdJy20-KcCt9KS9E0ZQ");
+            client.DefaultRequestHeaders.Add("gc-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ijk2MWM1YmM1LWJkM2EtNDg4MS1iMmI0LTgyM2YzOGM0YzBiYyJ9.eyJ0eXBlIjoidXNlciIsImNpZCI6ImNkNGFlMjFjLWYyY2MtNDIwNi04NzQ1LTkwNDI0YWQ1NjE4YyIsImVtYWlsIjoia3lsZS5yb2dlcnNAZ21haWwuY29tIiwidXNlcklkIjoiMzZiZTgwYWMtY2UwZC00OTE4LTgzMDYtY2M2MjMzOTZlMmMyIiwicnRrbiI6ImQ3NWVkNTE5LTVjZGQtNDRkNy05MTZhLWQxYmJlNzM0OWU2Mzo1MDgwN2Y3Zi05Zjk1LTQyMzYtYTEwZS00NzFmN2NiYjg5N2QiLCJpYXQiOjE2ODIzMzk3OTQsImV4cCI6MTY4MjM4Mjk5NH0._NcAHYL4bv8AlNkgZb_28Ia7474dxntW1zEhTNd4hpU");
 
             try
             {
                 //Console.WriteLine("\n-------------------  Search ---------------------------");
                 //SearchTeams(client, "Pony Express 13u");
                 //Console.WriteLine("\n-------------------  Players --------------------------");
-                //ListPlayers(client, PONY_BLUE_13u_TEAM_ID);
+                ListPlayers(client, PONY_BLUE_13u_TEAM_ID);
                 //Console.WriteLine("\n-------------------  Team Info ------------------------");
                 //ShowTeam(client, PONY_BLUE_13u_TEAM_ID);
                 //Console.WriteLine("\n-------------------  Team Avatar ----------------------");
@@ -34,9 +34,14 @@ namespace Stats.CmdApp
                 //GetEventData(client, PONY_BLUE_13u_TEAM_ID, "208a6e28-d2e8-49ed-a0bd-905a4e8ded41");
                 //Console.WriteLine("\n-------------------  Team Events Info ----------------------");
                 //GetTeamGameData(client, PONY_BLUE_13u_TEAM_ID);
-                Console.WriteLine("\n-------------------  Team Season Stats ----------------------");
-                GetTeamSeasonStats(client, PONY_BLUE_13u_TEAM_ID);
-
+                //Console.WriteLine("\n-------------------  Team Season Stats ----------------------");
+                //GetTeamSeasonStats(client, PONY_BLUE_13u_TEAM_ID);
+                //Console.WriteLine("\n-------------------  Team Event Video Playback Data ----------------------");
+                //GetTeamEventVideoPlaybackData(client, PONY_BLUE_13u_TEAM_ID, "f6a025d8-8f0c-467d-9d79-4afb0dc3554c");
+                //Console.WriteLine("\n-------------------  Team Event Video Asset Data ----------------------");
+                //GetTeamEventVideoAssetsData(client, PONY_BLUE_13u_TEAM_ID, "f6a025d8-8f0c-467d-9d79-4afb0dc3554c");
+                //Console.WriteLine("\n-------------------  Team Event Video Stream Data ----------------------");
+                //GetTeamEventVideoStreamData(client, PONY_BLUE_13u_TEAM_ID, "f6a025d8-8f0c-467d-9d79-4afb0dc3554c");
             }
             catch (AggregateException e)
             {
@@ -50,8 +55,6 @@ namespace Stats.CmdApp
             {
                 throw;
             }
-
-
         }
 
         static void SearchTeams(HttpClient client, string query)
@@ -117,6 +120,30 @@ namespace Stats.CmdApp
         {
             var db = new GameChangerService(client);
             var result = Task.Run(() => { return db.GetTeamSeasonStatsAsync(Id); }).Result;
+            string jsonString = JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true });
+            Console.WriteLine(jsonString);
+        }
+
+        static void GetTeamEventVideoPlaybackData(HttpClient client, string Id, string eventId)
+        {
+            var db = new GameChangerService(client);
+            var result = Task.Run(() => { return db.GetTeamEventVideoAssetsPlaybackAsync(Id, eventId); }).Result;
+            string jsonString = JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true });
+            Console.WriteLine(jsonString);
+        }
+
+        static void GetTeamEventVideoAssetsData(HttpClient client, string Id, string eventId)
+        {
+            var db = new GameChangerService(client);
+            var result = Task.Run(() => { return db.GetTeamEventVideoAssetsAsync(Id, eventId); }).Result;
+            string jsonString = JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true });
+            Console.WriteLine(jsonString);
+        }
+
+        static void GetTeamEventVideoStreamData(HttpClient client, string Id, string eventId)
+        {
+            var db = new GameChangerService(client);
+            var result = Task.Run(() => { return db.GetTeamEventVideoStreamAsync(Id, eventId); }).Result;
             string jsonString = JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true });
             Console.WriteLine(jsonString);
         }

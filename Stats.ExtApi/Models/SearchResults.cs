@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
+﻿
 namespace Stats.ExtApi.Models
 {
     public class SearchResults

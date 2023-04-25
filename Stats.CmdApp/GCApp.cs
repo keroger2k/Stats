@@ -10,7 +10,6 @@ namespace Stats.CmdApp
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
-        private readonly HttpClient _httpClient;
         private readonly GameChangerService _gameChangerService;
         public GCApp(ILogger<GCApp> logger, IConfiguration configuration, GameChangerService gameChangerService)
         {
@@ -33,7 +32,7 @@ namespace Stats.CmdApp
                     switch (choice)
                     {
                         case 1:
-                            // Search for a team.
+                            // Search for a Team.
                             SearchTeam();
                             break;
                         case 2:
@@ -52,35 +51,35 @@ namespace Stats.CmdApp
         {
             // Get the user's search text.
             Console.Clear();
-            Console.WriteLine("Enter a team name to search for: ");
+            Console.WriteLine("Enter a Team name to search for: ");
             string query = Console.ReadLine() ?? string.Empty;
             int selection = 0;
 
-            // Find all teams that match the search text.
+            // Find all Teams that match the search text.
             var results = Task.Run(() => { return _gameChangerService.SearchTeamsAsync(query); }).Result;
             ;
 
             // Display the search results.
             if (results.hits.Count() == 0)
             {
-                Console.WriteLine("No teams found.");
+                Console.WriteLine("No Teams found.");
             }
             else
             {
                 var i = 1;
-                foreach (var team in results.hits)
+                foreach (var Team in results.hits)
                 {
-                    var location = team.location == null ? "Unknown" : string.Format($"{team.location.city}, {team.location.state}");
-                    Console.WriteLine("{0}. {1}", i++, team.name);
-                    Console.WriteLine($"\tId: {team.id}");
-                    Console.WriteLine($"\tSport/Season: {team.sport.ToUpper()} / {team.team_season.season.ToUpper()}, {team.team_season.year} ");
-                    Console.WriteLine($"\tNumber of Players: {team.number_of_players}");
-                    Console.WriteLine($"\tAge Group: {team.age_group}");
+                    var location = Team.location == null ? "Unknown" : string.Format($"{Team.location.city}, {Team.location.state}");
+                    Console.WriteLine("{0}. {1}", i++, Team.name);
+                    Console.WriteLine($"\tId: {Team.id}");
+                    Console.WriteLine($"\tSport/Season: {Team.sport.ToUpper()} / {Team.team_season.season.ToUpper()}, {Team.team_season.year} ");
+                    Console.WriteLine($"\tNumber of Players: {Team.number_of_players}");
+                    Console.WriteLine($"\tAge Group: {Team.age_group}");
                     Console.WriteLine($"\tLocation: {location}");
-                    Console.WriteLine($"\tStaff: [ {string.Join(", ", team.staff)} ]");
+                    Console.WriteLine($"\tStaff: [ {string.Join(", ", Team.staff)} ]");
                 }
             }
-            Console.WriteLine("Which team do you want to select?:");
+            Console.WriteLine("Which Team do you want to select?:");
 
             if (int.TryParse(Console.ReadLine(), out selection))
                 SelectTeam(results.hits.ElementAt(selection - 1));
@@ -108,7 +107,7 @@ namespace Stats.CmdApp
                 switch (choice)
                 {
                     case 1:
-                        // Search for a team.
+                        // Search for a Team.
                         AddTeamToDb(item);
                         break;
                     case 2:

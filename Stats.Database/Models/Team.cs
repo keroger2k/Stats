@@ -1,14 +1,14 @@
 ﻿namespace Stats.Database.Models
 {
-    public class Team
+    public class TeamDTO
     {
         public string id { get; set; } = null!;
         public string name { get; set; } = null!;
-        public string team_type { get; set; } = null!;
+        public string Team_type { get; set; } = null!;
         public int meta_seq { get; set; }
         public DateTime created_at { get; set; }
         public DateTime updated_at { get; set; }
-        public object teamExternalAssociation { get; set; } = null!;
+        public object TeamExternalAssociation { get; set; } = null!;
         public object maxPrepsSyncState { get; set; } = null!;
         public List<object> organizations { get; set; } = null!;
         public Settings settings { get; set; } = null!;
@@ -26,20 +26,20 @@
         public string scorekeeping_access_level { get; set; } = null!;
         public string streaming_access_level { get; set; } = null!;
         public string ngb { get; set; } = null!;
-        public List<object> user_team_associations { get; set; } = null!;
-        public object team_avatar_image { get; set; } = null!;
-        public object team_player_count { get; set; } = null!;
+        public List<object> user_Team_associations { get; set; } = null!;
+        public object Team_avatar_image { get; set; } = null!;
+        public object Team_player_count { get; set; } = null!;
 
         public class AdminTeam
         {
-            public string root_team_id { get; set; } = null!;
+            public string root_Team_id { get; set; } = null!;
             public string age_group { get; set; } = null!;
             public string city { get; set; } = null!;
             public string competition_level { get; set; } = null!;
             public string country { get; set; } = null!;
             public string ngb { get; set; } = null!;
             public object paid_access_level { get; set; } = null!;
-            public object rolled_over_from_team_id { get; set; } = null!;
+            public object rolled_over_from_Team_id { get; set; } = null!;
             public object scorekeeping_access_level { get; set; } = null!;
             public string season_name { get; set; } = null!;
             public int season_year { get; set; }

@@ -34,11 +34,12 @@ namespace Stats.CmdApp
                 {
                     services.AddTransient<GCApp>();
                     services.AddTransient<GameChangerService>();
+                    services.AddAutoMapper(typeof(Program));
 
                     services.AddScoped(sp =>
                     {
                         var http = new HttpClient();
-                        http.BaseAddress = new Uri("https://api.team-manager.gc.com");
+                        http.BaseAddress = new Uri("https://api.Team-manager.gc.com");
                         http.DefaultRequestHeaders.Add("gc-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ijk2MWM1YmM1LWJkM2EtNDg4MS1iMmI0LTgyM2YzOGM0YzBiYyJ9.eyJ0eXBlIjoidXNlciIsImNpZCI6IjY1NGM1ZWQ3LTU5MDgtNGZlZC1iOWRhLWYwMjRhMmExNWJjNiIsImVtYWlsIjoia3lsZS5yb2dlcnNAZ21haWwuY29tIiwidXNlcklkIjoiMzZiZTgwYWMtY2UwZC00OTE4LTgzMDYtY2M2MjMzOTZlMmMyIiwicnRrbiI6IjQ0Nzc4MDE2LWZiYmYtNDVlYy1iMjZhLTM0ODMyZGQ1NTJjYzpiYTUxZDU3Ni0zZDNkLTQ1Y2QtOWE1Zi1kNzI4YWIzNGE4ZjEiLCJpYXQiOjE2ODI0MzUzMjQsImV4cCI6MTY4MjQzODkyNH0.4i_0WAKKeaezRglvoGTGS2IlbDnthjlMsj2P14E9SS0");
                         return http;
                     });

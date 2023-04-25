@@ -2,6 +2,6 @@
 {
     public class TeamAvatar
     {
-        public string full_media_url { get; set; }
+        public string full_media_url { get; set; } = string.Empty;
     }
 }

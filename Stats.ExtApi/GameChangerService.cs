@@ -41,11 +41,12 @@ namespace Stats.ExtApi
         /**************  ONLY works when they allow?  ******************/
         private readonly string VIDEO_ASSETS_PLAYBACK = "/teams/{0}/schedule/events/{1}/video-stream/assets/playback";
 
-
-
         //private readonly string GAME_RECAP_STORY = "/game-streams/gamestream-recap-story/{0}";
         //private readonly string GAME_RECAP_PAYLOAD = "/game-streams/gamestream-viewer-payload-lite/{0}?stream_id={1}";
-
+        public GameChangerService(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
 
         public async Task<IEnumerable<TeamUsers>> GetTeamUsersAsync(string teamId)
         {
@@ -59,11 +60,6 @@ namespace Stats.ExtApi
             var url = string.Format(TEAM_OPPONENTS, teamId);
             var result = JsonSerializer.Deserialize<IEnumerable<TeamOpponents>>(await GetRequestAsync(url));
             return result;
-        }
-
-        public GameChangerService(HttpClient httpClient)
-        {
-            _httpClient = httpClient;
         }
 
         public async Task<VideoStream> GetTeamEventVideoStreamAsync(string teamId, string eventId)

@@ -16,7 +16,7 @@ namespace Stats.ExtApi.Models
             public string age_group { get; set; } = null!;
             public int number_of_players { get; set; }
             public string[] staff { get; set; } = null!;
-            public Place location { get; set; } = null!;
+            public Place? location { get; set; }
 
             public class Place
             {

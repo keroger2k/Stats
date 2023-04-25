@@ -1,79 +1,53 @@
-﻿using Stats.ExtApi;
-using System.Net.Http;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Xml;
-using static Stats.ExtApi.Models.TeamSchedule;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
+using Serilog;
+using Stats.ExtApi;
 
 namespace Stats.CmdApp
 {
     public class Program
     {
+        static void BuildConfig(IConfigurationBuilder builder)
+        {
+            builder.SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
+                .AddEnvironmentVariables();
+        }
+
         static void Main(string[] args)
         {
-            var client = new HttpClient();
-            client.BaseAddress = new Uri("https://api.team-manager.gc.com");
-            client.DefaultRequestHeaders.Add("gc-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ijk2MWM1YmM1LWJkM2EtNDg4MS1iMmI0LTgyM2YzOGM0YzBiYyJ9.eyJ0eXBlIjoidXNlciIsImNpZCI6IjY1NGM1ZWQ3LTU5MDgtNGZlZC1iOWRhLWYwMjRhMmExNWJjNiIsImVtYWlsIjoia3lsZS5yb2dlcnNAZ21haWwuY29tIiwidXNlcklkIjoiMzZiZTgwYWMtY2UwZC00OTE4LTgzMDYtY2M2MjMzOTZlMmMyIiwicnRrbiI6ImY2Njk3NDEyLWVjMjgtNGIxYi04ZTE1LTkxOWI5YzhjZDJkYzpiZWJmMmQ1ZC0yMDMxLTRiZjktYTQxZC03YWUwZDFkOGVkY2QiLCJpYXQiOjE2ODI0MTk0MDAsImV4cCI6MTY4MjQyMzAwMH0.zCYGBGoV4gn0RT_dUrWg5rwwD-TrLes9AbvVGjex9AE");
-            var gc = new GameChangerService(client);
-            var stats = new StatsOut(gc);
+            var builder = new ConfigurationBuilder();
+            BuildConfig(builder);
 
-            while (true)
-            {
-                Console.WriteLine("What would you like to do?");
-                Console.WriteLine("1. Search Team");
-                Console.WriteLine("2. Add Team");
-                Console.WriteLine("3. Quit");
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(builder.Build())
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .CreateLogger();
 
-                // Get the user's input.
-                int choice = int.Parse(Console.ReadLine() ?? "3");
+            Log.Logger.Information("Application Starting");
 
-                // Switch on the user's choice.
-                switch (choice)
+            var host = Host.CreateDefaultBuilder()
+                .ConfigureServices((context, services) => 
                 {
-                    case 1:
-                        // Search for a team.
-                        SearchTeam(gc);
-                        break;
-                    case 2:
-                        // Add a team.
-                        //AddTeam(teams);
-                        break;
-                    case 3:
-                        // Quit.
-                        return;
-                    default:
-                        // Invalid choice.
-                        Console.WriteLine("Invalid choice.");
-                        break;
-                }
-            }
+                    services.AddTransient<GCApp>();
+                    services.AddTransient<GameChangerService>();
+
+                    services.AddScoped(sp =>
+                    {
+                        var http = new HttpClient();
+                        http.BaseAddress = new Uri("https://api.team-manager.gc.com");
+                        http.DefaultRequestHeaders.Add("gc-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ijk2MWM1YmM1LWJkM2EtNDg4MS1iMmI0LTgyM2YzOGM0YzBiYyJ9.eyJ0eXBlIjoidXNlciIsImNpZCI6IjY1NGM1ZWQ3LTU5MDgtNGZlZC1iOWRhLWYwMjRhMmExNWJjNiIsImVtYWlsIjoia3lsZS5yb2dlcnNAZ21haWwuY29tIiwidXNlcklkIjoiMzZiZTgwYWMtY2UwZC00OTE4LTgzMDYtY2M2MjMzOTZlMmMyIiwicnRrbiI6IjQ0Nzc4MDE2LWZiYmYtNDVlYy1iMjZhLTM0ODMyZGQ1NTJjYzpiYTUxZDU3Ni0zZDNkLTQ1Y2QtOWE1Zi1kNzI4YWIzNGE4ZjEiLCJpYXQiOjE2ODI0MzUzMjQsImV4cCI6MTY4MjQzODkyNH0.4i_0WAKKeaezRglvoGTGS2IlbDnthjlMsj2P14E9SS0");
+                        return http;
+                    });
+                })
+                .UseSerilog()
+                .Build();
+
+            var app = ActivatorUtilities.CreateInstance<GCApp>(host.Services);
+            app.Run();
         }
-
-        private static void SearchTeam(GameChangerService gc)
-        {
-            // Get the user's search text.
-            Console.WriteLine("Enter a team name to search for: ");
-            string query = Console.ReadLine() ?? string.Empty;
-
-            // Find all teams that match the search text.
-            var results = Task.Run(() => { return gc.SearchTeamsAsync(query); }).Result;
-;
-
-            // Display the search results.
-            if (results.hits.Count() == 0)
-            {
-                Console.WriteLine("No teams found.");
-            } 
-            else
-            {
-                foreach(var team in results.hits) 
-                {
-                    Console.WriteLine($"id: { team.id }, Name: { team.name }, Location: { team.location.city }, { team.location.state }, Staff: [ { string.Join(",", team.staff) } ]");
-                }
-            }
-        }
-
     }
 }       

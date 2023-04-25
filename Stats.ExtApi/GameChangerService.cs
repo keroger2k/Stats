@@ -32,7 +32,10 @@ namespace Stats.ExtApi
         //Works with GWT token from website or IOS
         private readonly string VIDEO_STREAM = "/teams/{0}/schedule/events/{1}/video-stream";
         //Works with GWT token from website or IOS
-        private readonly string USERS = "/teams/{0}/users";
+        private readonly string TEAM_USERS = "/teams/{0}/users";
+        //Works with GWT token from website or IOS
+        private readonly string TEAM_OPPONENTS = "/teams/{0}/opponents";
+        
         /**************  ONLY works with IOS GWT.  ******************/
         private readonly string TEAM_PLAYERS = "/teams/{0}/players";
         /**************  ONLY works when they allow?  ******************/
@@ -42,6 +45,21 @@ namespace Stats.ExtApi
 
         //private readonly string GAME_RECAP_STORY = "/game-streams/gamestream-recap-story/{0}";
         //private readonly string GAME_RECAP_PAYLOAD = "/game-streams/gamestream-viewer-payload-lite/{0}?stream_id={1}";
+
+
+        public async Task<IEnumerable<TeamUsers>> GetTeamUsersAsync(string teamId)
+        {
+            var url = string.Format(TEAM_USERS, teamId);
+            var result = JsonSerializer.Deserialize<IEnumerable<TeamUsers>>(await GetRequestAsync(url));
+            return result;
+        }
+
+        public async Task<IEnumerable<TeamOpponents>> GetTeamOpponentsAsync(string teamId)
+        {
+            var url = string.Format(TEAM_OPPONENTS, teamId);
+            var result = JsonSerializer.Deserialize<IEnumerable<TeamOpponents>>(await GetRequestAsync(url));
+            return result;
+        }
 
         public GameChangerService(HttpClient httpClient)
         {

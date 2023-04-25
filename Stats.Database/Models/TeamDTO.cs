@@ -1,7 +1,11 @@
-﻿namespace Stats.Database.Models
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+
+namespace Stats.Database.Models
 {
     public class TeamDTO
     {
+        [BsonId]
         public string id { get; set; } = null!;
         public string name { get; set; } = null!;
         public string Team_type { get; set; } = null!;

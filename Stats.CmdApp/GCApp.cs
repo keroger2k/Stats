@@ -3,6 +3,9 @@ using Microsoft.Extensions.Logging;
 using Stats.ExtApi.Models;
 using Stats.ExtApi;
 using System;
+using Stats.Database.Services;
+using AutoMapper;
+using Stats.Database.Models;
 
 namespace Stats.CmdApp
 {
@@ -11,11 +14,19 @@ namespace Stats.CmdApp
         private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
         private readonly GameChangerService _gameChangerService;
-        public GCApp(ILogger<GCApp> logger, IConfiguration configuration, GameChangerService gameChangerService)
+        private readonly DatabaseService _db;
+        private readonly IMapper _mapper;
+
+        public GCApp(ILogger<GCApp> logger, IConfiguration configuration, 
+            GameChangerService gameChangerService, 
+            DatabaseService databaseService,
+            IMapper mapper)
         {
             _configuration = configuration; 
             _logger = logger;
             _gameChangerService = gameChangerService;
+            _db = databaseService;
+            _mapper = mapper;
         }
 
         public void Run()
@@ -124,7 +135,9 @@ namespace Stats.CmdApp
         private void AddTeamToDb(SearchResults.SearchItem item)
         {
             Console.WriteLine($"Adding {item.name} to database with id {item.id}");
-
+            var team = Task.Run(() => { return _gameChangerService.GetTeamAsync(item.id); }).Result;
+            var teamDto = _mapper.Map<TeamDTO>(team);
+            Task.Run(() => { return _db.CreateAsync(teamDto); });
             Console.WriteLine($"Done! Press any key to continue.");
             Console.ReadLine();
         }

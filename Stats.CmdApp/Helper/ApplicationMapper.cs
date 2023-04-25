@@ -8,7 +8,11 @@ namespace Stats.CmdApp.Helper
     {
         public ApplicationMapper()
         {
-            CreateMap<Team, TeamDTO>().ReverseMap();
+            CreateMap<Team, TeamDTO>();
+            CreateMap<Team.Settings, TeamDTO.Settings>();
+            CreateMap<Team.Settings.Scorekeeping, TeamDTO.Settings.Scorekeeping>();
+            CreateMap<Team.Settings.Scorekeeping.Bats, TeamDTO.Settings.Scorekeeping.Bats>();
+            CreateMap<Team.AdminTeam, TeamDTO.AdminTeam>();
         }
     }
 }

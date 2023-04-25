@@ -10,8 +10,7 @@ namespace Stats.Database.Services
     {
         private readonly IMongoCollection<TeamDTO> _statsCollection;
 
-        public DatabaseService(
-            IOptions<DatabaseSettings> statsDatabaseSettings)
+        public DatabaseService(IOptions<DatabaseSettings> statsDatabaseSettings)
         {
             var mongoClient = new MongoClient(
                 statsDatabaseSettings.Value.ConnectionString);
@@ -20,7 +19,7 @@ namespace Stats.Database.Services
                 statsDatabaseSettings.Value.DatabaseName);
 
             _statsCollection = mongoDatabase.GetCollection<TeamDTO>(
-                statsDatabaseSettings.Value.BooksCollectionName);
+                statsDatabaseSettings.Value.TeamCollectionName);
         }
 
         public async Task<List<TeamDTO>> GetAsync() =>

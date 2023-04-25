@@ -16,18 +16,24 @@ namespace Stats.CmdApp
 
             var client = new HttpClient();
             client.BaseAddress = new Uri("https://api.team-manager.gc.com");
-            client.DefaultRequestHeaders.Add("gc-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ijk2MWM1YmM1LWJkM2EtNDg4MS1iMmI0LTgyM2YzOGM0YzBiYyJ9.eyJ0eXBlIjoidXNlciIsImNpZCI6ImNkNGFlMjFjLWYyY2MtNDIwNi04NzQ1LTkwNDI0YWQ1NjE4YyIsImVtYWlsIjoia3lsZS5yb2dlcnNAZ21haWwuY29tIiwidXNlcklkIjoiMzZiZTgwYWMtY2UwZC00OTE4LTgzMDYtY2M2MjMzOTZlMmMyIiwicnRrbiI6ImQ3NWVkNTE5LTVjZGQtNDRkNy05MTZhLWQxYmJlNzM0OWU2Mzo1MDgwN2Y3Zi05Zjk1LTQyMzYtYTEwZS00NzFmN2NiYjg5N2QiLCJpYXQiOjE2ODIzMzk3OTQsImV4cCI6MTY4MjM4Mjk5NH0._NcAHYL4bv8AlNkgZb_28Ia7474dxntW1zEhTNd4hpU");
+            client.DefaultRequestHeaders.Add("gc-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ijk2MWM1YmM1LWJkM2EtNDg4MS1iMmI0LTgyM2YzOGM0YzBiYyJ9.eyJ0eXBlIjoidXNlciIsImNpZCI6IjY1NGM1ZWQ3LTU5MDgtNGZlZC1iOWRhLWYwMjRhMmExNWJjNiIsImVtYWlsIjoia3lsZS5yb2dlcnNAZ21haWwuY29tIiwidXNlcklkIjoiMzZiZTgwYWMtY2UwZC00OTE4LTgzMDYtY2M2MjMzOTZlMmMyIiwicnRrbiI6IjQ0Nzc4MDE2LWZiYmYtNDVlYy1iMjZhLTM0ODMyZGQ1NTJjYzo3YmZlMGJkMy00ODhlLTRjMjYtOGQ5MS02NGI5YjkwM2UwZDEiLCJpYXQiOjE2ODIzODQzMTMsImV4cCI6MTY4MjM4NzkxM30.wnSH0uS0_nz1ol7reRIdXtMVXuLmfpPqjn_sUWhvg6k");
 
             try
             {
                 //Console.WriteLine("\n-------------------  Search ---------------------------");
                 //SearchTeams(client, "Pony Express 13u");
                 //Console.WriteLine("\n-------------------  Players --------------------------");
-                ListPlayers(client, PONY_BLUE_13u_TEAM_ID);
+                //ListPlayers(client, PONY_BLUE_13u_TEAM_ID);
                 //Console.WriteLine("\n-------------------  Team Info ------------------------");
                 //ShowTeam(client, PONY_BLUE_13u_TEAM_ID);
                 //Console.WriteLine("\n-------------------  Team Avatar ----------------------");
                 //ShowTeamAvatar(client, PONY_BLUE_13u_TEAM_ID);
+                
+                //Console.WriteLine("\n-------------------  Team Opponents ----------------------");
+                //ListTeamOpponents(client, PONY_BLUE_13u_TEAM_ID);
+                Console.WriteLine("\n-------------------  Team Users ----------------------");
+                ListTeamUsers(client, PONY_BLUE_13u_TEAM_ID);
+
                 //Console.WriteLine("\n-------------------  Team Events ----------------------");
                 //ListTeamEvents(client, PONY_BLUE_13u_TEAM_ID);
                 //Console.WriteLine("\n-------------------  Team Events Info ----------------------");
@@ -66,6 +72,26 @@ namespace Stats.CmdApp
                 Console.WriteLine($"Id: {team.id}, Name: {team.name}, Location: {team.location.city}, {team.location.state}");
             }
 
+        }
+
+        static void ListTeamOpponents(HttpClient client, string Id)
+        {
+            var db = new GameChangerService(client);
+            var result = Task.Run(() => { return db.GetTeamOpponentsAsync(Id); }).Result;
+            foreach (var opponent in result)
+            {
+                Console.WriteLine($"root_team_id: {opponent.root_team_id}, progenitor_id: {opponent.progenitor_team_id}, owning_team_id: {opponent.owning_team_id}");
+            }
+        }
+
+        static void ListTeamUsers(HttpClient client, string Id)
+        {
+            var db = new GameChangerService(client);
+            var result = Task.Run(() => { return db.GetTeamUsersAsync(Id); }).Result;
+            foreach (var user in result)
+            {
+                Console.WriteLine($"Id: {user.id}, Name: {user.first_name} {user.last_name}, Email: {user.email}");
+            }
         }
 
         static void ListPlayers(HttpClient client, string Id)

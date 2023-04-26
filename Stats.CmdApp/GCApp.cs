@@ -1,10 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using AutoMapper;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Stats.ExtApi.Models;
-using System;
-using Stats.Database.Services;
-using AutoMapper;
 using Stats.Database.Models;
+using Stats.Database.Services;
+using Stats.ExtApi.Models;
 using Stats.ExtApi.Services;
 
 namespace Stats.CmdApp
@@ -111,7 +110,7 @@ namespace Stats.CmdApp
             Console.WriteLine("---------------------------------------------------------------------------\n");
             Console.WriteLine("What would you like to do?\n");
             Console.WriteLine("1. Add Team to DB?");
-            Console.WriteLine("2. List Team Player");
+            Console.WriteLine("2. Add Player to DB?");
             Console.WriteLine("3. Back");
 
             if (int.TryParse(Console.ReadLine(), out choice))
@@ -138,7 +137,7 @@ namespace Stats.CmdApp
             Console.WriteLine($"Adding {item.name} to database with id {item.id}");
             var team = Task.Run(() => { return _gameChangerService.GetTeamAsync(item.id); }).Result;
             var teamDto = _mapper.Map<TeamDTO>(team);
-            Task.Run(() => { return _db.CreateAsync(teamDto); });
+            Task.Run(() => { return _db.CreateTeamAsync(teamDto); });
             Console.WriteLine($"Done! Press any key to continue.");
             Console.ReadLine();
         }
@@ -151,7 +150,9 @@ namespace Stats.CmdApp
             foreach(var playerId in team.stats_data.players.Keys)
             {
                 var player = Task.Run(() => { return _gameChangerService.GetPlayer(playerId); }).Result;
-                Console.WriteLine($"{player.first_name} {player.last_name}");
+                var playerDto = _mapper.Map<TeamPlayerDTO>(player);
+                Task.Run(() => { return _db.AddTeamPlayerAsync(playerDto); });
+                Console.WriteLine($"{player.id}: {player.first_name} {player.last_name}");
             }
 
             Console.WriteLine($"Done! Press any key to continue.");

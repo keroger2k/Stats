@@ -13,6 +13,8 @@ namespace Stats.CmdApp.Helper
             CreateMap<Team.Settings.Scorekeeping, TeamDTO.Settings.Scorekeeping>();
             CreateMap<Team.Settings.Scorekeeping.Bats, TeamDTO.Settings.Scorekeeping.Bats>();
             CreateMap<Team.AdminTeam, TeamDTO.AdminTeam>();
+            CreateMap<TeamPlayer, TeamPlayerDTO>();
+            CreateMap<TeamPlayer.BattingThrowingInfo, TeamPlayerDTO.BattingThrowingInfo>();
         }
     }
 }

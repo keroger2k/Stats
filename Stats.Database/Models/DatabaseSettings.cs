@@ -13,5 +13,7 @@ namespace Stats.Database.Models
         public string DatabaseName { get; set; } = null!;
 
         public string TeamCollectionName { get; set; } = null!;
+        public string PlayerCollectionName { get; set; } = null!;
+        public string EventCollectionName { get; set; } = null!;
     }
 }

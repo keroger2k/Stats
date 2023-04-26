@@ -9,32 +9,39 @@ namespace Stats.Database.Services
     public class DatabaseService
     {
         private readonly IMongoCollection<TeamDTO> _statsCollection;
-
+        private readonly IOptions<DatabaseSettings> _statsDatabaseSettings;
         public DatabaseService(IOptions<DatabaseSettings> statsDatabaseSettings)
         {
-            var mongoClient = new MongoClient(
-                statsDatabaseSettings.Value.ConnectionString);
-
-            var mongoDatabase = mongoClient.GetDatabase(
-                statsDatabaseSettings.Value.DatabaseName);
-
-            _statsCollection = mongoDatabase.GetCollection<TeamDTO>(
-                statsDatabaseSettings.Value.TeamCollectionName);
+            _statsDatabaseSettings = statsDatabaseSettings;
+            var mongoClient = new MongoClient(_statsDatabaseSettings.Value.ConnectionString);
+            var mongoDatabase = mongoClient.GetDatabase(_statsDatabaseSettings.Value.DatabaseName);
+            _statsCollection = mongoDatabase.GetCollection<TeamDTO>(_statsDatabaseSettings.Value.TeamCollectionName);
         }
 
-        public async Task<List<TeamDTO>> GetAsync() =>
-            await _statsCollection.Find(_ => true).ToListAsync();
+        private IMongoCollection<T> ConnectToMongo<T>(in string collection)
+        {
+            var client = new MongoClient(_statsDatabaseSettings.Value.ConnectionString);
+            var db = client.GetDatabase(_statsDatabaseSettings.Value.DatabaseName);
+            return db.GetCollection<T>(collection);
+        }
 
-        public async Task<TeamDTO?> GetAsync(string id) =>
-            await _statsCollection.Find(x => x.id == id).FirstOrDefaultAsync();
 
-        public async Task CreateAsync(TeamDTO newTeamDTO) =>
-            await _statsCollection.InsertOneAsync(newTeamDTO);
+        public Task CreateTeamAsync(TeamDTO newTeamDTO)
+        {
+            var teamCollection = ConnectToMongo<TeamDTO>(_statsDatabaseSettings.Value.TeamCollectionName);
+            return teamCollection.InsertOneAsync(newTeamDTO);
+        }
 
-        public async Task UpdateAsync(string id, TeamDTO updateTeamDTO) =>
-            await _statsCollection.ReplaceOneAsync(x => x.id == id, updateTeamDTO);
+        public Task AddTeamPlayerAsync(TeamPlayerDTO player)
+        {
+            var teamCollection = ConnectToMongo<TeamPlayerDTO>(_statsDatabaseSettings.Value.PlayerCollectionName);
+            return teamCollection.InsertOneAsync(player);
+        }
+        public Task AddTeamPlayersAsync(IEnumerable<TeamPlayerDTO> players)
+        {
+            var teamCollection = ConnectToMongo<TeamPlayerDTO>(_statsDatabaseSettings.Value.PlayerCollectionName);
+            return teamCollection.InsertManyAsync(players);
+        }
 
-        public async Task RemoveAsync(string id) =>
-            await _statsCollection.DeleteOneAsync(x => x.id == id);
     }
 }

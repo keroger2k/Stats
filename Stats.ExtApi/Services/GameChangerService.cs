@@ -1,12 +1,7 @@
 ﻿using Stats.ExtApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
-namespace Stats.ExtApi
+namespace Stats.ExtApi.Services
 {
     public class GameChangerService
     {
@@ -15,6 +10,8 @@ namespace Stats.ExtApi
         //# GC API Endpoints
         //Works with GWT token from website or IOS
         private readonly string TEAM_SEASON_STATS = "/teams/{0}/season-stats";
+        //Works with GWT token from website or IOS
+        private readonly string PLAYER_INFO = "/player/{0}";
         //Works with GWT token from website or IOS
         private readonly string TEAM_GAME_DATA = "/teams/{0}/schedule/batch-simple-scorekeeping-data/";
         //Works with GWT token from website or IOS
@@ -35,7 +32,7 @@ namespace Stats.ExtApi
         private readonly string TEAM_USERS = "/teams/{0}/users";
         //Works with GWT token from website or IOS
         private readonly string TEAM_OPPONENTS = "/teams/{0}/opponents";
-        
+
         /**************  ONLY works with IOS GWT.  ******************/
         private readonly string TEAM_PLAYERS = "/teams/{0}/players";
         /**************  ONLY works when they allow?  ******************/
@@ -48,38 +45,44 @@ namespace Stats.ExtApi
             _httpClient = httpClient;
         }
 
+        public async Task<IEnumerable<TeamPlayer>> GetPlayer(string playerId)
+        {
+            var url = string.Format(PLAYER_INFO, playerId);
+            var result = JsonSerializer.Deserialize<IEnumerable<TeamPlayer>>(await GetRequestAsync(url));
+            return result!;
+        }
         public async Task<IEnumerable<TeamUsers>> GetTeamUsersAsync(string teamId)
         {
             var url = string.Format(TEAM_USERS, teamId);
             var result = JsonSerializer.Deserialize<IEnumerable<TeamUsers>>(await GetRequestAsync(url));
-            return result;
+            return result!;
         }
 
         public async Task<IEnumerable<TeamOpponents>> GetTeamOpponentsAsync(string teamId)
         {
             var url = string.Format(TEAM_OPPONENTS, teamId);
             var result = JsonSerializer.Deserialize<IEnumerable<TeamOpponents>>(await GetRequestAsync(url));
-            return result;
+            return result!;
         }
 
         public async Task<VideoStream> GetTeamEventVideoStreamAsync(string teamId, string eventId)
         {
             var url = string.Format(VIDEO_STREAM, teamId, eventId);
             var result = JsonSerializer.Deserialize<VideoStream>(await GetRequestAsync(url));
-            return result;
+            return result!;
         }
         public async Task<IEnumerable<VideoAsset>> GetTeamEventVideoAssetsAsync(string teamId, string eventId)
         {
             var url = string.Format(VIDEO_ASSETS, teamId, eventId);
             var result = JsonSerializer.Deserialize<IEnumerable<VideoAsset>>(await GetRequestAsync(url));
-            return result;
+            return result!;
         }
 
         public async Task<IEnumerable<VideoPlayback>> GetTeamEventVideoAssetsPlaybackAsync(string teamId, string eventId)
         {
             var url = string.Format(VIDEO_ASSETS_PLAYBACK, teamId, eventId);
             var result = JsonSerializer.Deserialize<IEnumerable<VideoPlayback>>(await GetRequestAsync(url));
-            return result;
+            return result!;
         }
 
         /// <summary>
@@ -92,7 +95,7 @@ namespace Stats.ExtApi
         {
             var url = string.Format(TEAM_GAME_DATA, teamId);
             var result = JsonSerializer.Deserialize<IEnumerable<Game>>(await GetRequestAsync(url));
-            return result;
+            return result!;
         }
 
         /// <summary>
@@ -104,7 +107,7 @@ namespace Stats.ExtApi
         {
             var url = string.Format(TEAM_AVATAR, teamId);
             var result = JsonSerializer.Deserialize<TeamAvatar>(await GetRequestAsync(url));
-            return result;
+            return result!;
         }
 
         /// <summary>
@@ -116,7 +119,7 @@ namespace Stats.ExtApi
         {
             var url = string.Format(TEAM_SEASON_STATS, teamId);
             var result = JsonSerializer.Deserialize<TeamSeasonStats>(await GetRequestAsync(url));
-            return result;
+            return result!;
         }
 
         /// <summary>
@@ -128,7 +131,7 @@ namespace Stats.ExtApi
         {
             var url = string.Format(TEAM_SCHEDULE, teamId);
             var result = JsonSerializer.Deserialize<IEnumerable<TeamSchedule>>(await GetRequestAsync(url));
-            return result;
+            return result!;
         }
 
         /// <summary>
@@ -140,7 +143,7 @@ namespace Stats.ExtApi
         {
             var url = string.Format(TEAM_PLAYERS, teamId);
             var result = JsonSerializer.Deserialize<IEnumerable<TeamPlayer>>(await GetRequestAsync(url));
-            return result;
+            return result!;
         }
 
         /// <summary>
@@ -152,7 +155,7 @@ namespace Stats.ExtApi
         {
             var url = string.Format(TEAM_INFO, teamId);
             var result = JsonSerializer.Deserialize<Team>(await GetRequestAsync(url));
-            return result;
+            return result!;
         }
 
         /// <summary>
@@ -165,7 +168,7 @@ namespace Stats.ExtApi
         {
             var url = string.Format(TEAM_GAME_STATS, teamId, eventId);
             var result = JsonSerializer.Deserialize<TeamEvent>(await GetRequestAsync(url));
-            return result;
+            return result!;
         }
 
         /// <summary> Will work with any valid GWT. Will display only your team data if not from IOS.</summary>
@@ -177,7 +180,7 @@ namespace Stats.ExtApi
         {
             var url = string.Format(SEARCH, query);
             var result = JsonSerializer.Deserialize<SearchResults>(await GetRequestAsync(url));
-            return result;
+            return result!;
         }
         /// <summary>
         /// Private method used by all async Task to query the external API.

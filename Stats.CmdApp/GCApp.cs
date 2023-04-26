@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Stats.ExtApi.Models;
-using Stats.ExtApi;
 using System;
 using Stats.Database.Services;
 using AutoMapper;
 using Stats.Database.Models;
+using Stats.ExtApi.Services;
 
 namespace Stats.CmdApp
 {

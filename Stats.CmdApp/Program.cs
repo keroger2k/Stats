@@ -6,8 +6,8 @@ using Serilog;
 using Stats.CmdApp.Helper;
 using Stats.Database.Models;
 using Stats.Database.Services;
-using Stats.ExtApi;
 using Stats.ExtApi.Models;
+using Stats.ExtApi.Services;
 
 namespace Stats.CmdApp
 {
@@ -60,7 +60,7 @@ namespace Stats.CmdApp
                     {
                         var http = new HttpClient();
                         http.BaseAddress = new Uri("https://api.Team-manager.gc.com");
-                        http.DefaultRequestHeaders.Add("gc-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ijk2MWM1YmM1LWJkM2EtNDg4MS1iMmI0LTgyM2YzOGM0YzBiYyJ9.eyJ0eXBlIjoidXNlciIsImNpZCI6ImMyYjVjY2IwLWUyYWItNDliZC1hNmE0LTE3ZGU5NmYzZjI0YiIsImVtYWlsIjoia3lsZS5yb2dlcnNAZ21haWwuY29tIiwidXNlcklkIjoiMzZiZTgwYWMtY2UwZC00OTE4LTgzMDYtY2M2MjMzOTZlMmMyIiwicnRrbiI6IjQ0Nzc4MDE2LWZiYmYtNDVlYy1iMjZhLTM0ODMyZGQ1NTJjYzozYjdiOWNjYS1hM2QwLTQwNDUtYTc1Yi1iZjAzOTYzNWNjMTUiLCJpYXQiOjE2ODI0NTMzMjIsImV4cCI6MTY4MjQ1NjkyMn0.yNcv07zRqe5Cl6PZmoc9a1RIHdELopLI1ATVk8nmyuk");
+                        http.DefaultRequestHeaders.Add("gc-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ijk2MWM1YmM1LWJkM2EtNDg4MS1iMmI0LTgyM2YzOGM0YzBiYyJ9.eyJ0eXBlIjoidXNlciIsImNpZCI6IjM0MWUxZDQ5LWMwNmEtNDc5Mi1hMmZiLTQyNDQzYzZlZThkZiIsImVtYWlsIjoia3lsZS5yb2dlcnNAZ21haWwuY29tIiwidXNlcklkIjoiMzZiZTgwYWMtY2UwZC00OTE4LTgzMDYtY2M2MjMzOTZlMmMyIiwicnRrbiI6ImQ3NWVkNTE5LTVjZGQtNDRkNy05MTZhLWQxYmJlNzM0OWU2MzpiZDc2MDUxNC0yNjlkLTQyNDctYTQyZC1mZjIwYjNiYmIzYjIiLCJpYXQiOjE2ODI0NzIzOTcsImV4cCI6MTY4MjUxNTU5N30.Fl9b58BwgNbzfBWe4Dxtep_vXBN_N6sYaRACDBrm1Q0");
                         return http;
                     });
                 })

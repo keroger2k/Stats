@@ -1,4 +1,4 @@
-using Stats.ExtApi;
+using Stats.ExtApi.Services;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 

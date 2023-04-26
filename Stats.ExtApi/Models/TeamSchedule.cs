@@ -48,7 +48,7 @@
         public PregameData pregame_data { get; set; } = null!;
         public class PregameData
         {
-            public string id { get; set; } 
+            public string id { get; set; } = string.Empty!;
             public string game_id { get; set; } = null!;
             public string home_away { get; set; } = null!;
             public object lineup_id { get; set; } = null!;

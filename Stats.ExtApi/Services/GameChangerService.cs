@@ -11,7 +11,7 @@ namespace Stats.ExtApi.Services
         //Works with GWT token from website or IOS
         private readonly string TEAM_SEASON_STATS = "/teams/{0}/season-stats";
         //Works with GWT token from website or IOS
-        private readonly string PLAYER_INFO = "/player/{0}";
+        private readonly string PLAYER_INFO = "/players/{0}";
         //Works with GWT token from website or IOS
         private readonly string TEAM_GAME_DATA = "/teams/{0}/schedule/batch-simple-scorekeeping-data/";
         //Works with GWT token from website or IOS
@@ -45,10 +45,10 @@ namespace Stats.ExtApi.Services
             _httpClient = httpClient;
         }
 
-        public async Task<IEnumerable<TeamPlayer>> GetPlayer(string playerId)
+        public async Task<TeamPlayer> GetPlayer(string playerId)
         {
             var url = string.Format(PLAYER_INFO, playerId);
-            var result = JsonSerializer.Deserialize<IEnumerable<TeamPlayer>>(await GetRequestAsync(url));
+            var result = JsonSerializer.Deserialize<TeamPlayer>(await GetRequestAsync(url));
             return result!;
         }
         public async Task<IEnumerable<TeamUsers>> GetTeamUsersAsync(string teamId)

@@ -111,7 +111,8 @@ namespace Stats.CmdApp
             Console.WriteLine("---------------------------------------------------------------------------\n");
             Console.WriteLine("What would you like to do?\n");
             Console.WriteLine("1. Add Team to DB?");
-            Console.WriteLine("2. Back");
+            Console.WriteLine("2. List Team Player");
+            Console.WriteLine("3. Back");
 
             if (int.TryParse(Console.ReadLine(), out choice))
             {
@@ -122,7 +123,7 @@ namespace Stats.CmdApp
                         AddTeamToDb(item);
                         break;
                     case 2:
-                        // Quit.
+                        ListTeamPlayer(item);
                         return;
                     default:
                         // Invalid choice.
@@ -138,6 +139,21 @@ namespace Stats.CmdApp
             var team = Task.Run(() => { return _gameChangerService.GetTeamAsync(item.id); }).Result;
             var teamDto = _mapper.Map<TeamDTO>(team);
             Task.Run(() => { return _db.CreateAsync(teamDto); });
+            Console.WriteLine($"Done! Press any key to continue.");
+            Console.ReadLine();
+        }
+
+        private void ListTeamPlayer(SearchResults.SearchItem item)
+        {
+            Console.WriteLine($"Displaying {item.name} players");
+            var team = Task.Run(() => { return _gameChangerService.GetTeamSeasonStatsAsync(item.id); }).Result;
+
+            foreach(var playerId in team.stats_data.players.Keys)
+            {
+                var player = Task.Run(() => { return _gameChangerService.GetPlayer(playerId); }).Result;
+                Console.WriteLine($"{player.first_name} {player.last_name}");
+            }
+
             Console.WriteLine($"Done! Press any key to continue.");
             Console.ReadLine();
         }

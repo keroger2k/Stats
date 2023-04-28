@@ -9,6 +9,7 @@ using System.Formats.Asn1;
 using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
 using static Stats.ExtApi.Models.TeamEvent;
+using Stats.Database.Models;
 
 namespace Stats.CmdApp
 {
@@ -146,16 +147,69 @@ namespace Stats.CmdApp
 
         private async Task ImportTeamInfo(SearchResults.SearchItem item) 
         {
-            var team = Task.Run(() => { return _gameChangerService.GetTeamAsync(item.id); }).Result;
-            await AddTeamToDb(team);
+            var team = await _gameChangerService.GetTeamAsync(item.id); 
+            var teamPlayers = await  _gameChangerService.GetTeamSeasonStatsAsync(team.id);
+            var teamSchedule = await _gameChangerService.GetTeamScheduledEventsAsync(team.id);
+
+            var teamTransform = new TeamTransform()
+            {
+                id = team.id,
+                name = team.name,
+                created_at = team.created_at,
+                updated_at = team.updated_at,
+                sport = team.sport,
+                city = team.city,
+                state = team.state,
+                country = team.country,
+                age_group = team.age_group,
+                season_name = team.season_name,
+                season_year = team.season_year,
+                team_avatar_image = team.team_avatar_image,
+            };
+            
+            teamTransform.players = new List<TeamTransform.Player>(); 
+            teamTransform.events = new List<TeamTransform.Event>();
+
+            foreach (var playerId in teamPlayers.stats_data.players.Keys)
+            {
+              var player = await _gameChangerService.GetPlayer(playerId);  
+              teamTransform.players.Add(new TeamTransform.Player() 
+              {
+                id = player.id,
+                first_name = player.first_name,
+                last_name = player.last_name,
+                number = player.number,
+                status = player.status,
+                team_id = player.team_id,
+                person_id = player.person_id,
+                batting_side = player.bats.batting_side,
+                throwing_hand = player.bats.throwing_hand
+              });
+            }
+
+            foreach(var evt in teamSchedule) 
+            {
+                teamTransform.events.Add(new TeamTransform.Event() 
+                {
+                    id = evt.@event.id,
+                    //boxscore = evt.@event.
+
+
+                });
+
+            }
+
+
+
+            await AddTeamToDb(teamTransform);
             //await AddTeamPlayersToDb(team);
             //await AddTeamEventsToDb(team);
         }
 
-        public async Task AddTeamToDb(Team team)
+        public async Task AddTeamToDb(TeamTransform team)
         {
-            var teamDto = _mapper.Map<TeamDTO>(team);
-            await _db.CreateTeamAsync(teamDto);
+            //var teamDto = _mapper.Map<TeamDTO>(team);
+            await _db.CreateTeamAsync(team);
         }
 
         //public async Task AddTeamPlayersToDb(Team team)

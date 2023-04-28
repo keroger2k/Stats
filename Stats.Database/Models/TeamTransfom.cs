@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using System.Text.Json.Serialization;
 
-namespace Stats.Database
+namespace Stats.Database.Models
 {
     public class TeamTransform
     {
@@ -18,8 +18,8 @@ namespace Stats.Database
         public string season_name { get; set; } = string.Empty;
         public int season_year { get; set; }
         public string team_avatar_image { get; set; } = string.Empty;
-        IEnumerable<Player> players { get; set; } = Enumerable.Empty<Player>();
-        IEnumerable<Event> events { get; set; } = Enumerable.Empty<Event>();
+        public List<Player> players { get; set; } = new List<TeamTransform.Player>();
+        public List<Event> events { get; set; }  = new List<TeamTransform.Event>();
         public class Player
         {
             [BsonId]

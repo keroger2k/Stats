@@ -28,20 +28,20 @@ namespace Stats.Database.Services
         }
 
 
-        public async Task CreateTeamAsync(TeamDTO newTeamDTO)
+        public async Task CreateTeamAsync(TeamTransform team)
         {
-            var teamCollection = ConnectToMongo<TeamDTO>(_statsDatabaseSettings.Value.TeamCollectionName);
-            var existingTeam = teamCollection.FindAsync(t => t.id == newTeamDTO.id);
+            var teamCollection = ConnectToMongo<TeamTransform>(_statsDatabaseSettings.Value.TeamCollectionName);
+            var existingTeam = teamCollection.FindAsync(t => t.id == team.id);
             if (existingTeam == null)
             {
-                await teamCollection.InsertOneAsync(newTeamDTO);
+                await teamCollection.InsertOneAsync(team);
             }
             else
             {
                 await teamCollection.ReplaceOneAsync(
-                filter: new BsonDocument("_id", newTeamDTO.id),
+                filter: new BsonDocument("_id", team.id),
                 options: new ReplaceOptions { IsUpsert = true },
-                replacement: newTeamDTO
+                replacement: team
                 );
             }
 

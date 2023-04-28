@@ -3,6 +3,8 @@ using Stats.Database.Models;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Numerics;
+using MongoDB.Bson;
 
 namespace Stats.Database.Services
 {
@@ -26,22 +28,64 @@ namespace Stats.Database.Services
         }
 
 
-        public Task CreateTeamAsync(TeamDTO newTeamDTO)
+        public async Task CreateTeamAsync(TeamDTO newTeamDTO)
         {
             var teamCollection = ConnectToMongo<TeamDTO>(_statsDatabaseSettings.Value.TeamCollectionName);
-            return teamCollection.InsertOneAsync(newTeamDTO);
+            var existingTeam = teamCollection.FindAsync(t => t.id == newTeamDTO.id);
+            if (existingTeam == null)
+            {
+                await teamCollection.InsertOneAsync(newTeamDTO);
+            }
+            else
+            {
+                await teamCollection.ReplaceOneAsync(
+                filter: new BsonDocument("_id", newTeamDTO.id),
+                options: new ReplaceOptions { IsUpsert = true },
+                replacement: newTeamDTO
+                );
+            }
+
         }
 
-        public Task AddTeamPlayerAsync(TeamPlayerDTO player)
-        {
-            var teamCollection = ConnectToMongo<TeamPlayerDTO>(_statsDatabaseSettings.Value.PlayerCollectionName);
-            return teamCollection.InsertOneAsync(player);
-        }
-        public Task AddTeamPlayersAsync(IEnumerable<TeamPlayerDTO> players)
-        {
-            var teamCollection = ConnectToMongo<TeamPlayerDTO>(_statsDatabaseSettings.Value.PlayerCollectionName);
-            return teamCollection.InsertManyAsync(players);
-        }
+        //public async Task AddTeamPlayerAsync(TeamPlayerDTO player)
+        //{
+        //    var playerCollection = ConnectToMongo<TeamPlayerDTO>(_statsDatabaseSettings.Value.PlayerCollectionName);
+        //    var existingPlayer = playerCollection.FindAsync(t => t.id == player.id);
+        //    if (existingPlayer == null)
+        //    {
+        //        await playerCollection.InsertOneAsync(player);
+        //    }
+        //    else
+        //    {
+        //        await playerCollection.ReplaceOneAsync(
+        //        filter: new BsonDocument("_id", player.id),
+        //        options: new ReplaceOptions { IsUpsert = true },
+        //        replacement: player
+        //        );
+        //    }
+        //}
+       
+        //public async Task AddTeamEventsAsync(IEnumerable<TeamScheduleDTO> events)
+        //{
+        //    var eventCollection = ConnectToMongo<TeamScheduleDTO>(_statsDatabaseSettings.Value.EventCollectionName);
+            
+        //    foreach(var evt in events)
+        //    {
+        //        var existingPlayer = eventCollection.FindAsync(t => t.@event.id == evt.@event.id);
+        //        if (existingPlayer == null)
+        //        {
+        //            await eventCollection.InsertOneAsync(evt);
+        //        }
+        //        else
+        //        {
+        //            await eventCollection.ReplaceOneAsync(
+        //            filter: new BsonDocument("_id", evt.@event.id),
+        //            options: new ReplaceOptions { IsUpsert = true },
+        //            replacement: evt
+        //            );
+        //        }
+        //    }
+        //}
 
     }
 }

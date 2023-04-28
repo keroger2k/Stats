@@ -1,6 +1,6 @@
-﻿namespace Stats.ExtApi.Models
+﻿namespace Stats.Database.Models
 {
-    public class TeamSchedule
+    public class TeamScheduleDTO
     {
         public Event @event { get; set; } = null!;
         public class Event

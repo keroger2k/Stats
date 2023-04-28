@@ -47,6 +47,7 @@ namespace Stats.CmdApp
                 .ConfigureServices((context, services) => 
                 {
                     services.AddTransient<GCApp>();
+                    services.AddTransient<StatsOut>();
                     services.AddTransient<GameChangerService>();
                     services.AddTransient<DatabaseService>();
                     services.AddSingleton(mapper);
@@ -60,7 +61,7 @@ namespace Stats.CmdApp
                     {
                         var http = new HttpClient();
                         http.BaseAddress = new Uri("https://api.Team-manager.gc.com");
-                        http.DefaultRequestHeaders.Add("gc-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ijk2MWM1YmM1LWJkM2EtNDg4MS1iMmI0LTgyM2YzOGM0YzBiYyJ9.eyJ0eXBlIjoidXNlciIsImNpZCI6IjViNzA3OWFlLTEzZjItNDFiZS1hOWE1LTAxMzVmZjQzMDQ0ZSIsImVtYWlsIjoia3lsZS5yb2dlcnNAZ21haWwuY29tIiwidXNlcklkIjoiMzZiZTgwYWMtY2UwZC00OTE4LTgzMDYtY2M2MjMzOTZlMmMyIiwicnRrbiI6IjQ0Nzc4MDE2LWZiYmYtNDVlYy1iMjZhLTM0ODMyZGQ1NTJjYzphZTdhMjc4YS1hYTdmLTRlOTgtYTI5MS03YjI4N2NiZDA0MGMiLCJpYXQiOjE2ODI1MTkwMjEsImV4cCI6MTY4MjUyMjYyMX0.d00PSVmTfGNhDAHGH5PfkwbSBYGb7NF6aUFt6I2fYKc");
+                        http.DefaultRequestHeaders.Add("gc-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ijk2MWM1YmM1LWJkM2EtNDg4MS1iMmI0LTgyM2YzOGM0YzBiYyJ9.eyJ0eXBlIjoidXNlciIsImNpZCI6IjU2NDJjNDhkLTA1YjEtNDI1MC1iNDY2LWU3ZWRkZTllMzA0ZSIsImVtYWlsIjoia3lsZS5yb2dlcnNAZ21haWwuY29tIiwidXNlcklkIjoiMzZiZTgwYWMtY2UwZC00OTE4LTgzMDYtY2M2MjMzOTZlMmMyIiwicnRrbiI6IjQ0Nzc4MDE2LWZiYmYtNDVlYy1iMjZhLTM0ODMyZGQ1NTJjYzplZjVmOTdjZi02Mjg0LTQwMmMtYjQ4Ni05NzJiOWZlZGE5MjMiLCJpYXQiOjE2ODI2MjA4MTcsImV4cCI6MTY4MjYyNDQxN30.vmdjnC0GZTGgtap6-dY41KI5O0YbFAZpgtMV90Dwcg4");
                         return http;
                     });
                 })

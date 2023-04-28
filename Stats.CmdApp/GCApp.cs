@@ -5,6 +5,10 @@ using Stats.Database.Models;
 using Stats.Database.Services;
 using Stats.ExtApi.Models;
 using Stats.ExtApi.Services;
+using System.Formats.Asn1;
+using System.Runtime.CompilerServices;
+using System.Xml.Serialization;
+using static Stats.ExtApi.Models.TeamEvent;
 
 namespace Stats.CmdApp
 {
@@ -15,10 +19,12 @@ namespace Stats.CmdApp
         private readonly GameChangerService _gameChangerService;
         private readonly DatabaseService _db;
         private readonly IMapper _mapper;
+        private readonly StatsOut _statsOut;
 
-        public GCApp(ILogger<GCApp> logger, IConfiguration configuration, 
-            GameChangerService gameChangerService, 
+        public GCApp(ILogger<GCApp> logger, IConfiguration configuration,
+            GameChangerService gameChangerService,
             DatabaseService databaseService,
+            StatsOut statsOut,
             IMapper mapper)
         {
             _configuration = configuration; 
@@ -26,6 +32,7 @@ namespace Stats.CmdApp
             _gameChangerService = gameChangerService;
             _db = databaseService;
             _mapper = mapper;
+            _statsOut = statsOut; 
         }
 
         public void Run()
@@ -109,9 +116,10 @@ namespace Stats.CmdApp
             Console.WriteLine($"\tStaff: [ {string.Join(", ", item.staff)} ]\n");
             Console.WriteLine("---------------------------------------------------------------------------\n");
             Console.WriteLine("What would you like to do?\n");
-            Console.WriteLine("1. Add Team to DB?");
-            Console.WriteLine("2. Add Player to DB?");
-            Console.WriteLine("3. Back");
+            Console.WriteLine("1. Show Team Info?");
+            Console.WriteLine("2. Show Player Info?");
+            Console.WriteLine("3. Import Team Info?");
+            Console.WriteLine("4. Back");
 
             if (int.TryParse(Console.ReadLine(), out choice))
             {
@@ -119,10 +127,13 @@ namespace Stats.CmdApp
                 {
                     case 1:
                         // Search for a Team.
-                        AddTeamToDb(item);
+                        ListTeamInfo(item);
                         break;
                     case 2:
-                        ListTeamPlayer(item);
+                        //ListTeamPlayer(item);
+                        return;
+                    case 3:
+                        ImportTeamInfo(item).Wait();
                         return;
                     default:
                         // Invalid choice.
@@ -132,32 +143,74 @@ namespace Stats.CmdApp
             }
         }
     
-        private void AddTeamToDb(SearchResults.SearchItem item)
+
+        private async Task ImportTeamInfo(SearchResults.SearchItem item) 
         {
-            Console.WriteLine($"Adding {item.name} to database with id {item.id}");
             var team = Task.Run(() => { return _gameChangerService.GetTeamAsync(item.id); }).Result;
-            var teamDto = _mapper.Map<TeamDTO>(team);
-            Task.Run(() => { return _db.CreateTeamAsync(teamDto); });
-            Console.WriteLine($"Done! Press any key to continue.");
-            Console.ReadLine();
+            await AddTeamToDb(team);
+            //await AddTeamPlayersToDb(team);
+            //await AddTeamEventsToDb(team);
         }
 
-        private void ListTeamPlayer(SearchResults.SearchItem item)
+        public async Task AddTeamToDb(Team team)
         {
-            Console.WriteLine($"Displaying {item.name} players");
-            var team = Task.Run(() => { return _gameChangerService.GetTeamSeasonStatsAsync(item.id); }).Result;
+            var teamDto = _mapper.Map<TeamDTO>(team);
+            await _db.CreateTeamAsync(teamDto);
+        }
 
-            foreach(var playerId in team.stats_data.players.Keys)
-            {
-                var player = Task.Run(() => { return _gameChangerService.GetPlayer(playerId); }).Result;
-                var playerDto = _mapper.Map<TeamPlayerDTO>(player);
-                Task.Run(() => { return _db.AddTeamPlayerAsync(playerDto); });
-                Console.WriteLine($"{player.id}: {player.first_name} {player.last_name}");
-            }
+        //public async Task AddTeamPlayersToDb(Team team)
+        //{
+        //    var teamPlayers = Task.Run(() => { return _gameChangerService.GetTeamSeasonStatsAsync(team.id); }).Result;
 
-            Console.WriteLine($"Done! Press any key to continue.");
+        //    foreach (var playerId in teamPlayers.stats_data.players.Keys)
+        //    {
+        //        var player = Task.Run(() => { return _gameChangerService.GetPlayer(playerId); }).Result;
+        //        var playerDto = _mapper.Map<TeamPlayerDTO>(player);
+        //        await _db.AddTeamPlayerAsync(playerDto);
+        //    }
+        //}
+        //public async Task AddTeamEventsToDb(Team team)
+        //{
+
+        //    var teamSchedule = Task.Run(() => { return _gameChangerService.GetTeamScheduledEventsAsync(team.id); }).Result;
+        //    var teamEvents = _mapper.Map<IEnumerable<TeamScheduleDTO>>(teamSchedule);
+        //    await _db.AddTeamEventsAsync(teamEvents);
+
+        //}
+
+
+
+
+
+        private void ListTeamInfo(SearchResults.SearchItem item)
+        {
+            _statsOut.ShowTeam(item.id);
+            //Console.WriteLine($"Adding {item.name} to database with id {item.id}");
+            //var team = Task.Run(() => { return _gameChangerService.GetTeamAsync(item.id); }).Result;
+            //var teamDto = _mapper.Map<TeamDTO>(team);
+            //Task.Run(() => { return _db.CreateTeamAsync(teamDto); });
+            //Console.WriteLine($"Done! Press any key to continue.");
             Console.ReadLine();
         }
+
+        //private void ListTeamPlayer(SearchResults.SearchItem item)
+        //{
+        //    _statsOut.ListPlayers(item.id);
+
+        //    Console.WriteLine($"Displaying {item.name} players");
+        //    var team = Task.Run(() => { return _gameChangerService.GetTeamSeasonStatsAsync(item.id); }).Result;
+
+        //    foreach(var playerId in team.stats_data.players.Keys)
+        //    {
+        //        var player = Task.Run(() => { return _gameChangerService.GetPlayer(playerId); }).Result;
+        //        var playerDto = _mapper.Map<TeamPlayerDTO>(player);
+        //        Task.Run(() => { return _db.AddTeamPlayerAsync(playerDto); });
+        //        Console.WriteLine($"{player.id}: {player.first_name} {player.last_name}");
+        //    }
+
+        //    Console.WriteLine($"Done! Press any key to continue.");
+        //    Console.ReadLine();
+        //}
     }
 
 }

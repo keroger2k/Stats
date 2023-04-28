@@ -7,7 +7,7 @@
         public class GameData
         {
             public string game_id { get; set; } = null!;
-            public object scorekeeping_config_id { get; set; } = null!;
+            public string scorekeeping_config_id { get; set; } = null!;
             public string game_state { get; set; } = null!;
             public int team_score { get; set; }
             public int opponent_score { get; set; }

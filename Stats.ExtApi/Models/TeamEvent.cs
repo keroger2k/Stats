@@ -33,7 +33,7 @@ namespace Stats.ExtApi.Models
             {
                 public string id { get; set; } = null!;
                 public string code { get; set; } = null!;
-                public object createdAt { get; set; } = null!;
+                public string createdAt { get; set; } = null!;
                 public Attributes attributes { get; set; } = null!;
                 public CompactorAttributes compactorAttributes { get; set; } = null!;
                 public class CompactorAttributes
@@ -75,8 +75,10 @@ namespace Stats.ExtApi.Models
         }
         public class EventPlayerStats
         {
+            //owning team's box score
             public PlayerStats stats { get; set; } = null!; 
 
+            //players home & away stats
             public Dictionary<string, Player> players { get; set; } = null!;
         }
         public class Player

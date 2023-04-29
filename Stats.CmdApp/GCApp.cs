@@ -1,15 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
 using Stats.Database.Models;
 using Stats.Database.Services;
 using Stats.ExtApi.Models;
 using Stats.ExtApi.Services;
-using System.Formats.Asn1;
-using System.Runtime.CompilerServices;
-using System.Xml.Serialization;
-using static Stats.ExtApi.Models.TeamEvent;
-using Stats.Database.Models;
+using static Stats.Database.Models.TeamTransform;
 
 namespace Stats.CmdApp
 {
@@ -168,7 +165,8 @@ namespace Stats.CmdApp
             };
             
             teamTransform.players = new List<TeamTransform.Player>(); 
-            teamTransform.events = new List<TeamTransform.Event>();
+            teamTransform.completed_games = new List<TeamTransform.Event>();
+            teamTransform.schedule = _mapper.Map<List<TeamTransform.TeamSchedule>>(teamSchedule.ToList());
 
             foreach (var playerId in teamPlayers.stats_data.players.Keys)
             {
@@ -187,84 +185,39 @@ namespace Stats.CmdApp
               });
             }
 
-            foreach(var evt in teamSchedule) 
+            foreach(var evt in teamTransform.schedule.Where(c => c.@event.event_type.Equals("game"))
+                .Where(c => !c.@event.status.Equals("canceled"))
+                .Where(c => c.@event.start.datetime < DateTime.Now)
+                .Where(c => !c.@event.sub_type.Contains("scrimmages")))
             {
-                teamTransform.events.Add(new TeamTransform.Event() 
+                var game = await _gameChangerService.GetTeamEventStatsAsync(team.id, evt.@event.id);
+                var item1 = new TeamTransform.Event() 
                 {
-                    id = evt.@event.id,
-                    //boxscore = evt.@event.
+                    id = game.event_id,
+                    boxscore = _mapper.Map<TeamTransform.Event.PlayerStats>(game.player_stats.stats)
+                };
+                item1.players = new Dictionary<string, TeamTransform.Event.PlayerStats>();
 
+                foreach(var player in game.player_stats.players)
+                {
+                    item1.players.Add(player.Key, _mapper.Map<TeamTransform.Event.PlayerStats>(player.Value.stats));
 
-                });
+                }
+                teamTransform.completed_games.Add(item1);
 
             }
-
-
-
             await AddTeamToDb(teamTransform);
-            //await AddTeamPlayersToDb(team);
-            //await AddTeamEventsToDb(team);
         }
 
         public async Task AddTeamToDb(TeamTransform team)
         {
-            //var teamDto = _mapper.Map<TeamDTO>(team);
             await _db.CreateTeamAsync(team);
         }
-
-        //public async Task AddTeamPlayersToDb(Team team)
-        //{
-        //    var teamPlayers = Task.Run(() => { return _gameChangerService.GetTeamSeasonStatsAsync(team.id); }).Result;
-
-        //    foreach (var playerId in teamPlayers.stats_data.players.Keys)
-        //    {
-        //        var player = Task.Run(() => { return _gameChangerService.GetPlayer(playerId); }).Result;
-        //        var playerDto = _mapper.Map<TeamPlayerDTO>(player);
-        //        await _db.AddTeamPlayerAsync(playerDto);
-        //    }
-        //}
-        //public async Task AddTeamEventsToDb(Team team)
-        //{
-
-        //    var teamSchedule = Task.Run(() => { return _gameChangerService.GetTeamScheduledEventsAsync(team.id); }).Result;
-        //    var teamEvents = _mapper.Map<IEnumerable<TeamScheduleDTO>>(teamSchedule);
-        //    await _db.AddTeamEventsAsync(teamEvents);
-
-        //}
-
-
-
-
 
         private void ListTeamInfo(SearchResults.SearchItem item)
         {
             _statsOut.ShowTeam(item.id);
-            //Console.WriteLine($"Adding {item.name} to database with id {item.id}");
-            //var team = Task.Run(() => { return _gameChangerService.GetTeamAsync(item.id); }).Result;
-            //var teamDto = _mapper.Map<TeamDTO>(team);
-            //Task.Run(() => { return _db.CreateTeamAsync(teamDto); });
-            //Console.WriteLine($"Done! Press any key to continue.");
             Console.ReadLine();
         }
-
-        //private void ListTeamPlayer(SearchResults.SearchItem item)
-        //{
-        //    _statsOut.ListPlayers(item.id);
-
-        //    Console.WriteLine($"Displaying {item.name} players");
-        //    var team = Task.Run(() => { return _gameChangerService.GetTeamSeasonStatsAsync(item.id); }).Result;
-
-        //    foreach(var playerId in team.stats_data.players.Keys)
-        //    {
-        //        var player = Task.Run(() => { return _gameChangerService.GetPlayer(playerId); }).Result;
-        //        var playerDto = _mapper.Map<TeamPlayerDTO>(player);
-        //        Task.Run(() => { return _db.AddTeamPlayerAsync(playerDto); });
-        //        Console.WriteLine($"{player.id}: {player.first_name} {player.last_name}");
-        //    }
-
-        //    Console.WriteLine($"Done! Press any key to continue.");
-        //    Console.ReadLine();
-        //}
     }
-
 }

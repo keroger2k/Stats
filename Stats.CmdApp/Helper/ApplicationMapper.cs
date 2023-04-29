@@ -15,15 +15,22 @@ namespace Stats.CmdApp.Helper
             CreateMap<Team.AdminTeam, TeamDTO.AdminTeam>();
             CreateMap<TeamPlayer, TeamPlayerDTO>();
             CreateMap<TeamPlayer.BattingThrowingInfo, TeamPlayerDTO.BattingThrowingInfo>();
-            CreateMap<TeamSchedule, TeamScheduleDTO>();
-            CreateMap<TeamSchedule.Event, TeamScheduleDTO.Event>();
-            CreateMap<TeamSchedule.Event.End, TeamScheduleDTO.Event.End>();
-            CreateMap<TeamSchedule.Event.Start, TeamScheduleDTO.Event.Start>();
-            CreateMap<TeamSchedule.Event.Arrive, TeamScheduleDTO.Event.Arrive>();
-            CreateMap<TeamSchedule.Event.Location, TeamScheduleDTO.Event.Location>();
-            CreateMap<TeamSchedule.Event.Location.Coordinates, TeamScheduleDTO.Event.Location.Coordinates>();
-            CreateMap<TeamSchedule.PregameData, TeamScheduleDTO.PregameData>();
-            CreateMap<TeamSchedule.PregameData.Opponent, TeamScheduleDTO.PregameData.Opponent>();
+            CreateMap<TeamSchedule, TeamTransform.TeamSchedule>();
+            CreateMap<TeamSchedule.Event, TeamTransform.TeamSchedule.Event>();
+            CreateMap<TeamSchedule.Event.End, TeamTransform.TeamSchedule.Event.End>();
+            CreateMap<TeamSchedule.Event.Start, TeamTransform.TeamSchedule.Event.Start>();
+            CreateMap<TeamSchedule.Event.Arrive, TeamTransform.TeamSchedule.Event.Arrive>();
+            CreateMap<TeamSchedule.Event.Location, TeamTransform.TeamSchedule.Event.Location>();
+            CreateMap<TeamSchedule.Event.Location.Coordinates, TeamTransform.TeamSchedule.Event.Location.Coordinates>();
+            CreateMap<TeamSchedule.PregameData, TeamTransform.TeamSchedule.PregameData>();
+            CreateMap<TeamSchedule.PregameData.Opponent, TeamTransform.TeamSchedule.PregameData.Opponent>();
+            CreateMap<TeamEvent.PlayerStats, TeamTransform.Event.PlayerStats>();
+            CreateMap<TeamEvent.PlayerStats.Defense, TeamTransform.Event.PlayerStats.Defense>();
+            CreateMap<TeamEvent.PlayerStats.General, TeamTransform.Event.PlayerStats.General>();
+            CreateMap<TeamEvent.PlayerStats.Offense, TeamTransform.Event.PlayerStats.Offense>();
+            CreateMap<Game, TeamTransform.Game>();
+            CreateMap<Game.GameData, TeamTransform.Game.GameData>();
+
         }
     }
 }

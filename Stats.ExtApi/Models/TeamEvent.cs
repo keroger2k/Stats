@@ -19,7 +19,7 @@ namespace Stats.ExtApi.Models
         public string team_id { get; set; } = null!;
         public string event_id { get; set; } = null!;
         public EventPlayerStats player_stats { get; set; } = null!;
-        public SprayChart spray_chart_data { get; set; } = null!;
+        //public SprayChart spray_chart_data { get; set; } = null!;
         public CumulativePlayerStats cumulative_player_stats { get; set; } = null!;
         /// <summary>
         /// Dictionary events are the playersId for the string, and the outcomes with
@@ -33,7 +33,7 @@ namespace Stats.ExtApi.Models
             {
                 public string id { get; set; } = null!;
                 public string code { get; set; } = null!;
-                public string createdAt { get; set; } = null!;
+                public DateTime createdAt { get; set; }
                 public Attributes attributes { get; set; } = null!;
                 public CompactorAttributes compactorAttributes { get; set; } = null!;
                 public class CompactorAttributes

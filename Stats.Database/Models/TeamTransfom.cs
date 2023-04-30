@@ -520,10 +520,12 @@ namespace Stats.Database.Models
         }
         public class Game
         {
+            [BsonId]
             public string event_id { get; set; } = null!;
             public GameData game_data { get; set; } = null!;
             public class GameData
             {
+                [BsonId]
                 public string game_id { get; set; } = null!;
                 public string scorekeeping_config_id { get; set; } = null!;
                 public string game_state { get; set; } = null!;

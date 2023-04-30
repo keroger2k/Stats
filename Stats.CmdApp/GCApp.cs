@@ -114,23 +114,14 @@ namespace Stats.CmdApp
             Console.WriteLine($"\tStaff: [ {string.Join(", ", item.staff)} ]\n");
             Console.WriteLine("---------------------------------------------------------------------------\n");
             Console.WriteLine("What would you like to do?\n");
-            Console.WriteLine("1. Show Team Info?");
-            Console.WriteLine("2. Show Player Info?");
-            Console.WriteLine("3. Import Team Info?");
-            Console.WriteLine("4. Back");
+            Console.WriteLine("1. Import Team Info?");
+            Console.WriteLine("2. Back");
 
             if (int.TryParse(Console.ReadLine(), out choice))
             {
                 switch (choice)
                 {
                     case 1:
-                        // Search for a Team.
-                        ListTeamInfo(item);
-                        break;
-                    case 2:
-                        //ListTeamPlayer(item);
-                        return;
-                    case 3:
                         ImportTeamInfo(item).Wait();
                         return;
                     default:
@@ -147,6 +138,7 @@ namespace Stats.CmdApp
             var team = await _gameChangerService.GetTeamAsync(item.id); 
             var teamPlayers = await  _gameChangerService.GetTeamSeasonStatsAsync(team.id);
             var teamSchedule = await _gameChangerService.GetTeamScheduledEventsAsync(team.id);
+            var scores = await _gameChangerService.GetTeamGameDataAsync(team.id);
 
             var teamTransform = new TeamTransform()
             {
@@ -162,11 +154,10 @@ namespace Stats.CmdApp
                 season_name = team.season_name,
                 season_year = team.season_year,
                 team_avatar_image = team.team_avatar_image,
+                schedule = _mapper.Map<List<TeamTransform.TeamSchedule>>(teamSchedule.ToList()),
+                completed_game_scores = _mapper.Map<List<TeamTransform.Game>>(scores),
             };
             
-            teamTransform.players = new List<TeamTransform.Player>(); 
-            teamTransform.completed_games = new List<TeamTransform.Event>();
-            teamTransform.schedule = _mapper.Map<List<TeamTransform.TeamSchedule>>(teamSchedule.ToList());
 
             foreach (var playerId in teamPlayers.stats_data.players.Keys)
             {
@@ -205,18 +196,10 @@ namespace Stats.CmdApp
 
                 teamTransform.completed_games.Add(item1);
             }
-            await AddTeamToDb(teamTransform);
-        }
 
-        public async Task AddTeamToDb(TeamTransform team)
-        {
-            await _db.CreateTeamAsync(team);
-        }
+            await _db.CreateTeamAsync(teamTransform);
 
-        private void ListTeamInfo(SearchResults.SearchItem item)
-        {
-            _statsOut.ShowTeam(item.id);
-            Console.ReadLine();
+
         }
     }
 }

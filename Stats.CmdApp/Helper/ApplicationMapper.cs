@@ -24,10 +24,10 @@ namespace Stats.CmdApp.Helper
             CreateMap<TeamSchedule.Event.Location.Coordinates, TeamTransform.TeamSchedule.Event.Location.Coordinates>();
             CreateMap<TeamSchedule.PregameData, TeamTransform.TeamSchedule.PregameData>();
             CreateMap<TeamSchedule.PregameData.Opponent, TeamTransform.TeamSchedule.PregameData.Opponent>();
-            CreateMap<TeamEvent.PlayerStats, TeamTransform.Event.PlayerStats>();
-            CreateMap<TeamEvent.PlayerStats.Defense, TeamTransform.Event.PlayerStats.Defense>();
-            CreateMap<TeamEvent.PlayerStats.General, TeamTransform.Event.PlayerStats.General>();
-            CreateMap<TeamEvent.PlayerStats.Offense, TeamTransform.Event.PlayerStats.Offense>();
+            CreateMap<StatsData.PlayerStats, TeamTransform.Event.PlayerStats>();
+            CreateMap<StatsData.PlayerStats.Defense, TeamTransform.Event.PlayerStats.Defense>();
+            CreateMap<StatsData.PlayerStats.General, TeamTransform.Event.PlayerStats.General>();
+            CreateMap<StatsData.PlayerStats.Offense, TeamTransform.Event.PlayerStats.Offense>();
             CreateMap<Game, TeamTransform.Game>();
             CreateMap<Game.GameData, TeamTransform.Game.GameData>();
 

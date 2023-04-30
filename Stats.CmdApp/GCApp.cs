@@ -201,10 +201,9 @@ namespace Stats.CmdApp
                 foreach(var player in game.player_stats.players)
                 {
                     item1.players.Add(player.Key, _mapper.Map<TeamTransform.Event.PlayerStats>(player.Value.stats));
-
                 }
-                teamTransform.completed_games.Add(item1);
 
+                teamTransform.completed_games.Add(item1);
             }
             await AddTeamToDb(teamTransform);
         }

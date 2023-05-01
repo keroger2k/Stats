@@ -6,7 +6,6 @@ using Stats.Database.Models;
 using Stats.Database.Services;
 using Stats.ExtApi.Models;
 using Stats.ExtApi.Services;
-using static Stats.Database.Models.TeamTransform;
 
 namespace Stats.CmdApp
 {
@@ -37,68 +36,37 @@ namespace Stats.CmdApp
         {
             while (true)
             {
+                // Get the user's search text.
                 Console.Clear();
-                Console.WriteLine("What would you like to do?");
-                Console.WriteLine("1. Search Team");
-                Console.WriteLine("2. Quit");
-                int choice = 0;
-                if (int.TryParse(Console.ReadLine(), out choice))
+                Console.WriteLine("Enter a Team name to search for: ");
+                string query = Console.ReadLine() ?? string.Empty;
+                int selection = 0;
+
+                // Find all Teams that match the search text.
+                var results = Task.Run(() => { return _gameChangerService.SearchTeamsAsync(query); }).Result;
+                ;
+
+                // Display the search results.
+                if (results.hits.Count() == 0)
                 {
-                    switch (choice)
+                    Console.WriteLine("No Teams found.");
+                }
+                else
+                {
+                    var i = 1;
+                    Console.Clear();
+                    foreach (var item in results.hits)
                     {
-                        case 1:
-                            // Search for a Team.
-                            SearchTeam();
-                            break;
-                        case 2:
-                            // Quit.
-                            return;
-                        default:
-                            // Invalid choice.
-                            Console.WriteLine("Invalid choice.");
-                            break;
+                        var location = item.location == null ? "Unknown" : string.Format($"{item.location.city}, {item.location.state}");
+                        Console.WriteLine($"{i++}. {item.name}; Sport/Season: {item.sport.ToUpper()}/{item.team_season.season.ToUpper()}, {item.team_season.year}");
+                        Console.WriteLine($"Number of Players: {item.number_of_players}; Age Group: {item.age_group}; Staff: [ {string.Join(", ", item.staff)} ]\n");
                     }
                 }
+                Console.WriteLine("Which Team do you want to select?:");
+
+                if (int.TryParse(Console.ReadLine(), out selection))
+                    SelectTeam(results.hits.ElementAt(selection - 1));
             }
-        }
-
-        private void SearchTeam()
-        {
-            // Get the user's search text.
-            Console.Clear();
-            Console.WriteLine("Enter a Team name to search for: ");
-            string query = Console.ReadLine() ?? string.Empty;
-            int selection = 0;
-
-            // Find all Teams that match the search text.
-            var results = Task.Run(() => { return _gameChangerService.SearchTeamsAsync(query); }).Result;
-            ;
-
-            // Display the search results.
-            if (results.hits.Count() == 0)
-            {
-                Console.WriteLine("No Teams found.");
-            }
-            else
-            {
-                var i = 1;
-                foreach (var Team in results.hits)
-                {
-                    var location = Team.location == null ? "Unknown" : string.Format($"{Team.location.city}, {Team.location.state}");
-                    Console.WriteLine("{0}. {1}", i++, Team.name);
-                    Console.WriteLine($"\tId: {Team.id}");
-                    Console.WriteLine($"\tSport/Season: {Team.sport.ToUpper()} / {Team.team_season.season.ToUpper()}, {Team.team_season.year} ");
-                    Console.WriteLine($"\tNumber of Players: {Team.number_of_players}");
-                    Console.WriteLine($"\tAge Group: {Team.age_group}");
-                    Console.WriteLine($"\tLocation: {location}");
-                    Console.WriteLine($"\tStaff: [ {string.Join(", ", Team.staff)} ]");
-                }
-            }
-            Console.WriteLine("Which Team do you want to select?:");
-
-            if (int.TryParse(Console.ReadLine(), out selection))
-                SelectTeam(results.hits.ElementAt(selection - 1));
-
         }
         
         private void SelectTeam(SearchResults.SearchItem item)
@@ -106,12 +74,8 @@ namespace Stats.CmdApp
             int choice = 0;
             Console.Clear();
             Console.WriteLine("---------------------------------------------------------------------------\n");
-            Console.WriteLine($"\tId: {item.id}");
-            Console.WriteLine($"\tName: {item.name}");
-            Console.WriteLine($"\tSport/Season: {item.sport.ToUpper()} / {item.team_season.season.ToUpper()}, {item.team_season.year} ");
-            Console.WriteLine($"\tNumber of Players: {item.number_of_players}");
-            Console.WriteLine($"\tAge Group: {item.age_group}");
-            Console.WriteLine($"\tStaff: [ {string.Join(", ", item.staff)} ]\n");
+            Console.WriteLine($"Id: {item.id};\nName: {item.name}; Sport/Season: {item.sport.ToUpper()}/{item.team_season.season.ToUpper()}, {item.team_season.year} ");
+            Console.WriteLine($"Number of Players: {item.number_of_players}\nAge Group: {item.age_group}\nStaff: [ {string.Join(", ", item.staff)} ]\n");
             Console.WriteLine("---------------------------------------------------------------------------\n");
             Console.WriteLine("What would you like to do?\n");
             Console.WriteLine("1. Import Team Info?");
@@ -131,7 +95,6 @@ namespace Stats.CmdApp
                 }
             }
         }
-    
 
         private async Task ImportTeamInfo(SearchResults.SearchItem item) 
         {
@@ -157,7 +120,6 @@ namespace Stats.CmdApp
                 schedule = _mapper.Map<List<TeamTransform.TeamSchedule>>(teamSchedule.ToList()),
                 completed_game_scores = _mapper.Map<List<TeamTransform.Game>>(scores),
             };
-            
 
             foreach (var playerId in teamPlayers.stats_data.players.Keys)
             {
@@ -182,24 +144,22 @@ namespace Stats.CmdApp
                 .Where(c => !c.@event.sub_type.Contains("scrimmages")))
             {
                 var game = await _gameChangerService.GetTeamEventStatsAsync(team.id, evt.@event.id);
-                var item1 = new TeamTransform.Event() 
+                var eventPlayers = new TeamTransform.Event() 
                 {
                     id = game.event_id,
                     boxscore = _mapper.Map<TeamTransform.Event.PlayerStats>(game.player_stats.stats)
                 };
-                item1.players = new Dictionary<string, TeamTransform.Event.PlayerStats>();
+                eventPlayers.players = new Dictionary<string, TeamTransform.Event.PlayerStats>();
 
                 foreach(var player in game.player_stats.players)
                 {
-                    item1.players.Add(player.Key, _mapper.Map<TeamTransform.Event.PlayerStats>(player.Value.stats));
+                    eventPlayers.players.Add(player.Key, _mapper.Map<TeamTransform.Event.PlayerStats>(player.Value.stats));
                 }
 
-                teamTransform.completed_games.Add(item1);
+                teamTransform.completed_games.Add(eventPlayers);
             }
 
             await _db.CreateTeamAsync(teamTransform);
-
-
         }
     }
 }

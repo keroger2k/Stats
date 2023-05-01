@@ -51,7 +51,6 @@ namespace Stats.CmdApp
                     services.AddTransient<GameChangerService>();
                     services.AddTransient<DatabaseService>();
                     services.AddSingleton(mapper);
-                    services.AddAutoMapper(typeof(Team).Assembly, typeof(TeamDTO).Assembly);
 
 
                     services.Configure<DatabaseSettings>(context.Configuration.GetSection("DatabaseSettings"));

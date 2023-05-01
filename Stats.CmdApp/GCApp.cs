@@ -102,6 +102,7 @@ namespace Stats.CmdApp
             var teamPlayers = await  _gameChangerService.GetTeamSeasonStatsAsync(team.id);
             var teamSchedule = await _gameChangerService.GetTeamScheduledEventsAsync(team.id);
             var scores = await _gameChangerService.GetTeamGameDataAsync(team.id);
+            var season_stats = await _gameChangerService.GetTeamSeasonStatsAsync(team.id);
 
             var teamTransform = new TeamTransform()
             {
@@ -119,6 +120,7 @@ namespace Stats.CmdApp
                 team_avatar_image = team.team_avatar_image,
                 schedule = _mapper.Map<List<TeamTransform.TeamSchedule>>(teamSchedule.ToList()),
                 completed_game_scores = _mapper.Map<List<TeamTransform.Game>>(scores),
+                season_stats = _mapper.Map<TeamTransform.SeasonStats>(season_stats)
             };
 
             foreach (var playerId in teamPlayers.stats_data.players.Keys)

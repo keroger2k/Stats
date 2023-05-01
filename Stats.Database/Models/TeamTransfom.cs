@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using System.Text.Json.Serialization;
+using static Stats.Database.Models.TeamTransform.Event;
 
 namespace Stats.Database.Models
 {
@@ -22,7 +23,28 @@ namespace Stats.Database.Models
         public List<Event> completed_games { get; set; } = new List<TeamTransform.Event>();
         public List<Game> completed_game_scores { get; set; } = new List<TeamTransform.Game>();
         public List<TeamSchedule> schedule { get; set; } = new List<TeamTransform.TeamSchedule>();
-        
+        public SeasonStats season_stats { get; set; } = null!;
+
+        public class SeasonStats
+        {
+            public string id { get; set; } = null!;
+            public StatsData stats_data { get; set; } = null!;
+            public string team_id { get; set; } = null!;
+            public string meta_seq { get; set; } = null!;
+            public DateTime created_at { get; set; }
+            public DateTime updated_at { get; set; }
+
+            public class StatsData
+            {
+                public PlayerStats stats { get; set; } = null!;
+                public Dictionary<string, Player> players { get; set; } = null!;
+                public class Player
+                {
+                    public PlayerStats stats { get; set; } = null!;
+                }
+            }
+
+        }
         public class Player
         {
             [BsonId]

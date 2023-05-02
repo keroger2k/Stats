@@ -25,7 +25,14 @@ namespace Stats.ExtApi.Services
         //Works with GWT token from website or IOS
         private readonly string SEARCH = "/search/team?name={0}&sport=baseball&start_at=0";
         //Works with GWT token from website or IOS
-        private readonly string VIDEO_ASSETS = "/teams/{0}/schedule/events/{1}/video-stream/assets";
+        private readonly string TEAM_VIDEO_ASSETS = "/teams/{0}/video-stream/assets";
+        //Works with GWT token from website or IOS
+        private readonly string PLAYER_CLIP_ASSETS = "/teams/{0}/video-clips/player/{1}/clips";
+        //Works with GWT token from website or IOS
+        //use clipId
+        private readonly string PLAYER_CLIP_COOKIES = "/teams/{0}/video-clips/playable-clip/{1}/clip";
+        //Works with GWT token from website or IOS
+        private readonly string EVENT_VIDEO_ASSETS = "/teams/{0}/schedule/events/{1}/video-stream/assets";
         //Works with GWT token from website or IOS
         private readonly string VIDEO_STREAM = "/teams/{0}/schedule/events/{1}/video-stream";
         //Works with GWT token from website or IOS
@@ -51,6 +58,18 @@ namespace Stats.ExtApi.Services
             var result = JsonSerializer.Deserialize<TeamPlayer>(await GetRequestAsync(url));
             return result!;
         }
+        public async Task<IEnumerable<PlayerClip>> GetPlayerClipMeta(string teamId, string playerId)
+        {
+            var url = string.Format(PLAYER_CLIP_ASSETS, teamId, playerId);
+            var result = JsonSerializer.Deserialize<IEnumerable<PlayerClip>>(await GetRequestAsync(url));
+            return result!;
+        }
+        public async Task<ClipCookie> GetPlayerClipCookie(string teamId, string clipId)
+        {
+            var url = string.Format(PLAYER_CLIP_COOKIES, teamId, clipId);
+            var result = JsonSerializer.Deserialize<ClipCookie>(await GetRequestAsync(url));
+            return result!;
+        }
         public async Task<IEnumerable<TeamUsers>> GetTeamUsersAsync(string teamId)
         {
             var url = string.Format(TEAM_USERS, teamId);
@@ -73,7 +92,14 @@ namespace Stats.ExtApi.Services
         }
         public async Task<IEnumerable<VideoAsset>> GetTeamEventVideoAssetsAsync(string teamId, string eventId)
         {
-            var url = string.Format(VIDEO_ASSETS, teamId, eventId);
+            var url = string.Format(EVENT_VIDEO_ASSETS, teamId, eventId);
+            var result = JsonSerializer.Deserialize<IEnumerable<VideoAsset>>(await GetRequestAsync(url));
+            return result!;
+        }
+
+        public async Task<IEnumerable<VideoAsset>> GetTeamVideoAssetsAsync(string teamId)
+        {
+            var url = string.Format(TEAM_VIDEO_ASSETS, teamId);
             var result = JsonSerializer.Deserialize<IEnumerable<VideoAsset>>(await GetRequestAsync(url));
             return result!;
         }

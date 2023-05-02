@@ -26,6 +26,7 @@ namespace Stats.CmdApp.Helper
             CreateMap<Stats.ExtApi.Models.StatsData, TeamTransform.SeasonStats.StatsData>();
             CreateMap<Stats.ExtApi.Models.StatsData.Player, TeamTransform.SeasonStats.StatsData.Player>();
             CreateMap<Stats.ExtApi.Models.StatsData.PlayerStats, TeamTransform.Event.PlayerStats>();
+            CreateMap<Stats.ExtApi.Models.VideoAsset, TeamTransform.VideoAsset>();
         }
     }
 }

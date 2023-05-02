@@ -6,10 +6,15 @@ using Stats.Database.Models;
 using Stats.Database.Services;
 using Stats.ExtApi.Models;
 using Stats.ExtApi.Services;
+using System.Diagnostics;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Stats.CmdApp
 {
-    public  class GCApp
+    public class GCApp
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
@@ -24,12 +29,12 @@ namespace Stats.CmdApp
             StatsOut statsOut,
             IMapper mapper)
         {
-            _configuration = configuration; 
+            _configuration = configuration;
             _logger = logger;
             _gameChangerService = gameChangerService;
             _db = databaseService;
             _mapper = mapper;
-            _statsOut = statsOut; 
+            _statsOut = statsOut;
         }
 
         public void Run()
@@ -68,7 +73,7 @@ namespace Stats.CmdApp
                     SelectTeam(results.hits.ElementAt(selection - 1));
             }
         }
-        
+
         private void SelectTeam(SearchResults.SearchItem item)
         {
             int choice = 0;
@@ -79,7 +84,8 @@ namespace Stats.CmdApp
             Console.WriteLine("---------------------------------------------------------------------------\n");
             Console.WriteLine("What would you like to do?\n");
             Console.WriteLine("1. Import Team Info?");
-            Console.WriteLine("2. Back");
+            Console.WriteLine("2. Get event video?");
+            Console.WriteLine("3. Back");
 
             if (int.TryParse(Console.ReadLine(), out choice))
             {
@@ -87,6 +93,9 @@ namespace Stats.CmdApp
                 {
                     case 1:
                         ImportTeamInfo(item).Wait();
+                        return;
+                    case 2:
+                        ListEvents(item).Wait();
                         return;
                     default:
                         // Invalid choice.
@@ -96,13 +105,133 @@ namespace Stats.CmdApp
             }
         }
 
-        private async Task ImportTeamInfo(SearchResults.SearchItem item) 
+        private async Task ListEvents(SearchResults.SearchItem item)
         {
-            var team = await _gameChangerService.GetTeamAsync(item.id); 
-            var teamPlayers = await  _gameChangerService.GetTeamSeasonStatsAsync(team.id);
+            var schedule = await _gameChangerService.GetTeamScheduledEventsAsync(item.id);
+            var games = schedule.Where(c => c.@event.event_type.Equals("game"))
+                .Where(c => !c.@event.status.Equals("canceled"))
+                .Where(c => c.@event.start.datetime < DateTime.Now)
+                .Where(c => !c.@event.sub_type.Contains("scrimmages"));
+            int choice = 0;
+            foreach (var evt in games)
+            {
+                Console.WriteLine($"Id:{evt.@event.id}, Title:{evt.@event.title}");
+            }
+            if (int.TryParse(Console.ReadLine(), out choice))
+            {
+                var assets = await _gameChangerService.GetTeamEventVideoAssetsAsync(item.id, games.ElementAt(choice).@event.id);
+                if (assets.Any(c => !c.audience_type.Equals("players_family_fans")))
+                {
+                    Console.WriteLine("Unable to find any videos available to fans.");
+                    Console.ReadLine();
+                    return;
+                }
+                var asset = assets.OrderByDescending(c => c.duration).First();
+                var game = await _gameChangerService.GetTeamEventStatsAsync(item.id, asset.schedule_event_id);
+                var clipmeta = await _gameChangerService.GetPlayerClipMeta(item.id, game.player_stats.players.First().Key);
+                var interestClipForEvent = clipmeta.First(c => c.event_id == asset.schedule_event_id);
+                var playableClip = await _gameChangerService.GetPlayerClipCookie(item.id, interestClipForEvent.clip_metadata_id);
+                var clip = clipmeta.First(c => c.event_id == asset.schedule_event_id);
+                Console.Write($"\nThumbnail: {clip.thumbnail_url}");
+                Console.Write($"\nClip m3u8: {playableClip.url}");
+                Console.Write($"\nKey-Pair-Id: {playableClip.cookies.CloudFrontKeyPairId}");
+                Console.Write($"\nSignature: {playableClip.cookies.CloudFrontSignature}");
+                Console.Write($"\nPolicy: {playableClip.cookies.CloudFrontPolicy}");
+
+                //get m3u8 file
+                var client = new HttpClient();
+                var url = string.Format($"{playableClip.url}?Key-Pair-Id={playableClip.cookies.CloudFrontKeyPairId}&Signature={playableClip.cookies.CloudFrontSignature}&Policy={playableClip.cookies.CloudFrontPolicy}");
+                var response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                var responseStream = await response.Content.ReadAsStringAsync();
+
+                string[] lines = responseStream.Split('\n');
+                var path = lines.Where(c => c.EndsWith(".ts")).First();
+
+                var videoClipPath = new Uri(playableClip.url);
+
+                StringBuilder sb1 = new StringBuilder();
+                sb1.Append($"{videoClipPath.Scheme}://{videoClipPath.Host}");
+
+                for (int i = 0; i < videoClipPath.Segments.Length - 2; i++)
+                {
+                    sb1.Append(videoClipPath.Segments[i]);
+                }
+                var relpath = sb1.ToString();
+                var finalPath = path.Replace("../", relpath.Substring(0, relpath.Length));
+
+                var downloadPath = new Uri(finalPath);
+                StringBuilder sb2 = new StringBuilder();
+                sb2.Append($"{videoClipPath.Scheme}://{videoClipPath.Host}");
+
+                for (int i = 0; i < downloadPath.Segments.Length - 1; i++)
+                {
+                    sb2.Append(downloadPath.Segments[i]);
+                }
+                var basePath = sb2.ToString();
+                var numberOfTSFiles = asset.duration / 10;
+
+                Console.WriteLine($"Path: {basePath}");
+                Console.WriteLine($"Duration: {asset.duration}");
+                Console.WriteLine($"# of Files: {numberOfTSFiles}");
+
+                try
+                {
+                    // Create a temp directory to store the downloaded files.
+                    string tempDirectory = Path.GetFullPath("c:\\gc-downloads\\");
+                    for (int i = 0; i < numberOfTSFiles; i++)
+                    {
+                        Console.WriteLine($"Downloading: {basePath}{i}.ts?Key-Pair-Id={playableClip.cookies.CloudFrontKeyPairId}&Signature={playableClip.cookies.CloudFrontSignature}&Policy={playableClip.cookies.CloudFrontPolicy}");
+                        // Create a new WebClient object.
+
+                        // Download the file from the URL.
+                        byte[] bytes = await client.GetByteArrayAsync($"{basePath}{i}.ts?Key-Pair-Id={playableClip.cookies.CloudFrontKeyPairId}&Signature={playableClip.cookies.CloudFrontSignature}&Policy={playableClip.cookies.CloudFrontPolicy}");
+
+                        // Save the file to the temp directory.
+                        string fileName = Path.GetFileName($"{basePath}{i}.ts");
+                        File.WriteAllBytes(Path.Combine(tempDirectory, fileName), bytes);
+                    }
+                }
+                catch (Exception)
+                {
+
+                }
+
+                // Get the directory to combine the files from.
+                string inputDirectoryPath = @"C:\gc-downloads";
+
+                // Get the name of the output file.
+                string outputFileName = @"combined_file.ts";
+
+                string[] inputFilePaths = Directory.GetFiles(inputDirectoryPath);
+                Console.WriteLine("Number of files: {0}.", inputFilePaths.Length);
+
+
+                using (var outputStream = File.Create($"{inputDirectoryPath}\\finished\\{outputFileName}"))
+                {
+                    foreach (var inputFilePath in inputFilePaths.OrderBy(c => Int32.Parse(c.Split('\\')[2].Split('.')[0])))
+                    {
+                        using (var inputStream = File.OpenRead(inputFilePath))
+                        {
+                            inputStream.CopyTo(outputStream);
+                        }
+                        Console.WriteLine("The file {0} has been processed.", inputFilePath);
+                    }
+                }
+
+                Console.ReadLine();
+            }
+            Console.ReadLine();
+
+        }
+        private async Task ImportTeamInfo(SearchResults.SearchItem item)
+        {
+            var team = await _gameChangerService.GetTeamAsync(item.id);
+            var teamPlayers = await _gameChangerService.GetTeamSeasonStatsAsync(team.id);
             var teamSchedule = await _gameChangerService.GetTeamScheduledEventsAsync(team.id);
             var scores = await _gameChangerService.GetTeamGameDataAsync(team.id);
             var season_stats = await _gameChangerService.GetTeamSeasonStatsAsync(team.id);
+            var video_assets1 = await _gameChangerService.GetTeamVideoAssetsAsync(team.id);
 
             var teamTransform = new TeamTransform()
             {
@@ -120,40 +249,42 @@ namespace Stats.CmdApp
                 team_avatar_image = team.team_avatar_image,
                 schedule = _mapper.Map<List<TeamTransform.TeamSchedule>>(teamSchedule.ToList()),
                 completed_game_scores = _mapper.Map<List<TeamTransform.Game>>(scores),
-                season_stats = _mapper.Map<TeamTransform.SeasonStats>(season_stats)
+                season_stats = _mapper.Map<TeamTransform.SeasonStats>(season_stats),
+                video_assets = _mapper.Map<List<TeamTransform.VideoAsset>>(video_assets1)
+       
             };
 
             foreach (var playerId in teamPlayers.stats_data.players.Keys)
             {
-              var player = await _gameChangerService.GetPlayer(playerId);  
-              teamTransform.players.Add(new TeamTransform.Player() 
-              {
-                id = player.id,
-                first_name = player.first_name,
-                last_name = player.last_name,
-                number = player.number,
-                status = player.status,
-                team_id = player.team_id,
-                person_id = player.person_id,
-                batting_side = player.bats.batting_side,
-                throwing_hand = player.bats.throwing_hand
-              });
+                var player = await _gameChangerService.GetPlayer(playerId);
+                teamTransform.players.Add(new TeamTransform.Player()
+                {
+                    id = player.id,
+                    first_name = player.first_name,
+                    last_name = player.last_name,
+                    number = player.number,
+                    status = player.status,
+                    team_id = player.team_id,
+                    person_id = player.person_id,
+                    batting_side = player.bats.batting_side,
+                    throwing_hand = player.bats.throwing_hand
+                });
             }
 
-            foreach(var evt in teamTransform.schedule.Where(c => c.@event.event_type.Equals("game"))
+            foreach (var evt in teamTransform.schedule.Where(c => c.@event.event_type.Equals("game"))
                 .Where(c => !c.@event.status.Equals("canceled"))
                 .Where(c => c.@event.start.datetime < DateTime.Now)
                 .Where(c => !c.@event.sub_type.Contains("scrimmages")))
             {
                 var game = await _gameChangerService.GetTeamEventStatsAsync(team.id, evt.@event.id);
-                var eventPlayers = new TeamTransform.Event() 
+                var eventPlayers = new TeamTransform.Event()
                 {
                     id = game.event_id,
                     boxscore = _mapper.Map<TeamTransform.Event.PlayerStats>(game.player_stats.stats)
                 };
                 eventPlayers.players = new Dictionary<string, TeamTransform.Event.PlayerStats>();
 
-                foreach(var player in game.player_stats.players)
+                foreach (var player in game.player_stats.players)
                 {
                     eventPlayers.players.Add(player.Key, _mapper.Map<TeamTransform.Event.PlayerStats>(player.Value.stats));
                 }

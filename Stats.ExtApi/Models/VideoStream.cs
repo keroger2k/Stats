@@ -1,5 +1,10 @@
 ﻿namespace Stats.ExtApi.Models
 {
+    /// <summary>
+    /// 
+    /// Referenced API Endpoint: "/teams/:teamID/schedule/events/:eventID/video-stream"
+    /// 
+    /// </summary>
     public class VideoStream
     {
         public string stream_id { get; set; } = null!;

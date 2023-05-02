@@ -2,6 +2,14 @@
 
 namespace Stats.ExtApi.Models
 {
+    /// <summary>
+    /// 
+    /// Common object used between multiple API calls. 
+    /// 
+    /// Referenced API Endpoint: "/teams/:teamID/schedule/events/:eventID/player-stats"
+    /// Referenced API Endpoint: "/teams/:teamID/season-stats"
+    /// 
+    /// </summary>
     public class StatsData
     {
         public PlayerStats stats { get; set; } = null!;
@@ -486,5 +494,4 @@ namespace Stats.ExtApi.Models
             }
         }
     }
-
 }

@@ -15,4 +15,9 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Stats.Database\Stats.Database.csproj" />
+    <ProjectReference Include="..\Stats.ExtApi\Stats.ExtApi.csproj" />
+  </ItemGroup>
+
 </Project>

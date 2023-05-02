@@ -1,5 +1,10 @@
 ﻿namespace Stats.ExtApi.Models
 {
+    /// <summary>
+    /// 
+    /// Referenced API Endpoint: "/teams/:teamID"
+    /// 
+    /// </summary>
     public class Team
     {
         public string id { get; set; } = null!;

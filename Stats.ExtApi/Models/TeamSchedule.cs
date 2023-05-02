@@ -1,5 +1,10 @@
 ﻿namespace Stats.ExtApi.Models
 {
+    /// <summary>
+    /// 
+    /// Referenced API Endpoint: "/teams/:teamID/schedule/?fetch_place_details=true"
+    /// 
+    /// </summary>
     public class TeamSchedule
     {
         public Event @event { get; set; } = null!;

@@ -1,5 +1,11 @@
 ﻿namespace Stats.ExtApi.Models
 {
+    /// <summary>
+    /// 
+    /// Referenced API Endpoint: "/players/:playerID"
+    /// Referenced API Endpoint: "/teams/:teamID/players" (iOS JWT Token ONLY)
+    /// 
+    /// </summary>
     public class TeamPlayer
     {
         public string id { get; set; } = null!;

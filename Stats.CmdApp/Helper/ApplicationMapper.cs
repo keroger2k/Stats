@@ -16,16 +16,16 @@ namespace Stats.CmdApp.Helper
             CreateMap<Stats.ExtApi.Models.TeamSchedule.Event.Location.Coordinates, TeamTransform.TeamSchedule.Event.Location.Coordinates>();
             CreateMap<Stats.ExtApi.Models.TeamSchedule.PregameData, TeamTransform.TeamSchedule.PregameData>();
             CreateMap<Stats.ExtApi.Models.TeamSchedule.PregameData.Opponent, TeamTransform.TeamSchedule.PregameData.Opponent>();
-            CreateMap<Stats.ExtApi.Models.StatsData.PlayerStats, TeamTransform.Event.PlayerStats>();
-            CreateMap<Stats.ExtApi.Models.StatsData.PlayerStats.Defense, TeamTransform.Event.PlayerStats.Defense>();
-            CreateMap<Stats.ExtApi.Models.StatsData.PlayerStats.General, TeamTransform.Event.PlayerStats.General>();
-            CreateMap<Stats.ExtApi.Models.StatsData.PlayerStats.Offense, TeamTransform.Event.PlayerStats.Offense>();
+            CreateMap<Stats.ExtApi.Models.StatsData.PlayerStats, TeamTransform.PlayerStats>();
+            CreateMap<Stats.ExtApi.Models.StatsData.PlayerStats.Defense, TeamTransform.PlayerStats.Defense>();
+            CreateMap<Stats.ExtApi.Models.StatsData.PlayerStats.General, TeamTransform.PlayerStats.General>();
+            CreateMap<Stats.ExtApi.Models.StatsData.PlayerStats.Offense, TeamTransform.PlayerStats.Offense>();
             CreateMap<Stats.ExtApi.Models.Game, TeamTransform.Game>();
             CreateMap<Stats.ExtApi.Models.Game.GameData, TeamTransform.Game.GameData>();
             CreateMap<Stats.ExtApi.Models.TeamSeasonStats, TeamTransform.SeasonStats>();
             CreateMap<Stats.ExtApi.Models.StatsData, TeamTransform.SeasonStats.StatsData>();
             CreateMap<Stats.ExtApi.Models.StatsData.Player, TeamTransform.SeasonStats.StatsData.Player>();
-            CreateMap<Stats.ExtApi.Models.StatsData.PlayerStats, TeamTransform.Event.PlayerStats>();
+            CreateMap<Stats.ExtApi.Models.StatsData.PlayerStats, TeamTransform.PlayerStats>();
             CreateMap<Stats.ExtApi.Models.VideoAsset, TeamTransform.VideoAsset>();
         }
     }

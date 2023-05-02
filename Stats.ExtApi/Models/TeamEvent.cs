@@ -12,6 +12,8 @@ namespace Stats.ExtApi.Models
     /// cumulative_player_stats: Players season stat up to the point in time of the game.
     /// players_stats: Players stats for this game.
     /// spray_chart_data: Players plays for this game.
+    /// 
+    /// Referenced API Endpoint: "/teams/:teamID/schedule/events/:eventID/player-stats"
     /// </summary>
     public class TeamEvent
     {

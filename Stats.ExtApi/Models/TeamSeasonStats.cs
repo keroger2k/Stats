@@ -1,6 +1,11 @@
 ﻿namespace Stats.ExtApi.Models
 {
-    public  class TeamSeasonStats
+    /// <summary>
+    /// 
+    /// Referenced API Endpoint: "/teams/:teamID/season-stats"
+    /// 
+    /// </summary>
+    public class TeamSeasonStats
     {
         public string id { get; set; } = null!;
         public StatsData stats_data { get; set; } = null!;

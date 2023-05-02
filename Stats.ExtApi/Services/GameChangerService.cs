@@ -8,39 +8,39 @@ namespace Stats.ExtApi.Services
         private readonly HttpClient _httpClient;
 
         //# GC API Endpoints
-        //Works with GWT token from website or IOS
+        //Works with JWT token from website or IOS
         private readonly string TEAM_SEASON_STATS = "/teams/{0}/season-stats";
-        //Works with GWT token from website or IOS
+        //Works with JWT token from website or IOS
         private readonly string PLAYER_INFO = "/players/{0}";
-        //Works with GWT token from website or IOS
+        //Works with JWT token from website or IOS
         private readonly string TEAM_GAME_DATA = "/teams/{0}/schedule/batch-simple-scorekeeping-data/";
-        //Works with GWT token from website or IOS
+        //Works with JWT token from website or IOS
         private readonly string TEAM_GAME_STATS = "/teams/{0}/schedule/events/{1}/player-stats";
-        //Works with GWT token from website or IOS
+        //Works with JWT token from website or IOS
         private readonly string TEAM_INFO = "/teams/{0}";
-        //Works with GWT token from website or IOS
+        //Works with JWT token from website or IOS
         private readonly string TEAM_AVATAR = "/teams/{0}/avatar-image";
-        //Works with GWT token from website or IOS
+        //Works with JWT token from website or IOS
         private readonly string TEAM_SCHEDULE = "/teams/{0}/schedule/?fetch_place_details=true";
-        //Works with GWT token from website or IOS
-        private readonly string SEARCH = "/search/team?name={0}&sport=baseball&start_at=0";
-        //Works with GWT token from website or IOS
+        //Works with JWT token from website or IOS
+        private readonly string SEARCH = "/search/team?name={0}&sport={1}&start_at=0";
+        //Works with JWT token from website or IOS
         private readonly string TEAM_VIDEO_ASSETS = "/teams/{0}/video-stream/assets";
-        //Works with GWT token from website or IOS
+        //Works with JWT token from website or IOS
         private readonly string PLAYER_CLIP_ASSETS = "/teams/{0}/video-clips/player/{1}/clips";
-        //Works with GWT token from website or IOS
+        //Works with JWT token from website or IOS
         //use clipId
         private readonly string PLAYER_CLIP_COOKIES = "/teams/{0}/video-clips/playable-clip/{1}/clip";
-        //Works with GWT token from website or IOS
+        //Works with JWT token from website or IOS
         private readonly string EVENT_VIDEO_ASSETS = "/teams/{0}/schedule/events/{1}/video-stream/assets";
-        //Works with GWT token from website or IOS
+        //Works with JWT token from website or IOS
         private readonly string VIDEO_STREAM = "/teams/{0}/schedule/events/{1}/video-stream";
-        //Works with GWT token from website or IOS
+        //Works with JWT token from website or IOS
         private readonly string TEAM_USERS = "/teams/{0}/users";
-        //Works with GWT token from website or IOS
+        //Works with JWT token from website or IOS
         private readonly string TEAM_OPPONENTS = "/teams/{0}/opponents";
 
-        /**************  ONLY works with IOS GWT.  ******************/
+        /**************  ONLY works with IOS JWT.  ******************/
         private readonly string TEAM_PLAYERS = "/teams/{0}/players";
         /**************  ONLY works when they allow?  ******************/
         private readonly string VIDEO_ASSETS_PLAYBACK = "/teams/{0}/schedule/events/{1}/video-stream/assets/playback";
@@ -64,10 +64,10 @@ namespace Stats.ExtApi.Services
             var result = JsonSerializer.Deserialize<IEnumerable<PlayerClip>>(await GetRequestAsync(url));
             return result!;
         }
-        public async Task<ClipCookie> GetPlayerClipCookie(string teamId, string clipId)
+        public async Task<ClipAsset> GetPlayerClipCookie(string teamId, string clipId)
         {
             var url = string.Format(PLAYER_CLIP_COOKIES, teamId, clipId);
-            var result = JsonSerializer.Deserialize<ClipCookie>(await GetRequestAsync(url));
+            var result = JsonSerializer.Deserialize<ClipAsset>(await GetRequestAsync(url));
             return result!;
         }
         public async Task<IEnumerable<TeamUsers>> GetTeamUsersAsync(string teamId)
@@ -197,14 +197,14 @@ namespace Stats.ExtApi.Services
             return result!;
         }
 
-        /// <summary> Will work with any valid GWT. Will display only your team data if not from IOS.</summary>
+        /// <summary> Will work with any valid JWT. Will display only your team data if not from IOS.</summary>
         /// <param name="query"></param>
         /// <returns>
         /// <param name="SearchResults"></param>
         /// </returns>
-        public async Task<SearchResults> SearchTeamsAsync(string query)
+        public async Task<SearchResults> SearchTeamsAsync(string query, string sport)
         {
-            var url = string.Format(SEARCH, query);
+            var url = string.Format(SEARCH, query, sport);
             var result = JsonSerializer.Deserialize<SearchResults>(await GetRequestAsync(url));
             return result!;
         }

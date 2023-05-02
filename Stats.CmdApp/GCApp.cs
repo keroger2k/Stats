@@ -6,11 +6,7 @@ using Stats.Database.Models;
 using Stats.Database.Services;
 using Stats.ExtApi.Models;
 using Stats.ExtApi.Services;
-using System.Diagnostics;
-using System.Net;
-using System.Net.Http;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Stats.CmdApp
 {
@@ -39,39 +35,41 @@ namespace Stats.CmdApp
 
         public void Run()
         {
-            while (true)
+            Task.Run(async () =>
             {
-                // Get the user's search text.
-                Console.Clear();
-                Console.WriteLine("Enter a Team name to search for: ");
-                string query = Console.ReadLine() ?? string.Empty;
-                int selection = 0;
-
-                // Find all Teams that match the search text.
-                var results = Task.Run(() => { return _gameChangerService.SearchTeamsAsync(query); }).Result;
-                ;
-
-                // Display the search results.
-                if (results.hits.Count() == 0)
+                while (true)
                 {
-                    Console.WriteLine("No Teams found.");
-                }
-                else
-                {
-                    var i = 1;
+                    // Get the user's search text.
                     Console.Clear();
-                    foreach (var item in results.hits)
-                    {
-                        var location = item.location == null ? "Unknown" : string.Format($"{item.location.city}, {item.location.state}");
-                        Console.WriteLine($"{i++}. {item.name}; Sport/Season: {item.sport.ToUpper()}/{item.team_season.season.ToUpper()}, {item.team_season.year}");
-                        Console.WriteLine($"Number of Players: {item.number_of_players}; Age Group: {item.age_group}; Staff: [ {string.Join(", ", item.staff)} ]\n");
-                    }
-                }
-                Console.WriteLine("Which Team do you want to select?:");
+                    Console.WriteLine("Enter a Team name to search for: ");
+                    string query = Console.ReadLine() ?? string.Empty;
+                    int selection = 0;
 
-                if (int.TryParse(Console.ReadLine(), out selection))
-                    SelectTeam(results.hits.ElementAt(selection - 1));
-            }
+                    // Find all Teams that match the search text.
+                    var results = await _gameChangerService.SearchTeamsAsync(query, "baseball");
+
+                    // Display the search results.
+                    if (results.hits.Count() == 0)
+                    {
+                        Console.WriteLine("No Teams found.");
+                    }
+                    else
+                    {
+                        var i = 1;
+                        Console.Clear();
+                        foreach (var item in results.hits.Take(5))
+                        {
+                            var location = item.location == null ? "Unknown" : string.Format($"{item.location.city}, {item.location.state}");
+                            Console.WriteLine($"{i++}. {item.name}; Sport/Season: {item.sport.ToUpper()}/{item.team_season.season.ToUpper()}, {item.team_season.year}");
+                            Console.WriteLine($"Number of Players: {item.number_of_players}; Age Group: {item.age_group}; Staff: [ {string.Join(", ", item.staff)} ]\n");
+                        }
+                    }
+                    Console.WriteLine("Which Team do you want to select?:");
+
+                    if (int.TryParse(Console.ReadLine(), out selection))
+                        SelectTeam(results.hits.ElementAt(selection - 1));
+                }
+            }).GetAwaiter().GetResult();
         }
 
         private void SelectTeam(SearchResults.SearchItem item)
@@ -92,10 +90,10 @@ namespace Stats.CmdApp
                 switch (choice)
                 {
                     case 1:
-                        ImportTeamInfo(item).Wait();
+                        ImportTeamInfoAsync(item).Wait();
                         return;
                     case 2:
-                        ListEvents(item).Wait();
+                        ListEventsAsync(item).Wait();
                         return;
                     default:
                         // Invalid choice.
@@ -104,8 +102,7 @@ namespace Stats.CmdApp
                 }
             }
         }
-
-        private async Task ListEvents(SearchResults.SearchItem item)
+        private async Task ListEventsAsync(SearchResults.SearchItem item)
         {
             var schedule = await _gameChangerService.GetTeamScheduledEventsAsync(item.id);
             var games = schedule.Where(c => c.@event.event_type.Equals("game"))
@@ -224,7 +221,7 @@ namespace Stats.CmdApp
             Console.ReadLine();
 
         }
-        private async Task ImportTeamInfo(SearchResults.SearchItem item)
+        private async Task ImportTeamInfoAsync(SearchResults.SearchItem item)
         {
             var team = await _gameChangerService.GetTeamAsync(item.id);
             var teamPlayers = await _gameChangerService.GetTeamSeasonStatsAsync(team.id);
@@ -280,13 +277,13 @@ namespace Stats.CmdApp
                 var eventPlayers = new TeamTransform.Event()
                 {
                     id = game.event_id,
-                    boxscore = _mapper.Map<TeamTransform.Event.PlayerStats>(game.player_stats.stats)
+                    boxscore = _mapper.Map<TeamTransform.PlayerStats>(game.player_stats.stats)
                 };
-                eventPlayers.players = new Dictionary<string, TeamTransform.Event.PlayerStats>();
+                eventPlayers.players = new Dictionary<string, TeamTransform.PlayerStats>();
 
                 foreach (var player in game.player_stats.players)
                 {
-                    eventPlayers.players.Add(player.Key, _mapper.Map<TeamTransform.Event.PlayerStats>(player.Value.stats));
+                    eventPlayers.players.Add(player.Key, _mapper.Map<TeamTransform.PlayerStats>(player.Value.stats));
                 }
 
                 teamTransform.completed_games.Add(eventPlayers);

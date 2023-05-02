@@ -1,5 +1,10 @@
 ﻿namespace Stats.ExtApi.Models
 {
+    /// <summary>
+    /// 
+    /// Referenced API Endpoint: "/teams/:teamID/schedule/batch-simple-scorekeeping-data/"
+    /// 
+    /// </summary>
     public class Game
     {
         public string event_id { get; set; } = null!;

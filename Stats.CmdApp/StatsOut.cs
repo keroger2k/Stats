@@ -1,6 +1,5 @@
 using Stats.ExtApi.Services;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Stats.CmdApp
 {
@@ -12,91 +11,91 @@ namespace Stats.CmdApp
             _db = db;
         }
 
-        public void SearchTeams(string query)
+        public async Task SearchTeams(string query)
         {
-            var result = Task.Run(() => { return _db.SearchTeamsAsync(query); }).Result;
+            var result = await _db.SearchTeamsAsync(query, "baseball");
             string jsonString = JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true });
             Console.WriteLine(jsonString);
         }
 
-        public void ListTeamOpponents(string Id)
+        public async Task ListTeamOpponents(string Id)
         {
-            var result = Task.Run(() => { return _db.GetTeamOpponentsAsync(Id); }).Result;
+            var result = await _db.GetTeamOpponentsAsync(Id);
             string jsonString = JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true });
             Console.WriteLine(jsonString);
         }
 
-        public void ListTeamUsers(string Id)
+        public async Task ListTeamUsers(string Id)
         {
-            var result = Task.Run(() => { return _db.GetTeamUsersAsync(Id); }).Result;
+            var result = await _db.GetTeamUsersAsync(Id);
             string jsonString = JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true });
             Console.WriteLine(jsonString);
         }
 
-        public void ListPlayers(string Id)
+        public async Task ListPlayers(string Id)
         {
-            var result = Task.Run(() => { return _db.GetTeamPlayersAsync(Id); }).Result;
+            var result = await _db.GetTeamPlayersAsync(Id);
             string jsonString = JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true });
             Console.WriteLine(jsonString);
         }
 
-        public void ShowTeam(string Id)
+        public async Task ShowTeam(string Id)
         {
-            var result = Task.Run(() => { return _db.GetTeamAsync(Id); }).Result;
+            var result = await _db.GetTeamAsync(Id);
             string jsonString = JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true });
             Console.WriteLine(jsonString);
         }
 
-        public void ShowTeamAvatar(string Id)
+        public async Task ShowTeamAvatar(string Id)
         {
-            var result = Task.Run(() => { return _db.GetTeamAvatarAsync(Id); }).Result;
+            var result = await _db.GetTeamAvatarAsync(Id);
             Console.WriteLine(result.full_media_url);
         }
 
-        public void ListTeamEvents(string Id)
+        public async Task ListTeamEvents(string Id)
         {
-            var result = Task.Run(() => { return _db.GetTeamScheduledEventsAsync(Id); }).Result;
+            var result = await _db.GetTeamScheduledEventsAsync(Id);
             string jsonString = JsonSerializer.Serialize(result.Skip(17).Take(1), new JsonSerializerOptions { WriteIndented = true });
             Console.WriteLine(jsonString);
         }
-        public void GetEventData(string Id, string eventId)
+        public async Task GetEventData(string Id, string eventId)
         {
-            var result = Task.Run(() => { return _db.GetTeamEventStatsAsync(Id, eventId); }).Result;
+            var result = await _db.GetTeamEventStatsAsync(Id, eventId);
             string jsonString = JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true });
             Console.WriteLine(jsonString);
         }
 
-        public void GetTeamGameData(string Id)
+        public async Task GetTeamGameData(string Id)
         {
-            var result = Task.Run(() => { return _db.GetTeamGameDataAsync(Id); }).Result;
+            var result = await _db.GetTeamGameDataAsync(Id);
             string jsonString = JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true });
             Console.WriteLine(jsonString);
         }
 
-        public void GetTeamSeasonStats(string Id)
+        public async Task GetTeamSeasonStats(string Id)
         {
-            var result = Task.Run(() => { return _db.GetTeamSeasonStatsAsync(Id); }).Result;
+            var result = await _db.GetTeamSeasonStatsAsync(Id);
             string jsonString = JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true });
             Console.WriteLine(jsonString);
         }
 
-        public void GetTeamEventVideoPlaybackData(string Id, string eventId)
+        public async Task GetTeamEventVideoPlaybackData(string Id, string eventId)
         {
-            var result = Task.Run(() => { return _db.GetTeamEventVideoAssetsPlaybackAsync(Id, eventId); }).Result;
+            var result = await _db.GetTeamEventVideoAssetsPlaybackAsync(Id, eventId);
             string jsonString = JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true });
             Console.WriteLine(jsonString);
         }
 
-        public void GetTeamEventVideoAssetsData(string Id, string eventId)
+        public async Task GetTeamEventVideoAssetsData(string Id, string eventId)
         {
-            var result = Task.Run(() => { return _db.GetTeamEventVideoAssetsAsync(Id, eventId); }).Result;
+            var result = await _db.GetTeamEventVideoAssetsAsync(Id, eventId);
             string jsonString = JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true });
             Console.WriteLine(jsonString);
         }
 
-        public void GetTeamEventVideoStreamData(string Id, string eventId)
+        public async Task GetTeamEventVideoStreamData(string Id, string eventId)
         {
-            var result = Task.Run(() => { return _db.GetTeamEventVideoStreamAsync(Id, eventId); }).Result;
+            var result = await _db.GetTeamEventVideoStreamAsync(Id, eventId);
             string jsonString = JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true });
             Console.WriteLine(jsonString);
         }

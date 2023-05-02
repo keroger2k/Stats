@@ -1,6 +1,13 @@
 ﻿
 namespace Stats.ExtApi.Models
 {
+    /// <summary>
+    /// 
+    /// Referenced API Endpoint: "/search/team?name={0}&sport={1}"
+    /// 
+    /// Sport Options: [baseball, softball, etc.]
+    /// 
+    /// </summary>
     public class SearchResults
     {
         public IEnumerable<SearchItem> hits { get; set; } = null!;

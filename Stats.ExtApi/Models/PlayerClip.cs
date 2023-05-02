@@ -1,5 +1,10 @@
 ﻿namespace Stats.ExtApi.Models
 {
+    /// <summary>
+    /// 
+    /// Referenced API Endpoint: "/teams/:teamID/video-clips/player/:playerID/clips"
+    /// 
+    /// </summary>
     public class PlayerClip
     {
         public string clip_metadata_id { get; set; } = string.Empty;

@@ -274,7 +274,7 @@ namespace Stats.CmdApp
                 .Where(c => !c.@event.sub_type.Contains("scrimmages")))
             {
                 var game = await _gameChangerService.GetTeamEventStatsAsync(team.id, evt.@event.id);
-                var eventPlayers = new TeamTransform.Event()
+                var eventPlayers = new TeamTransform.EventStats()
                 {
                     id = game.event_id,
                     boxscore = _mapper.Map<TeamTransform.PlayerStats>(game.player_stats.stats)

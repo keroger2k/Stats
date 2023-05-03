@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Stats.Database.Services;
 using Stats.API.Models;
+using Stats.Database.Services;
 
 namespace Stats.API.Controllers
 {
@@ -39,6 +39,19 @@ namespace Stats.API.Controllers
         {
             var team = await _db.GetTeamAsync(id);
             var mapped = _mapper.Map<TeamStats>(team);
+            return Ok(mapped);
+        }
+
+        [HttpGet]
+        [Route("{id}/schedule")]
+        public async Task<ActionResult<TeamSchedule>> GetTeamGameSchedule(string id)
+        {
+            var team = await _db.GetTeamAsync(id);
+            var mapped = _mapper.Map<TeamSchedule>(team);
+            //mapped.schedule = mapped.schedule
+            //    .Where(c => c.@event.event_type.Equals("game", StringComparison.OrdinalIgnoreCase))
+            //    .Where(c => !c.@event.status.Equals("canceled", StringComparison.OrdinalIgnoreCase))
+            //    .Where(c => !c.@event.sub_type.Contains("scrimmages"));
             return Ok(mapped);
         }
 

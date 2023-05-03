@@ -19,7 +19,7 @@ namespace Stats.Database.Models
         public int season_year { get; set; }
         public string team_avatar_image { get; set; } = string.Empty;
         public List<Player> players { get; set; } = new List<TeamTransform.Player>();
-        public List<Event> completed_games { get; set; } = new List<TeamTransform.Event>();
+        public List<EventStats> completed_games { get; set; } = new List<TeamTransform.EventStats>();
         public List<Game> completed_game_scores { get; set; } = new List<TeamTransform.Game>();
         public List<TeamSchedule> schedule { get; set; } = new List<TeamTransform.TeamSchedule>();
         public SeasonStats season_stats { get; set; } = null!;
@@ -73,7 +73,7 @@ namespace Stats.Database.Models
             public string batting_side { get; set; } = null!;
             public string throwing_hand { get; set; } = null!;
         }
-        public class Event
+        public class EventStats
         {
             [BsonId]
             public string id { get; set; } = null!;

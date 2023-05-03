@@ -1,9 +1,33 @@
+using AutoMapper;
+using Serilog;
+using Stats.API.Helper;
+using Stats.Database.Models;
+using Stats.Database.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var configBuilder = new ConfigurationBuilder();
 
+Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configBuilder.Build())
+                .Enrich.FromLogContext()
+                .CreateLogger();
+
+Log.Logger.Information("Application Starting");
+
+
+var mappingConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile(new ApplicationMapper());
+});
+
+IMapper mapper = mappingConfig.CreateMapper();
+
+
+builder.Services.AddScoped<DatabaseService>();
+builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("DatabaseSettings"));
+builder.Services.AddSingleton(mapper);
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -16,8 +40,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseAuthorization();
+app.UseStaticFiles();
+app.UseRouting();
 
+app.MapFallbackToFile("index.html"); ;
 app.MapControllers();
-
 app.Run();

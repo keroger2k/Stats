@@ -40,5 +40,12 @@ namespace Stats.Database.Services
             }
 
         }
+
+        public async Task<TeamTransform> GetTeamAsync(string id)
+        {
+            var teamCollection = ConnectToMongo<TeamTransform>(_statsDatabaseSettings.Value.TeamCollectionName);
+            var existingTeam = teamCollection.FindAsync(t => t.id == id).Result.First();
+            return existingTeam;
+        }
     }
 }

@@ -56,7 +56,7 @@ namespace Stats.CmdApp
                     {
                         var http = new HttpClient();
                         http.BaseAddress = new Uri("https://api.Team-manager.gc.com");
-                        http.DefaultRequestHeaders.Add("gc-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ijk2MWM1YmM1LWJkM2EtNDg4MS1iMmI0LTgyM2YzOGM0YzBiYyJ9.eyJ0eXBlIjoidXNlciIsImNpZCI6ImM4MWRmNWJmLWE1YTEtNDQ2NS1hZjhhLTE0ZjdiYmVlMmRiNCIsImVtYWlsIjoia3lsZS5yb2dlcnNAZ21haWwuY29tIiwidXNlcklkIjoiMzZiZTgwYWMtY2UwZC00OTE4LTgzMDYtY2M2MjMzOTZlMmMyIiwicnRrbiI6IjQ0Nzc4MDE2LWZiYmYtNDVlYy1iMjZhLTM0ODMyZGQ1NTJjYzpjOWMzZDk1Zi00MDdmLTRkMDEtYTllNi1hZGM2ZjVhM2RlNWYiLCJpYXQiOjE2ODMwMjQ1NzUsImV4cCI6MTY4MzAyODE3NX0.p0Twn4K00dRaIXQgfjG8vMxNgNQ3qOr8Y7BU5RVGQtQ");
+                        http.DefaultRequestHeaders.Add("gc-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ijk2MWM1YmM1LWJkM2EtNDg4MS1iMmI0LTgyM2YzOGM0YzBiYyJ9.eyJ0eXBlIjoidXNlciIsImNpZCI6IjcwZDlhMmMwLTNiNDctNGRmNC1iZGJjLTZmMTRiMjE3YTM4NCIsImVtYWlsIjoia3lsZS5yb2dlcnNAZ21haWwuY29tIiwidXNlcklkIjoiMzZiZTgwYWMtY2UwZC00OTE4LTgzMDYtY2M2MjMzOTZlMmMyIiwicnRrbiI6IjQ0Nzc4MDE2LWZiYmYtNDVlYy1iMjZhLTM0ODMyZGQ1NTJjYzo3NmNhYzEzMi0yMDVlLTRjZGQtYTk5YS05NDY4YzAwNThjZTYiLCJpYXQiOjE2ODMwNDI1NzYsImV4cCI6MTY4MzA0NjE3Nn0.Q8KjrIalv2x99xclLO6mFx6eg7U1HXafXJEHPTLiVGQ");
                         return http;
                     });
                 })

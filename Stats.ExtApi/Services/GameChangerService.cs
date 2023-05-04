@@ -1,6 +1,9 @@
-﻿using Stats.ExtApi.Models;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Stats.ExtApi.Models;
+using System;
 using System.Net;
 using System.Text.Json;
+using static System.Net.WebRequestMethods;
 
 namespace Stats.ExtApi.Services
 {
@@ -8,13 +11,11 @@ namespace Stats.ExtApi.Services
     {
         private readonly HttpClient _httpClient;
         private readonly AuthorizationService _authService;
-
-        //value came from website JS file
-        private const string EDEN_AUTH_KEY = "xkTneFG9IPAqBpNe9qzjWZAS+1gfFPPmjW4ygCydiW8=";
+        private readonly IMemoryCache _memoryCache;
         //When you complete and /auth an refresh token is included. This is used for the 
         //authorization refresh request. This will change every time successful authorization
         //occurs. Will need to be stored and refreshed as needed.
-        private const string TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNhYzg2NmZkLWMyNzMtNGZjZi04NTU0LTc3ZThmYjYzZTc2MiJ9.eyJpZCI6IjBjNjZhYzcxLTY2YTEtNGFiMy04MTIzLTVjNDFmMDY4YTdmNDo5ODRmZGZhMS0yMWMxLTQ3MmItOWFhYy05ZTdlZjI0MGY2MDgiLCJjaWQiOiJmN2UyZGNlNy04Mzk1LTRkMWYtYmFjZS04ODEwYjI2YzBlOGUiLCJ1aWQiOiIzNmJlODBhYy1jZTBkLTQ5MTgtODMwNi1jYzYyMzM5NmUyYzIiLCJlbWFpbCI6Imt5bGUucm9nZXJzQGdtYWlsLmNvbSIsImlhdCI6MTY4MzIxMTg3MSwiZXhwIjoxNjg0NDIxNDcxfQ.kZbkMIGRqhLRYQNn97ExmKs5TbtwJeiy4GNzqL_fndc";
+        private const string REFRESH_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNhYzg2NmZkLWMyNzMtNGZjZi04NTU0LTc3ZThmYjYzZTc2MiJ9.eyJpZCI6IjBjNjZhYzcxLTY2YTEtNGFiMy04MTIzLTVjNDFmMDY4YTdmNDplNDViZTdmZC04NTdmLTQ4ZTgtYTIzZS0yYmU1ZGM5MWQ4ZjAiLCJjaWQiOiJmN2UyZGNlNy04Mzk1LTRkMWYtYmFjZS04ODEwYjI2YzBlOGUiLCJ1aWQiOiIzNmJlODBhYy1jZTBkLTQ5MTgtODMwNi1jYzYyMzM5NmUyYzIiLCJlbWFpbCI6Imt5bGUucm9nZXJzQGdtYWlsLmNvbSIsImlhdCI6MTY4MzIxODgxMiwiZXhwIjoxNjg0NDI4NDEyfQ.aLZXQibm_v36ut5juFLqBgfyKTfY4ZZXBd_M7HnyZck";
 
 
         //# GC API Endpoints
@@ -39,7 +40,6 @@ namespace Stats.ExtApi.Services
         //Works with JWT token from website or IOS
         private readonly string PLAYER_CLIP_ASSETS = "/teams/{0}/video-clips/player/{1}/clips";
         //Works with JWT token from website or IOS
-        //use clipId
         private readonly string PLAYER_CLIP_COOKIES = "/teams/{0}/video-clips/playable-clip/{1}/clip";
         //Works with JWT token from website or IOS
         private readonly string EVENT_VIDEO_ASSETS = "/teams/{0}/schedule/events/{1}/video-stream/assets";
@@ -57,10 +57,11 @@ namespace Stats.ExtApi.Services
 
         //private readonly string GAME_RECAP_STORY = "/game-streams/gamestream-recap-story/{0}";
         //private readonly string GAME_RECAP_PAYLOAD = "/game-streams/gamestream-viewer-payload-lite/{0}?stream_id={1}";
-        public GameChangerService(HttpClient httpClient, AuthorizationService authService)
+        public GameChangerService(HttpClient httpClient, AuthorizationService authService, IMemoryCache memoryCache)
         {
             _httpClient = httpClient;
             _authService = authService;
+            _memoryCache = memoryCache;
         }
 
         public async Task<TeamPlayer> GetPlayer(string playerId)
@@ -226,21 +227,24 @@ namespace Stats.ExtApi.Services
         /// <returns>JSON results from external API</returns>
         private async Task<string> GetRequestAsync(string url)
         {
+            var token = _memoryCache.Get<AuthorizationToken>(key: "gc-token");
+            _httpClient.DefaultRequestHeaders.Clear();
+            _httpClient.DefaultRequestHeaders.Add("gc-token", token?.access.data);
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsStringAsync();
         }
 
 
-        private void RefreshToken()
+        public async Task<AuthorizationToken> GetRefreshTokenAync(string oldToken)
         {
             var payload = new { type = "refresh" };
             var context = _authService.GetNewContext();
-            var clientRequestSignature = _authService.SignPayload(context, payload, EDEN_AUTH_KEY);
-            var testRequest = _authService.MakePostRequest(
-                context,
-                JsonSerializer.Serialize(payload),
-                clientRequestSignature, TOKEN);
+            var clientRequestSignature = _authService.SignPayload(context, payload);
+            var response = await _authService.MakePostRequestAync(context, JsonSerializer.Serialize(payload), clientRequestSignature, oldToken);
+            var refreshToken = await response.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<AuthorizationToken>(refreshToken);
+            return result!;
         }
     }
 }

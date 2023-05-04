@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Stats.ExtApi.Services
 {
@@ -13,9 +9,13 @@ namespace Stats.ExtApi.Services
     {
         private const string API_URL = "https://api.team-manager.gc.com";
         private const string AUTH_ENDPOINT = "/auth";
+        private const string DEVICE_ID = "ce0827aa5e4051bcf017ab8922f36b0d";
+        private const string CLIENT_ID = "f0d2b966-3baf-4229-8fba-2986ec4dc608";
+        //value came from website JS file
+        private const string EDEN_AUTH_KEY = "xkTneFG9IPAqBpNe9qzjWZAS+1gfFPPmjW4ygCydiW8=";
 
 
-        public HttpResponseMessage MakePostRequest(GCContext context, string payload, string signature, string token = "")
+        public async Task<HttpResponseMessage> MakePostRequestAync(GCContext context, string payload, string signature, string token = "")
         {
             HttpClient http = new HttpClient();
             http.BaseAddress = new Uri(API_URL);
@@ -25,22 +25,22 @@ namespace Stats.ExtApi.Services
                 http.DefaultRequestHeaders.Add("Gc-Token", token);
             }
             http.DefaultRequestHeaders.Add("Gc-App-Version", "0.0.0");
-            http.DefaultRequestHeaders.Add("Gc-Device-Id", "ce0827aa5e4051bcf017ab8922f36b0d");
-            http.DefaultRequestHeaders.Add("Gc-Client-Id", "f0d2b966-3baf-4229-8fba-2986ec4dc608");
+            http.DefaultRequestHeaders.Add("Gc-Device-Id", DEVICE_ID);
+            http.DefaultRequestHeaders.Add("Gc-Client-Id", CLIENT_ID);
             http.DefaultRequestHeaders.Add("Gc-App-Name", "web");
             http.DefaultRequestHeaders.Add("Gc-Timestamp", context.timestamp.ToString());
             var clientRequestContent = new StringContent(payload, Encoding.UTF8, "application/json");
-            return http.PostAsync(AUTH_ENDPOINT, clientRequestContent).Result;
+            return await http.PostAsync(AUTH_ENDPOINT, clientRequestContent);
         }
 
-        public GCContext GetNewContext(string? previousSignature = "")
+        public GCContext GetNewContext()
         {
-            return new GCContext { nonce = Base64Encode(RandomString(32)), timestamp = GetTimestamp(), previousSignature = previousSignature };
+            return new GCContext { nonce = Base64Encode(RandomString(32)), timestamp = GetTimestamp(), previousSignature = "" };
         }
 
-        public string SignPayload(GCContext context, object payload, string key)
+        public string SignPayload(GCContext context, object payload)
         {
-            using (IncrementalHash hmacsha256 = IncrementalHash.CreateHMAC(HashAlgorithmName.SHA256, Convert.FromBase64String(key)))
+            using (IncrementalHash hmacsha256 = IncrementalHash.CreateHMAC(HashAlgorithmName.SHA256, Convert.FromBase64String(EDEN_AUTH_KEY)))
             {
                 var values = ValuesForSigner(payload, 0);
                 var valstring = string.Join('|', values);
@@ -126,18 +126,9 @@ namespace Stats.ExtApi.Services
 
         public class GCContext
         {
-            public string nonce { get; set; }
+            public string nonce { get; set; } = string.Empty;
             public int timestamp { get; set; }
-            public string? previousSignature { get; set; }
-
-            public GCContext()
-            {
-            }
-
-            public GCContext(string previousSignature)
-            {
-                this.previousSignature = previousSignature;
-            }
+            public string previousSignature { get; set; } = string.Empty;
         }
 
     }

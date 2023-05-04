@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
@@ -16,14 +17,17 @@ namespace Stats.CmdApp
         private readonly ILogger _logger;
         private readonly GameChangerService _gameChangerService;
         private readonly DatabaseService _db;
+        private readonly IMemoryCache _memoryCache;
         private readonly IMapper _mapper;
         private readonly StatsOut _statsOut;
 
-        public GCApp(ILogger<GCApp> logger, IConfiguration configuration,
+        public GCApp(ILogger<GCApp> logger, 
+            IConfiguration configuration,
             GameChangerService gameChangerService,
             DatabaseService databaseService,
             StatsOut statsOut,
-            IMapper mapper)
+            IMapper mapper,
+            IMemoryCache memoryCache)
         {
             _configuration = configuration;
             _logger = logger;
@@ -31,6 +35,7 @@ namespace Stats.CmdApp
             _db = databaseService;
             _mapper = mapper;
             _statsOut = statsOut;
+            _memoryCache = memoryCache;
         }
 
         public void Run()
@@ -44,30 +49,51 @@ namespace Stats.CmdApp
                     Console.WriteLine("Enter a Team name to search for: ");
                     string query = Console.ReadLine() ?? string.Empty;
                     int selection = 0;
-
-                    // Find all Teams that match the search text.
-                    var results = await _gameChangerService.SearchTeamsAsync(query, "baseball");
-
-                    // Display the search results.
-                    if (results.hits.Count() == 0)
+                    try
                     {
-                        Console.WriteLine("No Teams found.");
-                    }
-                    else
-                    {
-                        var i = 1;
-                        Console.Clear();
-                        foreach (var item in results.hits.Take(5))
+                        // Find all Teams that match the search text.
+                        var results = await _gameChangerService.SearchTeamsAsync(query, "baseball");
+                        // Display the search results.
+                        if (results.hits.Count() == 0)
                         {
-                            var location = item.location == null ? "Unknown" : string.Format($"{item.location.city}, {item.location.state}");
-                            Console.WriteLine($"{i++}. {item.name}; Sport/Season: {item.sport.ToUpper()}/{item.team_season.season.ToUpper()}, {item.team_season.year}");
-                            Console.WriteLine($"Number of Players: {item.number_of_players}; Age Group: {item.age_group}; Staff: [ {string.Join(", ", item.staff)} ]\n");
+                            Console.WriteLine("No Teams found.");
+                        }
+                        else
+                        {
+                            var i = 1;
+                            Console.Clear();
+                            foreach (var item in results.hits.Take(5))
+                            {
+                                var location = item.location == null ? "Unknown" : string.Format($"{item.location.city}, {item.location.state}");
+                                Console.WriteLine($"{i++}. {item.name}; Sport/Season: {item.sport.ToUpper()}/{item.team_season.season.ToUpper()}, {item.team_season.year}");
+                                Console.WriteLine($"Number of Players: {item.number_of_players}; Age Group: {item.age_group}; Staff: [ {string.Join(", ", item.staff)} ]\n");
+                            }
+                        }
+                        Console.WriteLine("Which Team do you want to select?:");
+
+                        if (int.TryParse(Console.ReadLine(), out selection))
+                            SelectTeam(results.hits.ElementAt(selection - 1));
+
+                    }
+                    catch (HttpRequestException)
+                    {
+                        //Check for refresh token
+                        var token = _memoryCache.Get<AuthorizationToken>(key: "gc-token");
+                        if(token != null && token.refresh.data != null)
+                        {
+                            var newToken = await _gameChangerService.GetRefreshTokenAync(token.refresh.data);
+                            _memoryCache.Set<AuthorizationToken>(key: "gc-token", value: newToken);
+                        }else
+                        {
+                            //if doesn't exist as for a new one
+                            Console.WriteLine("Enter your new refresh token: ");
+                            //var data = Console.ReadLine();
+                            var data = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNhYzg2NmZkLWMyNzMtNGZjZi04NTU0LTc3ZThmYjYzZTc2MiJ9.eyJpZCI6IjBjNjZhYzcxLTY2YTEtNGFiMy04MTIzLTVjNDFmMDY4YTdmNDplNDViZTdmZC04NTdmLTQ4ZTgtYTIzZS0yYmU1ZGM5MWQ4ZjAiLCJjaWQiOiJmN2UyZGNlNy04Mzk1LTRkMWYtYmFjZS04ODEwYjI2YzBlOGUiLCJ1aWQiOiIzNmJlODBhYy1jZTBkLTQ5MTgtODMwNi1jYzYyMzM5NmUyYzIiLCJlbWFpbCI6Imt5bGUucm9nZXJzQGdtYWlsLmNvbSIsImlhdCI6MTY4MzIxODgxMiwiZXhwIjoxNjg0NDI4NDEyfQ.aLZXQibm_v36ut5juFLqBgfyKTfY4ZZXBd_M7HnyZck"
+                            var t = await _gameChangerService.GetRefreshTokenAync(data);
+                            _memoryCache.Set<AuthorizationToken>(key: "gc-token", value: t );
+
                         }
                     }
-                    Console.WriteLine("Which Team do you want to select?:");
-
-                    if (int.TryParse(Console.ReadLine(), out selection))
-                        SelectTeam(results.hits.ElementAt(selection - 1));
                 }
             }).GetAwaiter().GetResult();
         }

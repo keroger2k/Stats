@@ -107,7 +107,7 @@ namespace Stats.CmdApp
             var schedule = await _gameChangerService.GetTeamScheduledEventsAsync(item.id);
             var games = schedule.Where(c => c.@event.event_type.Equals("game"))
                 .Where(c => !c.@event.status.Equals("canceled"))
-                .Where(c => c.@event.start.datetime < DateTime.Now)
+                .Where(c => c.@event.start.datetime < DateTime.Now.AddDays(1))
                 .Where(c => !c.@event.sub_type.Contains("scrimmages"));
             int choice = 0;
             foreach (var evt in games)

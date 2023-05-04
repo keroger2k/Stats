@@ -88,7 +88,7 @@ namespace Stats.CmdApp
                             //if doesn't exist as for a new one
                             Console.WriteLine("Enter your new refresh token: ");
                             //var data = Console.ReadLine();
-                            var data = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNhYzg2NmZkLWMyNzMtNGZjZi04NTU0LTc3ZThmYjYzZTc2MiJ9.eyJpZCI6IjBjNjZhYzcxLTY2YTEtNGFiMy04MTIzLTVjNDFmMDY4YTdmNDplNDViZTdmZC04NTdmLTQ4ZTgtYTIzZS0yYmU1ZGM5MWQ4ZjAiLCJjaWQiOiJmN2UyZGNlNy04Mzk1LTRkMWYtYmFjZS04ODEwYjI2YzBlOGUiLCJ1aWQiOiIzNmJlODBhYy1jZTBkLTQ5MTgtODMwNi1jYzYyMzM5NmUyYzIiLCJlbWFpbCI6Imt5bGUucm9nZXJzQGdtYWlsLmNvbSIsImlhdCI6MTY4MzIxODgxMiwiZXhwIjoxNjg0NDI4NDEyfQ.aLZXQibm_v36ut5juFLqBgfyKTfY4ZZXBd_M7HnyZck"
+                            var data = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNhYzg2NmZkLWMyNzMtNGZjZi04NTU0LTc3ZThmYjYzZTc2MiJ9.eyJpZCI6IjBjNjZhYzcxLTY2YTEtNGFiMy04MTIzLTVjNDFmMDY4YTdmNDplNDViZTdmZC04NTdmLTQ4ZTgtYTIzZS0yYmU1ZGM5MWQ4ZjAiLCJjaWQiOiJmN2UyZGNlNy04Mzk1LTRkMWYtYmFjZS04ODEwYjI2YzBlOGUiLCJ1aWQiOiIzNmJlODBhYy1jZTBkLTQ5MTgtODMwNi1jYzYyMzM5NmUyYzIiLCJlbWFpbCI6Imt5bGUucm9nZXJzQGdtYWlsLmNvbSIsImlhdCI6MTY4MzIxODgxMiwiZXhwIjoxNjg0NDI4NDEyfQ.aLZXQibm_v36ut5juFLqBgfyKTfY4ZZXBd_M7HnyZck";
                             var t = await _gameChangerService.GetRefreshTokenAync(data);
                             _memoryCache.Set<AuthorizationToken>(key: "gc-token", value: t );
 

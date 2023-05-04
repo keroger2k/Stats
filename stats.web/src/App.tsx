@@ -1,5 +1,5 @@
 import TopNavbar from './components/TopNavbar';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.scss';
 
 function App() {
     return (

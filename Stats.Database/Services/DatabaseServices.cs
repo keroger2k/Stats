@@ -41,6 +41,12 @@ namespace Stats.Database.Services
 
         }
 
+        public async Task<IEnumerable<TeamTransform>> GetTeamsAsync()
+        {
+            var teamCollection = ConnectToMongo<TeamTransform>(_statsDatabaseSettings.Value.TeamCollectionName);
+            var existingTeam = await teamCollection.Find(_ => true).ToListAsync();
+            return existingTeam;
+        }
         public async Task<TeamTransform> GetTeamAsync(string id)
         {
             var teamCollection = ConnectToMongo<TeamTransform>(_statsDatabaseSettings.Value.TeamCollectionName);

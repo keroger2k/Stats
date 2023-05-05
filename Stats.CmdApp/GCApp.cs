@@ -231,6 +231,7 @@ namespace Stats.CmdApp
             var scores = await _gameChangerService.GetTeamGameDataAsync(team.id);
             var season_stats = await _gameChangerService.GetTeamSeasonStatsAsync(team.id);
             var video_assets1 = await _gameChangerService.GetTeamVideoAssetsAsync(team.id);
+            var avatar = await _gameChangerService.GetTeamAvatarAsync(team.id);
 
             var teamTransform = new TeamTransform()
             {
@@ -245,7 +246,7 @@ namespace Stats.CmdApp
                 age_group = team.age_group,
                 season_name = team.season_name,
                 season_year = team.season_year,
-                team_avatar_image = team.team_avatar_image,
+                team_avatar_image = avatar.full_media_url,
                 schedule = _mapper.Map<List<TeamTransform.TeamSchedule>>(teamSchedule.ToList()),
                 completed_game_scores = _mapper.Map<List<TeamTransform.Game>>(scores),
                 season_stats = _mapper.Map<TeamTransform.SeasonStats>(season_stats),

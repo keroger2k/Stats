@@ -16,6 +16,14 @@ namespace Stats.API.Controllers
         }
 
         [HttpGet]
+        public async Task<ActionResult<Team>> Get()
+        {
+            var team = await _db.GetTeamsAsync();
+            var mapped = _mapper.Map<IEnumerable<Team>>(team);
+            return Ok(mapped);
+        }
+
+        [HttpGet]
         [Route("{id}")]
         public async Task<ActionResult<Team>> Get(string id)
         {

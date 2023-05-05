@@ -6,6 +6,7 @@ using Serilog;
 using Stats.CmdApp.Helper;
 using Stats.Database.Models;
 using Stats.Database.Services;
+using Stats.ExtApi.Models;
 using Stats.ExtApi.Services;
 
 namespace Stats.CmdApp
@@ -58,7 +59,6 @@ namespace Stats.CmdApp
                     {
                         var http = new HttpClient();
                         http.BaseAddress = new Uri("https://api.Team-manager.gc.com");
-                        //http.DefaultRequestHeaders.Add("gc-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ijk2MWM1YmM1LWJkM2EtNDg4MS1iMmI0LTgyM2YzOGM0YzBiYyJ9.eyJ0eXBlIjoidXNlciIsImNpZCI6ImY3ZTJkY2U3LTgzOTUtNGQxZi1iYWNlLTg4MTBiMjZjMGU4ZSIsImVtYWlsIjoia3lsZS5yb2dlcnNAZ21haWwuY29tIiwidXNlcklkIjoiMzZiZTgwYWMtY2UwZC00OTE4LTgzMDYtY2M2MjMzOTZlMmMyIiwicnRrbiI6IjQ0Nzc4MDE2LWZiYmYtNDVlYy1iMjZhLTM0ODMyZGQ1NTJjYzo3MDg3ZjM5Yy0wZjIwLTQwYjYtYWIzNS1hZjc2MDAyYjliNmMiLCJpYXQiOjE2ODMxNjEyNjgsImV4cCI6MTY4MzE2NDg2OH0.V95slWMsHHdNHOoeiwcEpFhPMP1-4vhg3JPND3pVRMQ");
                         return http;
                     });
                 })

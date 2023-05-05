@@ -227,12 +227,21 @@ namespace Stats.ExtApi.Services
         /// <returns>JSON results from external API</returns>
         private async Task<string> GetRequestAsync(string url)
         {
-            var token = _memoryCache.Get<AuthorizationToken>(key: "gc-token");
-            _httpClient.DefaultRequestHeaders.Clear();
-            _httpClient.DefaultRequestHeaders.Add("gc-token", token?.access.data);
-            var response = await _httpClient.GetAsync(url);
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
+            try
+            {
+                var token = _memoryCache.Get<AuthorizationToken>(key: "gc-token");
+                _httpClient.DefaultRequestHeaders.Clear();
+                _httpClient.DefaultRequestHeaders.Add("gc-token", token?.access.data);
+                var response = await _httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync();
+            }
+            catch (HttpRequestException)
+            {
+                var t = await GetRefreshTokenAync(REFRESH_TOKEN);
+                _memoryCache.Set<AuthorizationToken>(key: "gc-token", value: t);
+                return await GetRequestAsync(url);
+            }
         }
 
 

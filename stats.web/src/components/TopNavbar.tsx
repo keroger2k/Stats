@@ -1,36 +1,28 @@
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-
 function TopNavbar() {
     return (
-        <Navbar bg="dark" variant="dark" expand="lg">
-            <Container fluid>
-                <Navbar.Brand href="#">Youth Baseball Stats</Navbar.Brand>
-                <Navbar.Toggle aria-controls="navbarScroll" />
-                <Navbar.Collapse id="navbarScroll">
-                    <Nav
-                        className="me-auto my-2 my-lg-0"
-                        style={{ maxHeight: '100px' }}
-                        navbarScroll
-                    >
-                        <Nav.Link href="#action1">Home</Nav.Link>
-                    </Nav>
-                    <Form className="d-flex">
-                        <Form.Control
-                            type="search"
-                            placeholder="Search"
-                            className="me-2"
-                            aria-label="Search"
-                        />
-                        <Button variant="outline-success">Search</Button>
-                    </Form>
-                </Navbar.Collapse>
-            </Container>
-        </Navbar>
-  );
+        <div className="NavBar__stickyItem StickyItem__stickyItem" data-sticky-name="Navbar" data-sticky="true">
+            <div className="NavBar__navBarContainer NavBar__loggedIn" data-testid="login-navbar-test-id">
+                <a className="NavBar__logoHolder" href="/teams"></a>
+                    <div className="NavBarMenu__dropdown"><span className="Clickable__container" role="button">
+                        <span className="Text__text Text__left Text__white Text__base Text__bold">Menu</span>
+                    </span>
+                    </div>
+                    <div className="NavBarMenu__nav-menu-container NavBarMenu__hide">
+                        <a href="/teams">
+                            <span className="NavBarMenu__teams">
+                                <span className="Text__text Text__left Text__white Text__base Text__semibold NavBarMenu__teams">My Teams</span>
+                            </span>
+                        </a>
+                        <span className="Clickable__container NavBarMenu__signoutContainer" role="button" >
+                            <div className="Avatar__container Avatar__grey-background Avatar__small NavBarMenu__avatar"><div className="Avatar__centered">
+                                <div className="Avatar__text"><span className="Text__text Text__left Text__white Text__small Text__bold">YS</span></div></div><div className="Avatar__status-accessory">
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+            </div>
+        </div>
+    );
 }
 
 export default TopNavbar;

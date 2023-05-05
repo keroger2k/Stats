@@ -1,3 +1,5 @@
+import './TopNavbar.scss';
+
 function TopNavbar() {
     return (
         <div className="NavBar__stickyItem StickyItem__stickyItem" data-sticky-name="Navbar" data-sticky="true">

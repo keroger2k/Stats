@@ -1,0 +1,249 @@
+.NavBar__noLoginNavBar {
+    position: relative;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    height: 72px;
+    box-shadow: 0 4px 5px rgba(0,0,0,.06);
+    align-items: center
+}
+
+.NavBar__logo {
+    display: inline-block;
+    height: 48px
+}
+
+.NavBar__logoCentered {
+    margin: 0 auto
+}
+
+.NavBar__logoHolder {
+    display: flex;
+    align-items: center
+}
+
+.NavBar__logoHolder > * {
+    margin-right: 8px
+}
+
+.NavBar__backButton {
+    background-color: inherit;
+    justify-content: start
+}
+
+.NavBar__stickyItem {
+    z-index: 100
+}
+
+.NavBar__navBarContainer {
+    display: grid;
+    grid-template-columns: 225px 1fr max-content;
+    padding: 12px 24px 12px 16px;
+    width: 100%;
+    height: 80px;
+    box-shadow: 0 4px 5px rgba(0,0,0,.06)
+}
+
+.NavBar__navBarContainer a, .NavBar__navBarContainer a:active {
+    text-decoration: none;
+    display: flex
+}
+
+.NavBar__horizontal-rule {
+    display: none
+}
+
+.NavBar__publicNavBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    box-shadow: 0 4px 5px rgba(0,0,0,.06);
+    z-index: 100;
+    width: 100%;
+    padding: 12px 24px
+}
+
+.NavBar__navBarButtons {
+    display: flex;
+    flex-direction: row
+}
+
+.NavBar__loggedIn {
+    background-color: #35373d;
+    color: #fff
+}
+
+.NavBar__loggedOut {
+    background-color: #fff;
+    color: #35373d
+}
+
+.NavBar__appDownloadButton {
+    background-color: rgba(0,0,0,0)
+}
+
+.NavBar__appDownloadButton:hover {
+    color: #35373d
+}
+
+@media screen and (max-width: 767px) {
+    .NavBar__navBarContainer {
+        grid-template-rows: 56px max-content 1fr;
+        height: 66px;
+        padding: 5px 24px 12px 16px
+    }
+
+    .NavBar__displayMenu {
+        height: 100% !important;
+        position: fixed;
+        z-index: calc(100 + 5)
+    }
+
+    .NavBar__logo {
+        height: 32px;
+        margin-top: 6px
+    }
+
+    .NavBar__publicNavBar.NavBar__loggedIn {
+        display: grid;
+        grid-template-rows: 56px max-content 1fr;
+        grid-template-columns: 225px 1fr max-content;
+        padding: 5px 24px 12px 16px;
+        width: 100%
+    }
+
+    .NavBar__publicNavBar.NavBar__loggedIn .NavBar__navBarButtons {
+        grid-row: 2
+    }
+
+    .NavBar__publicNavBar.NavBar__loggedIn .NavBar__navBarButtons > div:first-child {
+        position: absolute;
+        top: 24px;
+        right: 24px
+    }
+
+    .NavBar__horizontal-rule {
+        border-bottom: 1px solid #cfdce8;
+        min-width: 100vw;
+        margin-left: -24px;
+        display: block
+    }
+}
+
+.NavBarMenu__nav-menu-container {
+    grid-column: 3;
+    display: grid;
+    grid-column-gap: 1vw;
+    grid-template-columns: repeat(3, max-content);
+    align-items: center;
+    align-content: center;
+    height: 100%
+}
+
+.NavBarMenu__nav-menu-container a, .NavBarMenu__nav-menu-container a:active {
+    text-decoration: none
+}
+
+.NavBarMenu__nav-menu-container > *:not(button) {
+    border-radius: 4px;
+    padding: 4px 8px 4px 8px
+}
+
+.NavBarMenu__nav-menu-container > *:not(button):hover {
+    background-color: rgba(53,55,61,.08)
+}
+
+.NavBarMenu__nav-menu-container > *:not(button):last-of-type {
+    padding: 0px 3px
+}
+
+.NavBarMenu__avatar {
+    margin-top: 5px;
+    margin-right: 10px;
+    min-width: 32px
+}
+
+.NavBarMenu__signoutContainer {
+    display: flex;
+    margin-right: -18px
+}
+
+.NavBarMenu__email {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 185px
+}
+
+.NavBarMenu__teams svg, .NavBarMenu__request-help svg {
+    margin-right: 8px;
+    vertical-align: middle;
+    margin-top: 4px
+}
+
+.NavBarMenu__teams {
+    height: 100%;
+    width: 92px;
+    align-items: center;
+    font-size: 17px
+}
+
+.NavBarMenu__request-help {
+    align-items: center;
+    font-size: 17px
+}
+
+.NavBarMenu__sign-out {
+    font-size: 15px
+}
+
+.NavBarMenu__dropdown {
+    grid-column: 3;
+    display: none
+}
+
+@media screen and (max-width: 767px) {
+    .NavBarMenu__dropdown {
+        grid-column: 3;
+        display: flex !important;
+        align-items: center
+    }
+
+    .NavBarMenu__nav-menu-container {
+        grid-column: 1;
+        grid-row: 2;
+        grid-template-rows: repeat(2, 64px) 49px 80px;
+        grid-template-columns: 1fr;
+        z-index: calc(100 + 5);
+        background-color: #35373d
+    }
+
+    .NavBarMenu__nav-menu-container button {
+        margin-right: 36px
+    }
+
+    .NavBarMenu__hide {
+        display: none
+    }
+
+    .NavBarMenu__teams, .NavBarMenu__request-help, .NavBarMenu__sign-out {
+        font-size: 24px !important
+    }
+
+    .NavBarMenu__teams svg, .NavBarMenu__request-help svg {
+        margin-right: 18px
+    }
+
+    .NavBarMenu__email {
+        max-width: 280px;
+        margin-top: 2px
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .NavBarMenu__email {
+        max-width: 240px;
+        margin-top: 2px
+    }
+}

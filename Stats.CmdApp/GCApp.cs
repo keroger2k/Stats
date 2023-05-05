@@ -269,26 +269,36 @@ namespace Stats.CmdApp
                     throwing_hand = player.bats.throwing_hand
                 });
             }
+            
 
             foreach (var evt in teamTransform.schedule.Where(c => c.@event.event_type.Equals("game"))
                 .Where(c => !c.@event.status.Equals("canceled"))
                 .Where(c => c.@event.start.datetime < DateTime.Now)
                 .Where(c => !c.@event.sub_type.Contains("scrimmages")))
             {
-                var game = await _gameChangerService.GetTeamEventStatsAsync(team.id, evt.@event.id);
-                var eventPlayers = new TeamTransform.EventStats()
+                try
                 {
-                    id = game.event_id,
-                    boxscore = _mapper.Map<TeamTransform.PlayerStats>(game.player_stats.stats)
-                };
-                eventPlayers.players = new Dictionary<string, TeamTransform.PlayerStats>();
+                    var game = await _gameChangerService.GetTeamEventStatsAsync(team.id, evt.@event.id);
+                    var eventPlayers = new TeamTransform.EventStats()
+                    {
+                        id = game.event_id,
+                        boxscore = _mapper.Map<TeamTransform.PlayerStats>(game.player_stats.stats)
+                    };
+                    eventPlayers.players = new Dictionary<string, TeamTransform.PlayerStats>();
 
-                foreach (var player in game.player_stats.players)
-                {
-                    eventPlayers.players.Add(player.Key, _mapper.Map<TeamTransform.PlayerStats>(player.Value.stats));
+                    foreach (var player in game.player_stats.players)
+                    {
+                        eventPlayers.players.Add(player.Key, _mapper.Map<TeamTransform.PlayerStats>(player.Value.stats));
+                    }
+
+                    teamTransform.completed_games.Add(eventPlayers);
                 }
+                catch (Exception)
+                {
 
-                teamTransform.completed_games.Add(eventPlayers);
+                    
+                }
+               
             }
 
             await _db.CreateTeamAsync(teamTransform);

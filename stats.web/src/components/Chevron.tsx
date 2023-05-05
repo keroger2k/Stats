@@ -1,3 +1,5 @@
+import './Chevron.scss';
+
 function Chevron() {
     return (
         <svg width="16" height="16" viewBox="0 0 14 14" data-testid="icon-chevron">

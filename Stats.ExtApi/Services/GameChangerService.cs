@@ -192,7 +192,8 @@ namespace Stats.ExtApi.Services
         public async Task<Team> GetTeamAsync(string teamId)
         {
             var url = string.Format(TEAM_INFO, teamId);
-            var result = JsonSerializer.Deserialize<Team>(await GetRequestAsync(url));
+            var t = await GetRequestAsync(url);
+            var result = JsonSerializer.Deserialize<Team>(t);
             return result!;
         }
 
@@ -227,25 +228,19 @@ namespace Stats.ExtApi.Services
         /// <returns>JSON results from external API</returns>
         private async Task<string> GetRequestAsync(string url)
         {
-            try
-            {
-                var token = _memoryCache.Get<AuthorizationToken>(key: "gc-token");
-                _httpClient.DefaultRequestHeaders.Clear();
-                _httpClient.DefaultRequestHeaders.Add("gc-token", token?.access.data);
-                var response = await _httpClient.GetAsync(url);
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadAsStringAsync();
-            }
-            catch (HttpRequestException)
-            {
-                var t = await GetRefreshTokenAync(REFRESH_TOKEN);
-                _memoryCache.Set<AuthorizationToken>(key: "gc-token", value: t);
-                return await GetRequestAsync(url);
-            }
+            var token = _memoryCache.Get<AuthorizationToken>(key: "gc-token");
+            if (token == null)
+                await GetRefreshToken(REFRESH_TOKEN);
+            token = _memoryCache.Get<AuthorizationToken>(key: "gc-token");
+            _httpClient.DefaultRequestHeaders.Clear();
+            _httpClient.DefaultRequestHeaders.Add("gc-token", token?.access.data);
+            var response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync();
         }
 
 
-        public async Task<AuthorizationToken> GetRefreshTokenAync(string oldToken)
+        public async Task  GetRefreshToken(string oldToken)
         {
             var payload = new { type = "refresh" };
             var context = _authService.GetNewContext();
@@ -253,7 +248,7 @@ namespace Stats.ExtApi.Services
             var response = await _authService.MakePostRequestAync(context, JsonSerializer.Serialize(payload), clientRequestSignature, oldToken);
             var refreshToken = await response.Content.ReadAsStringAsync();
             var result = JsonSerializer.Deserialize<AuthorizationToken>(refreshToken);
-            return result!;
+            _memoryCache.Set<AuthorizationToken>(key: "gc-token", value: result);
         }
     }
 }

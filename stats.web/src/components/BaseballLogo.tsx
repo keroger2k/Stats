@@ -1,3 +1,6 @@
+import './BaseballLogo.scss';
+
+
 function BaseballLogo() {
     return (
         <svg width="16" height="16" viewBox="0 0 24 24" data-testid="icon-baseball" xmlns="http://www.w3.org/2000/svg">

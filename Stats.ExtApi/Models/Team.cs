@@ -15,8 +15,7 @@
         public DateTime updated_at { get; set; }
         public string teamExternalAssociation { get; set; } = null!;
         public string maxPrepsSyncState { get; set; } = null!;
-        public List<string> organizations { get; set; } = null!;
-        public Settings settings { get; set; } = null!;
+        public IEnumerable<Organization> organizations { get; set; } = new List<Organization>();
         public AdminTeam adminTeam { get; set; } = null!;
         public string sport { get; set; } = null!;
         public string city { get; set; } = null!;
@@ -34,6 +33,12 @@
         public List<string> user_team_associations { get; set; } = null!;
         public string team_avatar_image { get; set; } = null!;
         public string team_player_count { get; set; } = null!;
+
+        public class Organization
+        {
+            public string organization_id { get; set; } = string.Empty!;
+            public string status { get; set; } = string.Empty!;
+        }
 
         public class AdminTeam
         {

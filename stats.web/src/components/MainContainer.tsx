@@ -1,6 +1,7 @@
 import BaseballLogo from './BaseballLogo';
 import Chevron from './Chevron';
 import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import Service from '../services/api';
 import './MainContainer.scss';
 
@@ -14,6 +15,7 @@ function MainContainer() {
     }, []);
 
     const content = data.map((team) =>
+    <Link to={`/products/${team.id}`}>
         <span className="Clickable__container TeamsList__teamRow TeamsList__enabled" role="button" >
             <div className="Avatar__container Avatar__white-background Avatar__medium">
                 <div className="Avatar__centered">
@@ -38,6 +40,7 @@ function MainContainer() {
                 </div>
             </div>
         </span>
+        </Link>
     );
 
 

@@ -27,7 +27,11 @@ function MainContainer() {
                     <BaseballLogo></BaseballLogo>
                 </div>
             </div>
-            <div className="TeamsList__teamName"><span className="Text__text Text__left Text__off-black Text__base Text__semibold">{team.name}</span></div>
+            <div className="TeamsList__teamName">
+                <span className="Text__text Text__left Text__off-black Text__base Text__semibold">
+                    {team.name}
+                </span>
+            </div>
             <div className="TeamsList__teamGroup">
                 <div className="TeamsList__chevron">
                     <Chevron></Chevron>

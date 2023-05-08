@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Team, formatWeekdayShort, GameDataResponse } from '../models/models';
 import BaseballLogo from './BaseballLogo';
 import Chevron from './Chevron';
-import './TeamContainer.scss'
+import './TeamScheduleContainer.scss'
 import TeamEvent from './TeamEvent';
 
 class TeamRecord {
@@ -15,7 +15,7 @@ class TeamRecord {
 }
 
 
-function TeamContainer() {
+function TeamScheduleContainer() {
 
     const { id } = useParams();
     const [data, setData] = useState<Team | null>(null);
@@ -145,4 +145,4 @@ function TeamContainer() {
     );
 }
 
-export default TeamContainer;
+export default TeamScheduleContainer;

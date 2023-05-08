@@ -47,7 +47,7 @@ function TeamScheduleContainer() {
     React.useEffect(() => {
         const services = new Service();
         services.getSchedule('teams', id).then(data => {
-            
+
             setData(data);
 
         });
@@ -57,7 +57,7 @@ function TeamScheduleContainer() {
         <Link to={`/teams/${data.id}/schedule/events/${teamEvent.event.id}`}>
             <div className="ScheduleListByMonth__dayRow">
                 <div className="ScheduleListByMonth__dayDate">
-                    <div className="Text__text Text__center Text__cool-grey-dark Text__small Text__regular">{ formatWeekdayShort(getDay(teamEvent.event.start?.datetime)) }</div>
+                    <div className="Text__text Text__center Text__cool-grey-dark Text__small Text__regular">{formatWeekdayShort(getDay(teamEvent.event.start?.datetime))}</div>
                     <div className="Text__text Text__center Text__off-black Text__base Text__xbold ScheduleListByMonth__dateText">{getDate(teamEvent.event.start?.datetime)}</div>
                 </div>
                 <div>
@@ -107,18 +107,18 @@ function TeamScheduleContainer() {
                         </div>
                     </div>
                     <div className="TabNavBar__tabItems">
-                        <a data-testid="team-nav-bar-schedule" href="/teams/gVmCNqvYZdFp/2023-spring-pony-express-blue-13u/schedule">
+                        <Link to={`/teams/${data?.id}/schedule`}>
                             <div className="TabNavBarItem__tabNavBarItem TabNavBarItem__activeTabNavBarItem" role="tab"><span className="Text__text Text__left Text__gc-blue Text__base Text__bold TabNavBarItem__tabNavBarLabel">Schedule</span></div>
                             <div className="TabNavBarItem__activeTabItemUnderline"></div>
-                        </a>
-                        <a data-testid="team-nav-bar-team" href="/teams/gVmCNqvYZdFp/2023-spring-pony-express-blue-13u/teamInfo">
+                        </Link>
+                        <Link to={`/teams/${data?.id}/teamInfo`}>
                             <div className="TabNavBarItem__tabNavBarItem" role="tab"><span className="Text__text Text__left Text__cool-grey-dark Text__base Text__semibold TabNavBarItem__tabNavBarLabel">Team</span></div>
                             <div className=""></div>
-                        </a>
-                        <a data-testid="team-nav-bar-stats" href="/teams/gVmCNqvYZdFp/2023-spring-pony-express-blue-13u/season-stats">
+                        </Link>
+                        <Link to={`/teams/${data?.id}/season-stats`}>
                             <div className="TabNavBarItem__tabNavBarItem" role="tab"><span className="Text__text Text__left Text__cool-grey-dark Text__base Text__semibold TabNavBarItem__tabNavBarLabel">Stats</span></div>
                             <div className=""></div>
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -131,11 +131,11 @@ function TeamScheduleContainer() {
                         </button>
                     </div>
                 </div>
-                <br/>
+                <br />
                 <div className="Grid__grid-item" >
                     <div className="Grid__grid-item" >
                         <div className="ScheduleSection__section ScheduleListByMonth__eventMonth">
-                           {content} 
+                            {content}
                         </div>
                     </div>
                 </div>

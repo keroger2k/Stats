@@ -1,5 +1,3 @@
-import { forEachTrailingCommentRange } from "typescript";
-
 const headers = {
     "Accept": "application/json",
     "Content-Type": "application/json",

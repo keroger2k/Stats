@@ -1,16 +1,18 @@
 import BaseballLogo from './BaseballLogo';
 import Chevron from './Chevron';
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Service from '../services/api';
 import './MainContainer.scss';
 
 function MainContainer() {
-
-    const services = new Service();
     const [data, setData] = useState<any[]>([]);
 
+   
+
     React.useEffect(() => {
+        const services = new Service();
+        
         services.get('teams').then(data => setData(data));
     }, []);
 

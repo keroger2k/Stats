@@ -30,6 +30,7 @@ export interface Team {
         status: string;
     }[];
     schedule: Event[] | null;
+    completed_game_scores: GameDataResponse[] | null;
 }
 
 export type Event = {
@@ -58,6 +59,35 @@ export type Event = {
         lineup_id?: string | null;
     };
 };
+
+export type GameDataResponse = {
+    event_id: string;
+    game_data: GameData | null;
+};
+
+export type GameData = {
+    game_id: string;
+    scorekeeping_config_id: string | null;
+    game_state: GameStates;
+    team_score: number;
+    opponent_score: number;
+    last_time_to_score_ts: string;
+};
+
+type GameStates =
+    | '1st Half'
+    | '2nd Half'
+    | '1st Quarter'
+    | '2nd Quarter'
+    | '3rd Quarter'
+    | '4th Quarter'
+    | '1st Period'
+    | '2nd Period'
+    | '3rd Period'
+    | 'Halftime'
+    | 'Overtime 1'
+    | 'Overtime 2'
+    | 'Game Over';
 
 export type Location = {
     coordinates?: {

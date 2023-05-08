@@ -2,16 +2,24 @@
 import { useParams } from "react-router-dom";
 import Service from '../services/api';
 import { Link } from 'react-router-dom';
-import { Team, formatWeekdayShort } from '../models/models';
+import { Team, formatWeekdayShort, GameDataResponse } from '../models/models';
 import BaseballLogo from './BaseballLogo';
 import Chevron from './Chevron';
 import './TeamContainer.scss'
+import TeamEvent from './TeamEvent';
+
+class TeamRecord {
+    wins: number = 0;
+    losses: number = 0;
+    ties: number = 0;
+}
 
 
 function TeamContainer() {
 
     const { id } = useParams();
     const [data, setData] = useState<Team | null>(null);
+
 
     function getDay(date: string | undefined) {
         var d = new Date(date!);
@@ -32,9 +40,17 @@ function TeamContainer() {
         return formattedTime;
     }
 
+    function getScore(id: any) {
+        return data?.completed_game_scores?.filter((teamEvent) => teamEvent.event_id === id);
+    }
+
     React.useEffect(() => {
         const services = new Service();
-        services.getSchedule('teams', id).then(data => setData(data));
+        services.getSchedule('teams', id).then(data => {
+            
+            setData(data);
+
+        });
     }, []);
 
     const content = data?.schedule?.map((teamEvent) =>
@@ -52,7 +68,7 @@ function TeamContainer() {
                         </div>
                         <div className="Text__text Text__left Text__cool-grey-dark Text__small Text__regular ScheduleListByMonth__location">at {teamEvent.event.location?.address[0]}</div>
                         <div className="ScheduleListByMonth__scoreOrTime">
-                            <span className="Text__text Text__left Text__off-black Text__base Text__regular ScheduleListByMonth__time ScheduleListByMonth__scoreOrTimeText">{getTime(teamEvent.event.start?.datetime)}</span>
+                            <TeamEvent isGame={teamEvent.event.event_type === "game"} time={getTime(teamEvent.event.start?.datetime)} score={getScore(teamEvent.event.id)}></TeamEvent>
                             <span className="ScheduleListByMonth__chevron">
                                 <Chevron></Chevron>
                             </span>
@@ -84,7 +100,7 @@ function TeamContainer() {
                         <div className="TeamInfoSection__teamText">
                             <div className="TeamInfoSection__teamNameContainer"><span className="Text__text Text__left Text__off-black Text__base Text__xbold TeamInfoSection__teamName">{data?.name}</span></div>
                             <div className="TeamInfoSection__teamSeasonLocation" data-testid="TeamInfoSection-SeasonRecordAndName">
-                                <span className="Text__text Text__left Text__cool-grey-dark Text__small Text__bold">WINS-LOSSES-TIES</span>
+                                <span className="Text__text Text__left Text__cool-grey-dark Text__small Text__bold">{data?.completed_game_scores?.filter((x: GameDataResponse) => x.game_data !== null).filter((x: GameDataResponse) => x.game_data!.team_score > x.game_data!.opponent_score).length}-{data?.completed_game_scores?.filter((x: GameDataResponse) => x.game_data !== null).filter((x: GameDataResponse) => x.game_data!.team_score < x.game_data!.opponent_score).length}-{data?.completed_game_scores?.filter((x: GameDataResponse) => x.game_data !== null).filter((x: GameDataResponse) => x.game_data!.team_score === x.game_data!.opponent_score).length}</span>
                                 <span className="Text__text Text__left Text__cool-grey-dark Text__small Text__regular"> • {data?.season_year}</span>
                                 <span className="Text__text Text__left Text__cool-grey-dark Text__small Text__regular" title={`${data?.city}, ${data?.state}, ${data?.country}`}> • {`${data?.city}, ${data?.state}, ${data?.country}`}</span>
                             </div>

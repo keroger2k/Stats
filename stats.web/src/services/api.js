@@ -32,6 +32,14 @@ class Service {
         }
         return this.request(url, method).then(res => res.json());
     }
+
+    getSchedule(url, id) {
+        const method = "GET";
+        if (id) {
+            url = `${url}/${id}/schedule`;
+        }
+        return this.request(url, method).then(res => res.json());
+    }
 }
 
 export default Service;

@@ -4,9 +4,10 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Service from '../services/api';
 import './MainContainer.scss';
+import { Team } from '../models/models';
 
 function MainContainer() {
-    const [data, setData] = useState<any[]>([]);
+    const [data, setData] = useState<Team[]>([]);
 
    
 
@@ -17,7 +18,7 @@ function MainContainer() {
     }, []);
 
     const content = data.map((team) =>
-    <Link to={`/teams/${team.id}`}>
+    <Link to={`/teams/${team.id}/schedule`}>
         <span className="Clickable__container TeamsList__teamRow TeamsList__enabled" role="button" >
             <div className="Avatar__container Avatar__white-background Avatar__medium">
                 <div className="Avatar__centered">

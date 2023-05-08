@@ -7,14 +7,12 @@ import './App.scss';
 
 function App() {
 
-    
-
     return (
         <>
             <TopNavbar></TopNavbar>
             <Routes>
                 <Route path="/" element={<MainContainer />}></Route>
-                <Route path="/teams/:id" element={<TeamContainer />}></Route>
+                <Route path="/teams/:id/schedule" element={<TeamContainer />}></Route>
                 <Route></Route>
             </Routes>
 

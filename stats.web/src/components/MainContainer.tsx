@@ -15,7 +15,7 @@ function MainContainer() {
     }, []);
 
     const content = data.map((team) =>
-    <Link to={`/products/${team.id}`}>
+    <Link to={`/teams/${team.id}`}>
         <span className="Clickable__container TeamsList__teamRow TeamsList__enabled" role="button" >
             <div className="Avatar__container Avatar__white-background Avatar__medium">
                 <div className="Avatar__centered">

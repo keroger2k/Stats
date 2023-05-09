@@ -23,7 +23,7 @@ function TeamSeasonContainer() {
 
         <main className="MainContent__mainContentContainer">
             <div className="TeamNavBar__stickyItem StickyItem__stickyItem" data-sticky-name="TeamNavbar" data-sticky="true" >
-                <TeamNavBar team={data} active="stats" />
+                <TeamNavBar {...data!} />
             </div>
             <div className="OldGrid__grid OldGrid__centered SeasonStatsPage__statsPageContainer">
                 <div className="SeasonStatsPage__top-grid">

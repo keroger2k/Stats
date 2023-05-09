@@ -83,7 +83,7 @@ function TeamScheduleContainer() {
     return (
         <main className="MainContent__mainContentContainer">
             <div className="TeamNavBar__stickyItem StickyItem__stickyItem" data-sticky-name="TeamNavbar" data-sticky="true" >
-                <TeamNavBar team={data} active="schedule"/>
+                <TeamNavBar {...data!} />
             </div>
             <div className="Grid__grid Grid__fixed ScheduleListContainer__schedulePageContainer">
                 <div className="Grid__grid-item ScheduleListContainer__scheduleHeader" >

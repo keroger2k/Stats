@@ -5,8 +5,6 @@ import { Team } from '../models/models';
 import './TeamScheduleContainer.scss'
 import TeamNavBar from './TeamNavBar';
 
-
-
 function TeamInfoContainer() {
 
     const { id } = useParams();
@@ -23,7 +21,7 @@ function TeamInfoContainer() {
 
         <main className="MainContent__mainContentContainer">
             <div className="TeamNavBar__stickyItem StickyItem__stickyItem" data-sticky-name="TeamNavbar" data-sticky="true" >
-                <TeamNavBar team={data} active="info"/>
+                <TeamNavBar {...data!} />
             </div>
             <div className="Grid__grid Grid__fixed ScheduleListContainer__schedulePageContainer">
                 <div className="Grid__grid-item ScheduleListContainer__scheduleHeader" >

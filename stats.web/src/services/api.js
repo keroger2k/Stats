@@ -40,6 +40,14 @@ class Service {
         }
         return this.request(url, method).then(res => res.json());
     }
+
+    getSeasonStats(url, id) {
+        const method = "GET";
+        if (id) {
+            url = `${url}/${id}/season-stats`;
+        }
+        return this.request(url, method).then(res => res.json());
+    }
 }
 
 export default Service;

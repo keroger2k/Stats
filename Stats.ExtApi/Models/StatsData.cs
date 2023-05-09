@@ -411,6 +411,8 @@ namespace Stats.ExtApi.Models
 
                 [JsonPropertyName("KC%")]
                 public double KC { get; set; }
+                [JsonPropertyName("K-L")]
+                public double KL { get; set; }
                 public int LND { get; set; }
                 public int LOB { get; set; }
                 public double OBP { get; set; }

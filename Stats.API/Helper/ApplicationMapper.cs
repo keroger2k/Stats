@@ -20,6 +20,8 @@ namespace Stats.API.Helper
             CreateMap<Stats.Database.Models.TeamTransform.PlayerStats.Defense, Stats.API.Models.TeamStats.PlayerStats.Defense>();
             CreateMap<Stats.Database.Models.TeamTransform.SeasonStats.StatsData, Stats.API.Models.TeamStats.SeasonStats.StatsData>();
             CreateMap<Stats.Database.Models.TeamTransform.SeasonStats.StatsData.Player, Stats.API.Models.TeamStats.SeasonStats.StatsData.Player>();
+            CreateMap<Stats.Database.Models.TeamTransform.SeasonStats.StatsData.Player, Stats.API.Models.TeamStats.SeasonStats.StatsData.Player>();
+            CreateMap<Stats.Database.Models.TeamTransform.Player, Stats.API.Models.TeamStats.Player>();
             //TeamSchedule
             CreateMap<Stats.Database.Models.TeamTransform, Stats.API.Models.TeamSchedule>();
             CreateMap<Stats.Database.Models.TeamTransform.TeamSchedule, Stats.API.Models.TeamSchedule.Schedule>();

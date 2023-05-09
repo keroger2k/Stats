@@ -568,6 +568,8 @@ namespace Stats.Database.Models
 
                 [JsonPropertyName("KB%")]
                 public double KB { get; set; }
+                [JsonPropertyName("K-L")]
+                public double KL { get; set; }
 
                 [JsonPropertyName("KC%")]
                 public double KC { get; set; }

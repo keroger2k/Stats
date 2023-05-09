@@ -179,7 +179,7 @@ export type CoreBattingStats = {
     'C%': number;
     ci: number;
     cs: number;
-    'FB%': number;
+    'FLB%': number;
     fc: number;
     'GB%': number;
     gidp: number;

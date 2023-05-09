@@ -16,14 +16,14 @@ function AdvancedBattingGrid(team: Team) {
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.pa}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.ab}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.qab}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["QAB%"].toFixed(2)}</td>
+            <td className="statCell">{(team.season_stats.stats_data.players[player].stats.offense["QAB%"] * 100).toFixed(2)}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["PA/BB"].toFixed(1)}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["BB/K"].toFixed(3).replace(/^0+/, '')}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["C%"].toFixed(2)}</td>
+            <td className="statCell">{ (team.season_stats.stats_data.players[player].stats.offense["C%"] * 100).toFixed(2)}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.hard}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["LND%"].toFixed(2)}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["FB%"]}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["GB%"].toFixed(2)}</td>
+            <td className="statCell">{(team.season_stats.stats_data.players[player].stats.offense["LND%"] * 100).toFixed(2)}</td>
+            <td className="statCell">{(team.season_stats.stats_data.players[player].stats.offense["FLB%"] * 100).toFixed(2)}</td>
+            <td className="statCell">{(team.season_stats.stats_data.players[player].stats.offense["GB%"]  * 100).toFixed(2)}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.babip.toFixed(3)}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["BA/RISP"].toFixed(3).replace(/^0+/, '')}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.lob}</td>
@@ -33,9 +33,9 @@ function AdvancedBattingGrid(team: Team) {
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.ps}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["PS/PA"].toFixed(3)}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["2S+3"]}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["2S+3%"].toFixed(2)}</td>
+            <td className="statCell">{(team.season_stats.stats_data.players[player].stats.offense["2S+3%"] * 100).toFixed(2)}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["6+"]}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["6+%"].toFixed(2)}</td>
+            <td className="statCell">{(team.season_stats.stats_data.players[player].stats.offense["6+%"] * 100).toFixed(2)}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["AB/HR"]}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.gidp}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.gitp}</td>
@@ -186,35 +186,35 @@ function AdvancedBattingGrid(team: Team) {
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td className="footerTitleCell">Team</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
+                                <td className="footerTitleCell">Team</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.general.gp}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.pa}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.ab}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.qab}</td>
+                                <td className="statCell">{(team.season_stats.stats_data.stats.offense["QAB%"] * 100).toFixed(2)}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense["PA/BB"].toFixed(1)}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense["BB/K"].toFixed(3).replace(/^0+/, '')}</td>
+                                <td className="statCell">{ (team.season_stats.stats_data.stats.offense["C%"] * 100).toFixed(2) }</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.hard}</td>
+                                <td className="statCell">{(team.season_stats.stats_data.stats.offense["LND%"] * 100).toFixed(2)}</td>
+                                <td className="statCell">{(team.season_stats.stats_data.stats.offense["FLB%"] * 100).toFixed(2)}</td>
+                                <td className="statCell">{(team.season_stats.stats_data.stats.offense["GB%"] * 100).toFixed(2)}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.babip.toFixed(3)}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense["BA/RISP"].toFixed(3)}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.lob}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense._2OUTRBI}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.xbh}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.tb}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.ps}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense["PS/PA"].toFixed(3)}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense["2S+3"]}</td>
+                                <td className="statCell">{(team.season_stats.stats_data.stats.offense["2S+3%"] * 100).toFixed(2)}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense["6+"]}</td>
+                                <td className="statCell">{(team.season_stats.stats_data.stats.offense["6+%"] * 100).toFixed(2)}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense["AB/HR"]}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.gidp}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.gitp}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.ci}</td>
                         </tr>
                     </tfoot>
                 </table>
@@ -222,64 +222,7 @@ function AdvancedBattingGrid(team: Team) {
         </div>
 
         <div className="Spacer__spacer Spacer__md Spacer__vertical" />
-        <div className="StatsLegend__legendRow" data-testid="stats-legend">
-            <dl>
-                <dt>GP</dt>
-                <dd>Games played</dd>
-                <dt>PA</dt>
-                <dd>Plate appearances</dd>
-                <dt>AB</dt>
-                <dd>At bats</dd>
-                <dt>AVG</dt>
-                <dd>Batting average</dd>
-                <dt>OBP</dt>
-                <dd>On-base percentage</dd>
-                <dt>OPS</dt>
-                <dd>On-base percentage plus slugging percentage</dd>
-                <dt>SLG</dt>
-                <dd>Slugging percentage</dd>
-                <dt>H</dt>
-                <dd>Hits</dd>
-                <dt>1B</dt>
-                <dd>Singles</dd>
-                <dt>2B</dt>
-                <dd>Doubles</dd>
-                <dt>3B</dt>
-                <dd>Triples</dd>
-                <dt>HR</dt>
-                <dd>Home runs</dd>
-                <dt>RBI</dt>
-                <dd>Runs batted in</dd>
-            </dl>
-            <dl>
-                <dt>R</dt>
-                <dd>Runs scored</dd>
-                <dt>BB</dt>
-                <dd>Base on balls (walks)</dd>
-                <dt>SO</dt>
-                <dd>Strikeouts</dd>
-                <dt>K-L</dt>
-                <dd>Strikeouts looking</dd>
-                <dt>HBP</dt>
-                <dd>Hit by pitch</dd>
-                <dt>SAC</dt>
-                <dd>Sacrifice hits &amp; bunts</dd>
-                <dt>SF</dt>
-                <dd>Sacrifice flies</dd>
-                <dt>ROE</dt>
-                <dd>Reached on error</dd>
-                <dt>FC</dt>
-                <dd>Hit into fielder's choice</dd>
-                <dt>SB</dt>
-                <dd>Stolen bases</dd>
-                <dt>SB%</dt>
-                <dd>Stolen base percentage</dd>
-                <dt>CS</dt>
-                <dd>Caught stealing</dd>
-                <dt>PIK</dt>
-                <dd>Picked off</dd>
-            </dl>
-        </div>
+            <div className="StatsLegend__legendRow" data-testid="stats-legend"><dl><dt>GP</dt><dd>Games played</dd><dt>PA</dt><dd>Plate appearances</dd><dt>AB</dt><dd>At bats</dd><dt>QAB</dt><dd>Quality at bats (any one of: 3 pitches after 2 strikes, 6+ pitch ABs, XBH, HHB, BB, SAC Bunt, SAC Fly)</dd><dt>QAB%</dt><dd>Quality at bats per plate appearance</dd><dt>PA/BB</dt><dd>Plate appearances per walk</dd><dt>BB/K</dt><dd>Walks per strikeout</dd><dt>C%</dt><dd>Contact percentage/Contact rate: AB-K/AB</dd><dt>HHB</dt><dd>Hard hit balls: Total line drives and hard ground balls</dd><dt>LD%</dt><dd>Line drive percentage</dd><dt>FB%</dt><dd>Fly ball percentage</dd><dt>GB%</dt><dd>Ground ball percentage</dd><dt>BABIP</dt><dd>Batting average on balls in play</dd><dt>BA/RISP</dt><dd>Batting average with runners in scoring position</dd></dl><dl><dt>LOB</dt><dd>Runners left on base</dd><dt>2OUTRBI</dt><dd>2-out RBI</dd><dt>XBH</dt><dd>Extra-base hits</dd><dt>TB</dt><dd>Total bases</dd><dt>PS</dt><dd>Pitches seen</dd><dt>PS/PA</dt><dd>Pitches seen per plate appearance</dd><dt>2S+3</dt><dd>Plate appearances in which batter sees 3+ pitches after 2 strikes</dd><dt>2S+3%</dt><dd>% of plate appearances in which batter sees 3+ pitches after 2 strikes</dd><dt>6+</dt><dd>Plate appearances with 6+ pitches</dd><dt>6+%</dt><dd>% of plate appearances of 6+ pitches</dd><dt>AB/HR</dt><dd>At bats per home run</dd><dt>GIDP</dt><dd>Hit into double play</dd><dt>GITP</dt><dd>Hit into triple play</dd><dt>CI</dt><dd>Batter advances on catcher's interference</dd></dl></div>
     </div>
     );
 

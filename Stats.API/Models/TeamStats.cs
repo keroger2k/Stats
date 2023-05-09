@@ -3,8 +3,8 @@ using System.Text.Json.Serialization;
 
 namespace Stats.API.Models
 {
-    public class TeamStats 
-    { 
+    public class TeamStats
+    {
         public string id { get; set; } = string.Empty;
         public string name { get; set; } = string.Empty;
         public DateTime created_at { get; set; }
@@ -19,6 +19,8 @@ namespace Stats.API.Models
         public string team_avatar_image { get; set; } = string.Empty;
         public SeasonStats season_stats { get; set; } = null!;
         public List<Player> players { get; set; } = new List<Player>();
+
+        public IEnumerable<Game> completed_game_scores { get; set; } = new List<Game>();
         public class SeasonStats
         {
             public string id { get; set; } = null!;
@@ -37,7 +39,7 @@ namespace Stats.API.Models
                     public PlayerStats stats { get; set; } = null!;
                 }
             }
-            
+
 
         }
         public class PlayerStats
@@ -525,6 +527,23 @@ namespace Stats.API.Models
             public string person_id { get; set; } = null!;
             public string batting_side { get; set; } = null!;
             public string throwing_hand { get; set; } = null!;
+        }
+
+        public class Game
+        {
+            [BsonId]
+            public string event_id { get; set; } = null!;
+            public GameData game_data { get; set; } = null!;
+            public class GameData
+            {
+                [BsonId]
+                public string game_id { get; set; } = null!;
+                public string scorekeeping_config_id { get; set; } = null!;
+                public string game_state { get; set; } = null!;
+                public int team_score { get; set; }
+                public int opponent_score { get; set; }
+                public DateTime last_time_to_score_ts { get; set; }
+            }
         }
     }
 }

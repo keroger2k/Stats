@@ -143,9 +143,16 @@ namespace Stats.ExtApi.Services
         /// <returns></returns>
         public async Task<TeamAvatar> GetTeamAvatarAsync(string teamId)
         {
-            var url = string.Format(TEAM_AVATAR, teamId);
-            var result = JsonSerializer.Deserialize<TeamAvatar>(await GetRequestAsync(url));
-            return result!;
+            try
+            {
+                var url = string.Format(TEAM_AVATAR, teamId);
+                var result = JsonSerializer.Deserialize<TeamAvatar>(await GetRequestAsync(url));
+                return result!;
+            }
+            catch (Exception)
+            {
+            }
+            return new TeamAvatar();
         }
 
         /// <summary>

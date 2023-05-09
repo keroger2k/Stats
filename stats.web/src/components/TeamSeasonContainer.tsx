@@ -5,6 +5,7 @@ import { Team } from '../models/models';
 import './TeamScheduleContainer.scss'
 import TeamNavBar from './TeamNavBar';
 
+import './TeamSeasonContainer.scss'
 
 
 function TeamSeasonContainer() {
@@ -124,7 +125,113 @@ function TeamSeasonContainer() {
                     </div>
                 </div>
                 <div className="Spacer__spacer Spacer__md Spacer__vertical" />
-                <h1>Table</h1>
+
+                <div id="stats_container">
+                    <div className="statsPageContainer grid">
+                        <table className="gcTable statTable withGridLines withOutline withHoverHighlighting">
+                            <thead>
+                                <tr>
+                                    <th className="jerseyNumberCell header">#</th>
+                                    <th className="playerNameCell invertLinkUnderline strong header headerSortDown">First</th>
+                                    <th className="playerNameCell invertLinkUnderline strong header headerSortDown">Last</th>
+                                    <th className="statCell header">GP</th>
+                                    <th className="statCell header">PA</th>
+                                    <th className="statCell header">AB</th>
+                                    <th className="statCell header">AVG</th>
+                                    <th className="statCell header">OBP</th>
+                                    <th className="statCell header">OPS</th>
+                                    <th className="statCell header">SLG</th>
+                                    <th className="statCell header">H</th>
+                                    <th className="statCell header">1B</th>
+                                    <th className="statCell header">2B</th>
+                                    <th className="statCell header">3B</th>
+                                    <th className="statCell header">HR</th>
+                                    <th className="statCell header">RBI</th>
+                                    <th className="statCell header">R</th>
+                                    <th className="statCell header">BB</th>
+                                    <th className="statCell header">SO</th>
+                                    <th className="statCell header">K-L</th>
+                                    <th className="statCell header">HPB</th>
+                                    <th className="statCell header">SAC</th>
+                                    <th className="statCell header">SF</th>
+                                    <th className="statCell header">ROE</th>
+                                    <th className="statCell header">FC</th>
+                                    <th className="statCell header">SB</th>
+                                    <th className="statCell header">SB%</th>
+                                    <th className="statCell header">CS</th>
+                                    <th className="statCell header">PIK</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr className="whiteRow odd">
+                                    <td className="jerseyNumberCell">0</td>
+                                    <td className="playerNameCell invertLinkUnderline strong">John</td>
+                                    <td className="playerNameCell invertLinkUnderline strong">Doe</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td className="footerTitleCell">Totals</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                    <td className="statCell">00</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
                 <div className="Spacer__spacer Spacer__md Spacer__vertical" />
                 <div className="StatsLegend__legendRow" data-testid="stats-legend">
                     <dl>

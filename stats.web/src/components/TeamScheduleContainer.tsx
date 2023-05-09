@@ -5,8 +5,10 @@ import { Link } from 'react-router-dom';
 import { Team, formatWeekdayShort, GameDataResponse } from '../models/models';
 import BaseballLogo from './BaseballLogo';
 import Chevron from './Chevron';
-import './TeamScheduleContainer.scss'
 import TeamEvent from './TeamEvent';
+import TeamNavBar from './TeamNavBar';
+
+import './TeamScheduleContainer.scss'
 
 class TeamRecord {
     wins: number = 0;
@@ -47,9 +49,7 @@ function TeamScheduleContainer() {
     React.useEffect(() => {
         const services = new Service();
         services.getSchedule('teams', id).then(data => {
-
             setData(data);
-
         });
     }, []);
 
@@ -83,44 +83,7 @@ function TeamScheduleContainer() {
     return (
         <main className="MainContent__mainContentContainer">
             <div className="TeamNavBar__stickyItem StickyItem__stickyItem" data-sticky-name="TeamNavbar" data-sticky="true" >
-                <div className="TeamNavBar__navBar">
-                    <div className="TeamInfoSection__teamInfo" data-testid="TeamInfoSection">
-                        <div className="Avatar__container Avatar__white-background Avatar__large TeamInfoSection__teamAvatar TeamInfoSection__teamCustomAvatar">
-                            <div className="Avatar__centered">
-                                <img
-                                    className="Image__circle"
-                                    src={data?.team_avatar_image}
-                                    alt=""
-                                />
-                            </div>
-                            <div className="Avatar__sport-accessory Avatar__white-background Avatar__small-border">
-                                <BaseballLogo></BaseballLogo>
-                            </div>
-                        </div>
-                        <div className="TeamInfoSection__teamText">
-                            <div className="TeamInfoSection__teamNameContainer"><span className="Text__text Text__left Text__off-black Text__base Text__xbold TeamInfoSection__teamName">{data?.name}</span></div>
-                            <div className="TeamInfoSection__teamSeasonLocation" data-testid="TeamInfoSection-SeasonRecordAndName">
-                                <span className="Text__text Text__left Text__cool-grey-dark Text__small Text__bold">{data?.completed_game_scores?.filter((x: GameDataResponse) => x.game_data !== null).filter((x: GameDataResponse) => x.game_data!.team_score > x.game_data!.opponent_score).length}-{data?.completed_game_scores?.filter((x: GameDataResponse) => x.game_data !== null).filter((x: GameDataResponse) => x.game_data!.team_score < x.game_data!.opponent_score).length}-{data?.completed_game_scores?.filter((x: GameDataResponse) => x.game_data !== null).filter((x: GameDataResponse) => x.game_data!.team_score === x.game_data!.opponent_score).length}</span>
-                                <span className="Text__text Text__left Text__cool-grey-dark Text__small Text__regular"> • {data?.season_year}</span>
-                                <span className="Text__text Text__left Text__cool-grey-dark Text__small Text__regular" title={`${data?.city}, ${data?.state}, ${data?.country}`}> • {`${data?.city}, ${data?.state}, ${data?.country}`}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="TabNavBar__tabItems">
-                        <Link to={`/teams/${data?.id}/schedule`}>
-                            <div className="TabNavBarItem__tabNavBarItem TabNavBarItem__activeTabNavBarItem" role="tab"><span className="Text__text Text__left Text__gc-blue Text__base Text__bold TabNavBarItem__tabNavBarLabel">Schedule</span></div>
-                            <div className="TabNavBarItem__activeTabItemUnderline"></div>
-                        </Link>
-                        <Link to={`/teams/${data?.id}/teamInfo`}>
-                            <div className="TabNavBarItem__tabNavBarItem" role="tab"><span className="Text__text Text__left Text__cool-grey-dark Text__base Text__semibold TabNavBarItem__tabNavBarLabel">Team</span></div>
-                            <div className=""></div>
-                        </Link>
-                        <Link to={`/teams/${data?.id}/season-stats`}>
-                            <div className="TabNavBarItem__tabNavBarItem" role="tab"><span className="Text__text Text__left Text__cool-grey-dark Text__base Text__semibold TabNavBarItem__tabNavBarLabel">Stats</span></div>
-                            <div className=""></div>
-                        </Link>
-                    </div>
-                </div>
+                <TeamNavBar team={data} active="schedule"/>
             </div>
             <div className="Grid__grid Grid__fixed ScheduleListContainer__schedulePageContainer">
                 <div className="Grid__grid-item ScheduleListContainer__scheduleHeader" >

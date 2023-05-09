@@ -25,8 +25,8 @@ function TeamSeasonContainer() {
 
     function getGrid() {
         if (data !== undefined) {
-            //return <StandardBattingGrid {...data!}></StandardBattingGrid>;
-            return <AdvancedBattingGrid {...data!}></AdvancedBattingGrid>;
+            return <StandardBattingGrid {...data!}></StandardBattingGrid>;
+            //return <AdvancedBattingGrid {...data!}></AdvancedBattingGrid>;
         }
         return "";
     }

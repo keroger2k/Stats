@@ -10,10 +10,9 @@ function StandardBattingGrid(team: Team) {
 
 
     const content = Object.keys(team.season_stats.stats_data.players).map<any>((player) => {
-        return (<tr className="whiteRow odd">
-            <td className="jerseyNumberCell">{getPlayer(player)?.number}</td>
-            <td className="playerNameCell invertLinkUnderline strong">{getPlayer(player)?.first_name}</td>
-            <td className="playerNameCell invertLinkUnderline strong">{getPlayer(player)?.last_name}</td>
+        return (
+        <tr className="whiteRow odd">
+            <td className="playerNameCell invertLinkUnderline strong">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.general.gp}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.pa}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.ab}</td>
@@ -37,7 +36,7 @@ function StandardBattingGrid(team: Team) {
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.roe}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.fc}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.sb}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["SB%"].toFixed(3) }</td>
+            <td className="statCell">{(team.season_stats.stats_data.players[player].stats.offense["SB%"] * 100).toFixed(2) }</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.cs}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.pik}</td>
         </tr>);
@@ -150,9 +149,7 @@ function StandardBattingGrid(team: Team) {
                 <table className="gcTable statTable withGridLines withOutline withHoverHighlighting">
                     <thead>
                         <tr>
-                            <th className="jerseyNumberCell header">#</th>
-                            <th className="playerNameCell invertLinkUnderline strong header headerSortDown">First</th>
-                            <th className="playerNameCell invertLinkUnderline strong header headerSortDown">Last</th>
+                            <th className="playerNameCell invertLinkUnderline strong header headerSortDown">Player</th>
                             <th className="statCell header">GP</th>
                             <th className="statCell header">PA</th>
                             <th className="statCell header">AB</th>
@@ -186,35 +183,33 @@ function StandardBattingGrid(team: Team) {
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td className="footerTitleCell">Totals</td>
-                            <td></td>
-                            <td></td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
-                            <td className="statCell">00</td>
+                                <td className="footerTitleCell">Team</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.general.gp}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.pa}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.ab}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.avg.toFixed(3).replace(/^0+/, '')}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.obp.toFixed(3).replace(/^0+/, '')}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.ops.toFixed(3).replace(/^0+/, '')}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.slg.toFixed(3).replace(/^0+/, '')}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.h}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense["1B"]}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense["2B"]}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense["3B"]}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.hr}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.rbi}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.r}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.bb}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.so}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.sol}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.hbp}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.shb}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.shf}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.roe}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.fc}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.sb}</td>
+                                <td className="statCell">{(team.season_stats.stats_data.stats.offense["SB%"] * 100).toFixed(2)}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.cs}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.offense.pik}</td>
                         </tr>
                     </tfoot>
                 </table>

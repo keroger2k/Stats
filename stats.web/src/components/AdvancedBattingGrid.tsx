@@ -10,7 +10,8 @@ function AdvancedBattingGrid(team: Team) {
 
 
     const content = Object.keys(team.season_stats.stats_data.players).map<any>((player) => {
-        return (<tr className="whiteRow odd">
+        return (
+         <tr className="whiteRow odd">
             <td className="playerNameCell invertLinkUnderline strong">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.general.gp}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.pa}</td>

@@ -266,8 +266,8 @@ namespace Stats.CmdApp
                     status = player.status,
                     team_id = player.team_id,
                     person_id = player.person_id,
-                    batting_side = player.bats.batting_side,
-                    throwing_hand = player.bats.throwing_hand
+                    batting_side = (player.bats == null) ? "" : player.bats.batting_side,
+                    throwing_hand = (player.bats == null) ? "" : player.bats.throwing_hand
                 });
             }
             

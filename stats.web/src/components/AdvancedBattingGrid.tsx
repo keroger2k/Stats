@@ -1,7 +1,7 @@
 import { } from "react-bootstrap";
 import { Team, Player } from "../models/models";
 
-function StandardGrid(team: Team) {
+function AdvancedBattingGrid(team: Team) {
 
     function getPlayer(id: string) {
         return team.players.find((player: Player) => player.id === id);
@@ -11,35 +11,35 @@ function StandardGrid(team: Team) {
 
     const content = Object.keys(team.season_stats.stats_data.players).map<any>((player) => {
         return (<tr className="whiteRow odd">
-            <td className="jerseyNumberCell">{getPlayer(player)?.number}</td>
-            <td className="playerNameCell invertLinkUnderline strong">{getPlayer(player)?.first_name}</td>
-            <td className="playerNameCell invertLinkUnderline strong">{getPlayer(player)?.last_name}</td>
+            <td className="playerNameCell invertLinkUnderline strong">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.general.gp}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.pa}</td>
             <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.ab}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.avg.toFixed(3).replace(/^0+/, '')}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.obp.toFixed(3).replace(/^0+/, '')}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.ops.toFixed(3).replace(/^0+/, '')}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.slg.toFixed(3).replace(/^0+/, '')}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.h}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["1B"]}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["2B"]}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["3B"]}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.hr}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.rbi}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.r}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.bb}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.so}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.sol}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.hbp}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.shb}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.shf}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.roe}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.fc}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.sb}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["SB%"].toFixed(3) }</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.cs}</td>
-            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.pik}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.qab}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["QAB%"].toFixed(2)}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["PA/BB"].toFixed(1)}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["BB/K"].toFixed(3).replace(/^0+/, '')}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["C%"].toFixed(2)}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.hard}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["LND%"].toFixed(2)}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["FB%"]}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["GB%"].toFixed(2)}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.babip.toFixed(3)}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["BA/RISP"].toFixed(3).replace(/^0+/, '')}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.lob}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["_2OUTRBI"]}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.xbh}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.tb}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.ps}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["PS/PA"].toFixed(3)}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["2S+3"]}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["2S+3%"].toFixed(2)}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["6+"]}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["6+%"].toFixed(2)}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["AB/HR"]}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.gidp}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.gitp}</td>
+            <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.ci}</td>
         </tr>);
     });
 
@@ -150,35 +150,35 @@ function StandardGrid(team: Team) {
                 <table className="gcTable statTable withGridLines withOutline withHoverHighlighting">
                     <thead>
                         <tr>
-                            <th className="jerseyNumberCell header">#</th>
-                            <th className="playerNameCell invertLinkUnderline strong header headerSortDown">First</th>
-                            <th className="playerNameCell invertLinkUnderline strong header headerSortDown">Last</th>
+                            <th className="playerNameCell invertLinkUnderline strong header headerSortDown">Player</th>
                             <th className="statCell header">GP</th>
                             <th className="statCell header">PA</th>
                             <th className="statCell header">AB</th>
-                            <th className="statCell header">AVG</th>
-                            <th className="statCell header">OBP</th>
-                            <th className="statCell header">OPS</th>
-                            <th className="statCell header">SLG</th>
-                            <th className="statCell header">H</th>
-                            <th className="statCell header">1B</th>
-                            <th className="statCell header">2B</th>
-                            <th className="statCell header">3B</th>
-                            <th className="statCell header">HR</th>
-                            <th className="statCell header">RBI</th>
-                            <th className="statCell header">R</th>
-                            <th className="statCell header">BB</th>
-                            <th className="statCell header">SO</th>
-                            <th className="statCell header">K-L</th>
-                            <th className="statCell header">HPB</th>
-                            <th className="statCell header">SAC</th>
-                            <th className="statCell header">SF</th>
-                            <th className="statCell header">ROE</th>
-                            <th className="statCell header">FC</th>
-                            <th className="statCell header">SB</th>
-                            <th className="statCell header">SB%</th>
-                            <th className="statCell header">CS</th>
-                            <th className="statCell header">PIK</th>
+                            <th className="statCell header">QAB</th>
+                            <th className="statCell header">QAB%</th>
+                            <th className="statCell header">PA/BB</th>
+                            <th className="statCell header">BB/K</th>
+                            <th className="statCell header">C%</th>
+                            <th className="statCell header">HHB</th>
+                            <th className="statCell header">LD%</th>
+                            <th className="statCell header">FB%</th>
+                            <th className="statCell header">GB%</th>
+                            <th className="statCell header">BABIP</th>
+                            <th className="statCell header">BA/RISP</th>
+                            <th className="statCell header">LOB</th>
+                            <th className="statCell header">2OUTRBI</th>
+                            <th className="statCell header">XBH</th>
+                            <th className="statCell header">TB</th>
+                            <th className="statCell header">PS</th>
+                            <th className="statCell header">PS/PA</th>
+                            <th className="statCell header">2S+3</th>
+                            <th className="statCell header">2S+3%</th>
+                            <th className="statCell header">6+</th>
+                            <th className="statCell header">6+%</th>
+                            <th className="statCell header">AB/HR</th>
+                            <th className="statCell header">GIDP</th>
+                            <th className="statCell header">GITP</th>
+                            <th className="statCell header">CI</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -186,9 +186,9 @@ function StandardGrid(team: Team) {
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td className="footerTitleCell">Totals</td>
-                            <td></td>
-                            <td></td>
+                            <td className="footerTitleCell">Team</td>
+                            <td className="statCell">00</td>
+                            <td className="statCell">00</td>
                             <td className="statCell">00</td>
                             <td className="statCell">00</td>
                             <td className="statCell">00</td>
@@ -285,4 +285,4 @@ function StandardGrid(team: Team) {
 
 }
 
-export default StandardGrid;
+export default AdvancedBattingGrid;

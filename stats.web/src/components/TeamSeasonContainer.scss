@@ -3,6 +3,11 @@
     box-sizing: border-box;
 }
 
+.playerNameCell {
+    display:block;
+    width: 200px;
+}
+
 *:focus {
     outline: 1px solid grey;
 }

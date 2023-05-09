@@ -647,11 +647,14 @@ namespace Stats.Database.Models
                 [JsonPropertyName("PS/PA")]
                 public double PSPA { get; set; }
                 public int ABRISP { get; set; }
+                [JsonPropertyName("2OUTRBI")]
                 public int _2OUTRBI { get; set; }
+                [JsonPropertyName("3OUTLOB")]
                 public int _3OUTLOB { get; set; }
 
                 [JsonPropertyName("BA/RISP")]
                 public double BARISP { get; set; }
+                [JsonPropertyName("2STRIKES")]
                 public int _2STRIKES { get; set; }
             }
         }

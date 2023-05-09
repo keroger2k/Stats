@@ -6,7 +6,9 @@ import './TeamScheduleContainer.scss'
 import TeamNavBar from './TeamNavBar';
 
 import './TeamSeasonContainer.scss'
-import StandardGrid from './StandardGrid';
+import StandardGrid from './StandardBattingGrid';
+import StandardBattingGrid from './StandardBattingGrid';
+import AdvancedBattingGrid from './AdvancedBattingGrid';
 
 
 function TeamSeasonContainer() {
@@ -22,8 +24,10 @@ function TeamSeasonContainer() {
     }, []);
 
     function getGrid() {
-        if (data !== undefined)
-            return <StandardGrid {...data!}></StandardGrid>;
+        if (data !== undefined) {
+            //return <StandardBattingGrid {...data!}></StandardBattingGrid>;
+            return <AdvancedBattingGrid {...data!}></AdvancedBattingGrid>;
+        }
         return "";
     }
     

@@ -285,6 +285,7 @@ namespace Stats.Database.Models
                 public int LND { get; set; }
                 public int LOB { get; set; }
                 public int LOO { get; set; }
+                public int OBBINN { get; set; }
 
                 [JsonPropertyName("OS%")]
                 public double OffSpeed { get; set; }

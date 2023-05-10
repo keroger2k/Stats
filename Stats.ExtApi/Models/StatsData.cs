@@ -204,6 +204,7 @@ namespace Stats.ExtApi.Models
                 [JsonPropertyName("LOB%")]
                 public double LOB_Something { get; set; }
                 public int LOBB { get; set; }
+                public int OBBINN { get; set; }
 
                 [JsonPropertyName("LOO%")]
                 public double LeadOffOutPercentage { get; set; }

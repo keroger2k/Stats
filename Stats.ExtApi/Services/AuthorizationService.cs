@@ -70,7 +70,7 @@ namespace Stats.ExtApi.Services
             PropertyInfo[] properties = objType.GetProperties().OrderBy(c => c.Name).ToArray();
             foreach (PropertyInfo property in properties)
             {
-                object propValue = property.GetValue(obj, null);
+                object propValue = property.GetValue(obj, index: null);
                 var elems = propValue as IList;
                 if (elems != null)
                 {

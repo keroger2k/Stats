@@ -9,6 +9,8 @@ import './TeamSeasonContainer.scss'
 import StandardGrid from './StandardBattingGrid';
 import StandardBattingGrid from './StandardBattingGrid';
 import AdvancedBattingGrid from './AdvancedBattingGrid';
+import { Stats } from 'fs';
+import StandardPitchingGrid from './StandardPitchingGrid';
 
 
 function TeamSeasonContainer() {
@@ -25,7 +27,8 @@ function TeamSeasonContainer() {
 
     function getGrid() {
         if (data !== undefined) {
-            return <StandardBattingGrid {...data!}></StandardBattingGrid>;
+            return <StandardPitchingGrid {...data!}></StandardPitchingGrid>;
+            //return <StandardBattingGrid {...data!}></StandardBattingGrid>;
             //return <AdvancedBattingGrid {...data!}></AdvancedBattingGrid>;
         }
         return "";

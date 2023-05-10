@@ -70,6 +70,8 @@ namespace Stats.ExtApi.Models
                 public int SM { get; set; }
                 public int SO { get; set; }
                 public int SV { get; set; }
+                [JsonPropertyName("SV%")]
+                public decimal SVPercent { get; set; }
                 public int SW { get; set; }
                 public int TB { get; set; }
                 public int TC { get; set; }

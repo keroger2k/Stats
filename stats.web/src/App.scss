@@ -2,6 +2,20 @@
 @import "./Styles/variables";
 @import "./Styles/mixins";
 
+.custom-grid {
+    --grid-item-width-xl:6;
+    --grid-column-start-xl: auto;
+}
+
+.custom-grid-item2 {
+    --grid-item-width-xl: 2;
+    --grid-column-start-xl: auto;
+}
+.custom-grid-item5 {
+    --grid-item-width-xl: 5;
+    --grid-column-start-xl: auto;
+}
+
 .CSSConstants__breakpoint__xl__1200px__100000px {
     color: red
 }

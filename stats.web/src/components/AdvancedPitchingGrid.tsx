@@ -1,6 +1,5 @@
 import { } from "react-bootstrap";
 import { Team, Player } from "../models/models";
-import SeasonStatsTopGrid from "./SeasonStatsTopGrid";
 
 function AdvancedPitchingGrid(team: Team) {
 
@@ -49,13 +48,7 @@ function AdvancedPitchingGrid(team: Team) {
 
 
     return (
-        <div className="OldGrid__grid OldGrid__centered SeasonStatsPage__statsPageContainer">
-
-            <SeasonStatsTopGrid></SeasonStatsTopGrid>
-
-
-            <div className="Spacer__spacer Spacer__md Spacer__vertical" />
-
+        <>
             <div id="stats_container">
                 <div className="statsPageContainer grid">
                     <table className="gcTable statTable withGridLines withOutline withHoverHighlighting">
@@ -102,11 +95,11 @@ function AdvancedPitchingGrid(team: Team) {
                         <tfoot>
                             <tr>
                                 <td className="footerTitleCell">Team</td>
-                                <td className="statCell">{ team.season_stats.stats_data.stats.defense.ip.toFixed(1)}</td>
-                                <td className="statCell">{ team.season_stats.stats_data.stats.defense.bf}</td>
-                                <td className="statCell">{ team.season_stats.stats_data.stats.defense["P/IP"].toFixed(1)}</td>
-                                <td className="statCell">{ team.season_stats.stats_data.stats.defense["P/BF"].toFixed(3)}</td>
-                                <td className="statCell">{ (team.season_stats.stats_data.stats.defense["<3%"] * 100).toFixed(2)}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.defense.ip.toFixed(1)}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.defense.bf}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.defense["P/IP"].toFixed(1)}</td>
+                                <td className="statCell">{team.season_stats.stats_data.stats.defense["P/BF"].toFixed(3)}</td>
+                                <td className="statCell">{(team.season_stats.stats_data.stats.defense["<3%"] * 100).toFixed(2)}</td>
                                 <td className="statCell">{team.season_stats.stats_data.stats.defense.loo}</td>
                                 <td className="statCell">{team.season_stats.stats_data.stats.defense["1ST2OUT"]}</td>
                                 <td className="statCell">{team.season_stats.stats_data.stats.defense["123INN"]}</td>
@@ -139,9 +132,7 @@ function AdvancedPitchingGrid(team: Team) {
                     </table>
                 </div>
             </div>
-
             <div className="Spacer__spacer Spacer__md Spacer__vertical" />
-
             <div className="StatsLegend__legendRow" data-testid="stats-legend">
                 <dl>
                     <dt>IP</dt>
@@ -212,8 +203,7 @@ function AdvancedPitchingGrid(team: Team) {
                     <dd>Opponent batting average with runners in scoring position</dd>
                 </dl>
             </div>
-
-        </div>
+        </>
     );
 
 }

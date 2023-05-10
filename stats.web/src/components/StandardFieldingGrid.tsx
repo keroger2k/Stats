@@ -1,14 +1,11 @@
 import { } from "react-bootstrap";
 import { Team, Player } from "../models/models";
-import SeasonStatsTopGrid from "./SeasonStatsTopGrid";
 
 function StandardFieldingGrid(team: Team) {
 
     function getPlayer(id: string) {
         return team.players.find((player: Player) => player.id === id);
     }
-
-
 
     const content = Object.keys(team.season_stats.stats_data.players).map<any>((player) => {
         return (
@@ -25,12 +22,7 @@ function StandardFieldingGrid(team: Team) {
 
 
     return (
-        <div className="OldGrid__grid OldGrid__centered SeasonStatsPage__statsPageContainer">
-
-            <SeasonStatsTopGrid></SeasonStatsTopGrid>
-
-            <div className="Spacer__spacer Spacer__md Spacer__vertical" />
-
+        <>
             <div id="stats_container">
                 <div className="statsPageContainer grid">
                     <table className="gcTable statTable withGridLines withOutline withHoverHighlighting">
@@ -62,7 +54,6 @@ function StandardFieldingGrid(team: Team) {
                     </table>
                 </div>
             </div>
-
             <div className="Spacer__spacer Spacer__md Spacer__vertical" />
             <div className="StatsLegend__legendRow" data-testid="stats-legend">
                 <dl>
@@ -84,8 +75,7 @@ function StandardFieldingGrid(team: Team) {
                     <dd>Triple Plays</dd>
                 </dl>
             </div>
-
-        </div>
+        </>
     );
 
 }

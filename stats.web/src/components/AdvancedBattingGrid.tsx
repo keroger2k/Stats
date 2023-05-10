@@ -1,6 +1,5 @@
 import { } from "react-bootstrap";
 import { Team, Player } from "../models/models";
-import SeasonStatsTopGrid from "./SeasonStatsTopGrid";
 
 function AdvancedBattingGrid(team: Team) {
 
@@ -45,13 +44,7 @@ function AdvancedBattingGrid(team: Team) {
 
 
     return (
-        <div className="OldGrid__grid OldGrid__centered SeasonStatsPage__statsPageContainer">
-
-            <SeasonStatsTopGrid></SeasonStatsTopGrid>
-
-
-            <div className="Spacer__spacer Spacer__md Spacer__vertical" />
-
+        <>
             <div id="stats_container">
                 <div className="statsPageContainer grid">
                     <table className="gcTable statTable withGridLines withOutline withHoverHighlighting">
@@ -127,9 +120,7 @@ function AdvancedBattingGrid(team: Team) {
                     </table>
                 </div>
             </div>
-
             <div className="Spacer__spacer Spacer__md Spacer__vertical" />
-
             <div className="StatsLegend__legendRow" data-testid="stats-legend">
                 <dl>
                     <dt>IP</dt>
@@ -192,7 +183,7 @@ function AdvancedBattingGrid(team: Team) {
                     <dd>Opponent batting average</dd>
                 </dl>
             </div>
-        </div>
+        </>
     );
 
 }

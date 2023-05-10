@@ -13,6 +13,7 @@ import { Stats } from 'fs';
 import StandardPitchingGrid from './StandardPitchingGrid';
 import AdvancedPitchingGrid from './AdvancedPitchingGrid';
 import StandardFieldingGrid from './StandardFieldingGrid';
+import StandardCatchingGrid from './StandardCatchingGrid';
 
 
 function TeamSeasonContainer() {
@@ -31,7 +32,8 @@ function TeamSeasonContainer() {
         if (data !== undefined) {
             //return <StandardPitchingGrid {...data!}></StandardPitchingGrid>;
             //return <AdvancedPitchingGrid {...data!}></AdvancedPitchingGrid>;
-            return <StandardFieldingGrid {...data!}></StandardFieldingGrid>;
+            return <StandardCatchingGrid {...data!}></StandardCatchingGrid>;
+            //return <StandardFieldingGrid {...data!}></StandardFieldingGrid>;
             //return <StandardBattingGrid {...data!}></StandardBattingGrid>;
             //return <AdvancedBattingGrid {...data!}></AdvancedBattingGrid>;
         }

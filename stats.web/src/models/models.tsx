@@ -262,6 +262,14 @@ export type Defense = {
     'FPSH%': number;
     'BB/INN': number;
     '0BBINN': number;
+    'IC:C': number;
+    'PB:C': number;
+    'SB:C': number;
+    'SBATT:C': number;
+    'PIK:C': number;
+    'CS:C': number;
+    'CI:C': number;
+    'CS:C%': number;
     bbs: number;
     lobb: number;
     lobbs: number;
@@ -356,12 +364,12 @@ export type Defense = {
     tp: number;
     'GP:F': number;
     INN: number;
-    PB: number;
+    pb: number;
     sb: number;
     'SB-ATT': string;
     cs: number;
     'CS%': number;
     pik: number;
-    CI: number;
+    ci: number;
     'GP:C': number;
 }

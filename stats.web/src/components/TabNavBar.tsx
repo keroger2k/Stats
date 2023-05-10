@@ -18,10 +18,7 @@ function TabNavBar(team: Team) {
                 <div className="TabNavBarItem__tabNavBarItem" role="tab"><span className="Text__text Text__left Text__cool-grey-dark Text__base Text__semibold TabNavBarItem__tabNavBarLabel">Stats</span></div>
                 <div className=""></div>
             </Link>
-            <Link to={`/teams/${team.id}/opponents`}>
-                <div className="TabNavBarItem__tabNavBarItem" role="tab"><span className="Text__text Text__left Text__cool-grey-dark Text__base Text__semibold TabNavBarItem__tabNavBarLabel">Opponents</span></div>
-                <div className=""></div>
-            </Link>    </div>
+        </div>
     );
 
 }

@@ -19,12 +19,9 @@ function OpponentsContainer() {
 
     return (
         <main className="MainContent__mainContentContainer">
-            <div className="TeamNavBar__stickyItem StickyItem__stickyItem" data-sticky-name="TeamNavbar" data-sticky="true" >
-                <TeamNavBar {...data!} />
-            </div>
             <div className="OpponentsPageDisplay__opponentsPage">
                 <div className="OpponentsPageDisplay__stickyItem StickyItem__stickyItem" data-sticky-name="Opponents" data-sticky="true" >
-                    <h1 className="Text__text Text__left Text__off-black Text__xlarge Text__xbold Text__inline-header">Opponents</h1>
+                    <h1 className="Text__text Text__left Text__off-black Text__xlarge Text__xbold Text__inline-header">Import New Team</h1>
                     <div className="OpponentsPageSearch__searchContainer">
                         <div className="Text__text Text__left Text__off-black Text__medium Text__bold OpponentsPageSearch__searchBarTitle">Add New Opponent</div>
                         <span>

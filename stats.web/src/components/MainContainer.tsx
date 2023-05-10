@@ -9,66 +9,71 @@ import { Team } from '../models/models';
 function MainContainer() {
     const [data, setData] = useState<Team[]>([]);
 
-   
+
 
     React.useEffect(() => {
         const services = new Service();
-        
+
         services.get('teams').then(data => setData(data));
     }, []);
 
     const content = data.map((team) =>
-    <Link to={`/teams/${team.id}/schedule`}>
-        <span className="Clickable__container TeamsList__teamRow TeamsList__enabled" role="button" >
-            <div className="Avatar__container Avatar__white-background Avatar__medium">
-                <div className="Avatar__centered">
-                    <img
-                        className="Image__circle"
-                        src={team.team_avatar_image}
-                        alt=""
-                    />
+        <Link to={`/teams/${team.id}/schedule`}>
+            <span className="Clickable__container TeamsList__teamRow TeamsList__enabled" role="button" >
+                <div className="Avatar__container Avatar__white-background Avatar__medium">
+                    <div className="Avatar__centered">
+                        <img
+                            className="Image__circle"
+                            src={team.team_avatar_image}
+                            alt=""
+                        />
+                    </div>
+                    <div className="Avatar__sport-accessory Avatar__white-background Avatar__xsmall-border">
+                        <BaseballLogo></BaseballLogo>
+                    </div>
                 </div>
-                <div className="Avatar__sport-accessory Avatar__white-background Avatar__xsmall-border">
-                    <BaseballLogo></BaseballLogo>
+                <div className="TeamsList__teamName">
+                    <span className="Text__text Text__left Text__off-black Text__base Text__semibold">
+                        {team.name}
+                    </span>
                 </div>
-            </div>
-            <div className="TeamsList__teamName">
-                <span className="Text__text Text__left Text__off-black Text__base Text__semibold">
-                    {team.name}
-                </span>
-            </div>
-            <div className="TeamsList__teamGroup">
-                <div className="TeamsList__chevron">
-                    <Chevron></Chevron>
+                <div className="TeamsList__teamGroup">
+                    <div className="TeamsList__chevron">
+                        <Chevron></Chevron>
+                    </div>
                 </div>
-            </div>
-        </span>
+            </span>
         </Link>
     );
 
 
 
     return (
-    <main className="MainContent__mainContentContainer">
-    <div className="TeamsList__teamPageContainer">
-        <div className="Grid__fullWidth Grid__grid Grid__fixed TeamsList__teamPageGrid">
-            <div className="Grid__grid-item" >
-                <div className="TeamsList__teamPageHeader">
-                    <div className="OldGrid__row OldGrid__vertical-align Title__row" role="presentation">
-                        <h1 className="Text__text Text__left Text__off-black Text__base Text__xbold Title__text Text__inline-header" data-testid="teams-title">Teams</h1>
-                    </div>
-                </div>
-                <div className="TeamsList__teamListContainer">
-                    <div className="TeamsList_seasonHeader"><span className="Text__text Text__left Text__off-black Text__base Text__xbold">Spring 2023</span></div>
-                    <div className="TeamsList__seasonContainer">
-                              {content}
+        <main className="MainContent__mainContentContainer">
+            <div className="TeamsList__teamPageContainer">
+                <div className="Grid__fullWidth Grid__grid Grid__fixed TeamsList__teamPageGrid">
+                    <div className="Grid__grid-item" >
+                        <div className="TeamsList__teamPageHeader">
+                            <div className="OldGrid__row OldGrid__vertical-align Title__row" role="presentation">
+                                <h1 className="Text__text Text__left Text__off-black Text__base Text__xbold Title__text Text__inline-header" data-testid="teams-title">Teams</h1>
+                            </div>
+                            <Link to={`/teams/opponents`}>
+                                <button type="button" className="Button__large Button__gc-blue Button__filled Button__fixed" data-testid="add-event-button">
+                                    <span className="Text__text Text__left Text__white Text__base Text__bold">Add_Team</span>
+                                </button>
+                            </Link>
+                        </div>
+                        <div className="TeamsList__teamListContainer">
+                            <div className="TeamsList_seasonHeader"><span className="Text__text Text__left Text__off-black Text__base Text__xbold">Spring 2023</span></div>
+                            <div className="TeamsList__seasonContainer">
+                                {content}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</main>
-  );
+        </main>
+    );
 }
 
 export default MainContainer;

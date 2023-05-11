@@ -5,7 +5,12 @@ namespace Stats.ExtApi.Models
     /// 
     /// Referenced API Endpoint: "/search/team?name={0}&sport={1}"
     /// 
-    /// Sport Options: [baseball, softball, etc.]
+    /// Filter by:
+    /// City
+    /// State
+    /// Sports - Sport Options: [baseball, softball, etc.]
+    /// Season
+    /// Year
     /// 
     /// </summary>
     public class SearchResults

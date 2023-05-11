@@ -2,7 +2,6 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Stats.Database.Models;
-using System.Linq;
 
 namespace Stats.Database.Services
 {

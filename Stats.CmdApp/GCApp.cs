@@ -48,7 +48,7 @@ namespace Stats.CmdApp
                     string query = Console.ReadLine() ?? string.Empty;
                     int selection = 0;
                     // Find all Teams that match the search text.
-                    var results = await _gameChangerService.SearchTeamsAsync(query, "baseball");
+                    var results = await _gameChangerService.SearchTeamsAsync(query, sport: "baseball");
 
                     // Display the search results.
                     if (results.hits.Count() == 0)

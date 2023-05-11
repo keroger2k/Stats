@@ -9,7 +9,7 @@
         public readonly static string TEAM_INFO = "/teams/{0}";
         public readonly static string TEAM_AVATAR = "/teams/{0}/avatar-image";
         public readonly static string TEAM_SCHEDULE = "/teams/{0}/schedule/?fetch_place_details=true";
-        public readonly static string SEARCH = "/search/team?name={0}&sport={1}&start_at=0";
+        public readonly static string SEARCH = "/search/team?name={0}{1}&start_at=0";
         public readonly static string TEAM_VIDEO_ASSETS = "/teams/{0}/video-stream/assets";
         public readonly static string PLAYER_CLIP_ASSETS = "/teams/{0}/video-clips/player/{1}/clips";
         public readonly static string PLAYER_CLIP_COOKIES = "/teams/{0}/video-clips/playable-clip/{1}/clip";

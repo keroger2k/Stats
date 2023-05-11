@@ -1,4 +1,6 @@
 ﻿using Stats.ExtApi.Models;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.Json;
 
 namespace Stats.ExtApi.Services
@@ -172,9 +174,15 @@ namespace Stats.ExtApi.Services
         /// <returns>
         /// <param name="SearchResults"></param>
         /// </returns>
-        public async Task<SearchResults> SearchTeamsAsync(string query, string sport)
+        public async Task<SearchResults> SearchTeamsAsync(string query, string city = "", string state = "", string season = "", string year = "", string sport = "baseball")
         {
-            var url = string.Format(APIEndpoint.SEARCH, query, sport);
+            StringBuilder st1 = new StringBuilder(); 
+            if (city != string.Empty) st1.Append($"&city={city}");
+            if (state != string.Empty) st1.Append($"&state={state}");
+            if (state != string.Empty) st1.Append($"&season={season}");
+            if (state != string.Empty) st1.Append($"&year={year}");
+            if (state != string.Empty) st1.Append($"&sport={sport}");
+            var url = string.Format(APIEndpoint.SEARCH, query, st1.ToString());
             var result = JsonSerializer.Deserialize<SearchResults>(await GetRequestAsync(url));
             return result!;
         }

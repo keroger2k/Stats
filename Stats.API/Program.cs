@@ -7,15 +7,9 @@ using Stats.ExtApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(policy =>
-                      {
-                          policy.WithOrigins("http://localhost:3000")
-                          .AllowAnyHeader()
-                          .AllowAnyMethod();  
-                      });
-});
+builder.Services.AddCors();
+
+
 
 var configBuilder = new ConfigurationBuilder();
 
@@ -55,7 +49,7 @@ builder.Services.AddScoped(sp =>
 var app = builder.Build();
 
 
-app.UseCors();
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

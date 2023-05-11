@@ -10,12 +10,9 @@ wget -qO- https://deb.nodesource.com/setup_14.x | bash - && apt-get install -y b
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
-COPY Stats.sln ./
 COPY Stats.API/*.csproj ./Stats.API/
 COPY Stats.Database/*.csproj ./Stats.Database/
 COPY Stats.ExtApi/*.csproj ./Stats.ExtApi/
-COPY Stats.CmdApp/*.csproj ./Stats.CmdApp/
-COPY stats.web/*.esproj ./Stats.Web/
 
 RUN dotnet restore
 
@@ -28,12 +25,6 @@ WORKDIR /Stats.API
 RUN dotnet build -c Release -o /app
 
 WORKDIR /Stats.ExtApi
-RUN dotnet build -c Release -o /app
-
-WORKDIR /Stats.CmdApp
-RUN dotnet build -c Release -o /app
-
-WORKDIR /Stats.Web
 RUN dotnet build -c Release -o /app
 
 FROM build AS publish

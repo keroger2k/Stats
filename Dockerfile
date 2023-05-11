@@ -14,6 +14,8 @@ COPY *.sln ./
 COPY Stats.API/*.csproj Stats.API/
 COPY Stats.Database/*.csproj Stats.Database/
 COPY Stats.ExtApi/*.csproj Stats.ExtApi/
+COPY Stats.CmdApp/*.csproj Stats.CmdApp/
+COPY stats.web/*.esproj Stats.Web/
 RUN dotnet restore
 
 # Copy the entire solution and build

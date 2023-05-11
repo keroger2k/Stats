@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Stats.API.Models;
 using Stats.Database.Services;
+using Stats.ExtApi.Services;
+using static Stats.ExtApi.Services.GameChangerService;
 
 namespace Stats.API.Controllers
 {

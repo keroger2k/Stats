@@ -15,7 +15,7 @@ namespace Stats.ExtApi.Services
         private const string AUTH_ENDPOINT = "/auth";
         private const string DEVICE_ID = "ce0827aa5e4051bcf017ab8922f36b0d";
         private const string CLIENT_ID = "f0d2b966-3baf-4229-8fba-2986ec4dc608";
-        private const string EDEN_AUTH_KEY = "xkTneFG9IPAqBpNe9qzjWZAS+1gfFPPmjW4ygCydiW8=";
+        private const string EDEN_AUTH_KEY = "RGNjbN2RAXZMholK0Oic7zESgwGyvqSPOiJi+wGjk0A=";
         private readonly HttpClient _httpClient;
         private readonly DatabaseService _db;
         public AuthorizationService(HttpClient httpClient, DatabaseService db)
@@ -34,11 +34,11 @@ namespace Stats.ExtApi.Services
             {
                 throw new Exception("No access token present. Please create one with valid refresh token.");
             }
-            else if (access1.ValidTo > DateTime.Now)
+            else if (access1.ValidTo > DateTime.UtcNow)
             {
                 return token.access.data;
             }
-            else if (refresh1.ValidTo > DateTime.Now)
+            else if (refresh1.ValidTo > DateTime.UtcNow)
             {
                 var newToken = await GetRefreshTokenAsync(token.refresh.data);
                 await _db.CreateTokenAsync(new Stats.Database.Models.AuthorizationToken()
@@ -49,10 +49,13 @@ namespace Stats.ExtApi.Services
                         data = newToken.access.data,
                         expires = newToken.access.expires
                     },
+                    //this is wrong, but I'm not getting back a good refresh token with my request.
+                    //need to either figure out a way to get a new refresh token, or create a UI input
+                    //to put in either a refresh token or access token.
                     refresh = new Stats.Database.Models.AuthorizationToken.Token()
                     {
-                        data = newToken.refresh.data,
-                        expires = newToken.refresh.expires
+                        data = token.refresh.data,
+                        expires = token.refresh.expires
                     }
                 });
             }

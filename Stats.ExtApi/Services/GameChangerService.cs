@@ -174,14 +174,14 @@ namespace Stats.ExtApi.Services
         /// <returns>
         /// <param name="SearchResults"></param>
         /// </returns>
-        public async Task<SearchResults> SearchTeamsAsync(string query, string city = "", string state = "", string season = "", string year = "", string sport = "baseball")
+        public async Task<SearchResults> SearchTeamsAsync(string query, string city = "Bloomington", string state = "", string season = "", string year = "", string sport = "baseball")
         {
             StringBuilder st1 = new StringBuilder(); 
-            if (city != string.Empty) st1.Append($"&city={city}");
-            if (state != string.Empty) st1.Append($"&state={state}");
-            if (state != string.Empty) st1.Append($"&season={season}");
-            if (state != string.Empty) st1.Append($"&year={year}");
-            if (state != string.Empty) st1.Append($"&sport={sport}");
+            if (!string.IsNullOrEmpty(city)) st1.Append($"&city={city}");
+            if (!string.IsNullOrEmpty(state)) st1.Append($"&state={state}");
+            if (!string.IsNullOrEmpty(season)) st1.Append($"&season={season}");
+            if (!string.IsNullOrEmpty(year)) st1.Append($"&year={year}");
+            if (!string.IsNullOrEmpty(sport)) st1.Append($"&sport={sport}");
             var url = string.Format(APIEndpoint.SEARCH, query, st1.ToString());
             var result = JsonSerializer.Deserialize<SearchResults>(await GetRequestAsync(url));
             return result!;
@@ -199,6 +199,38 @@ namespace Stats.ExtApi.Services
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsStringAsync();
+        }
+
+        public class SearchResults
+        {
+            public IEnumerable<SearchItem> hits { get; set; } = null!;
+
+            public class SearchItem
+            {
+                public string id { get; set; } = null!;
+                public string name { get; set; } = null!;
+                public string sport { get; set; } = null!;
+                public SeasonInfo team_season { get; set; } = null!;
+                public bool is_orphan { get; set; }
+                public string competition_level { get; set; } = null!;
+                public string age_group { get; set; } = null!;
+                public int number_of_players { get; set; }
+                public string[] staff { get; set; } = null!;
+                public Place? location { get; set; }
+
+                public class Place
+                {
+                    public string city { get; set; } = null!;
+                    public string country { get; set; } = null!;
+                    public string state { get; set; } = null!;
+                }
+                public class SeasonInfo
+                {
+                    public string season { get; set; } = null!;
+
+                    public int year { get; set; }
+                }
+            }
         }
     }
 }

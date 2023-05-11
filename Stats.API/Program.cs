@@ -3,6 +3,7 @@ using Serilog;
 using Stats.API.Helper;
 using Stats.Database.Models;
 using Stats.Database.Services;
+using Stats.ExtApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,12 +37,22 @@ IMapper mapper = mappingConfig.CreateMapper();
 
 builder.Services.AddScoped<DatabaseService>();
 builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("DatabaseSettings"));
+builder.Services.AddTransient<GameChangerService>(); 
+builder.Services.AddTransient<AuthorizationService>(); 
 builder.Services.AddSingleton(mapper);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped(sp =>
+{
+    var http = new HttpClient();
+    http.BaseAddress = new Uri("https://api.Team-manager.gc.com");
+    return http;
+});
+
 
 var app = builder.Build();
+
 
 app.UseCors();
 

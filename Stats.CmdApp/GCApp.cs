@@ -10,6 +10,7 @@ using Stats.Database.Services;
 using Stats.ExtApi.Models;
 using Stats.ExtApi.Services;
 using System.Text;
+using static Stats.ExtApi.Services.GameChangerService;
 
 namespace Stats.CmdApp
 {

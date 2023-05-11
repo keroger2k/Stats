@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Stats.Database.Services;
+using Stats.ExtApi.Services;
 
 namespace Stats.API.Controllers
 {

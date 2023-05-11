@@ -29,6 +29,12 @@ function OpponentsContainer() {
         }
     }
 
+    function importTeam(id: string) {
+        const services = new Service();
+        services.importTeam('Teams', id);
+    }
+
+
     const content = Object.entries(data).map((i, index) => {
         return (
             <div className="Grid__grid Grid__fixed Grid__grid-item OpponentListing__list" >
@@ -45,7 +51,7 @@ function OpponentsContainer() {
                         <div className="OpponentListing__button">
                             <div>
                                 <a className="Button__button-link" href="/">
-                                    <button type="button" className="Button__small Button__gc-blue Button__stroke Button__fixed">Import</button>
+                                    <button type="button" className="Button__small Button__gc-blue Button__stroke Button__fixed" onClick={ () => importTeam(data[index].id) }>Import</button>
                                 </a>
                             </div>
                         </div>

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Stats.API.Helper;
 using Stats.API.Models;
 using Stats.Database.Services;
 using Stats.ExtApi.Services;
@@ -11,10 +12,11 @@ namespace Stats.API.Controllers
     [ApiController]
     public class TeamsController : BaseController<TeamsController>
     {
-        public TeamsController(ILogger<TeamsController> logger, DatabaseService db, IMapper mapper) 
+        private readonly ExternalAPIService _externalApi;
+        public TeamsController(ILogger<TeamsController> logger, DatabaseService db, IMapper mapper, ExternalAPIService externalApi) 
             : base(logger, db, mapper)
         {
-            
+            _externalApi = externalApi;
         }
 
         [HttpGet]
@@ -25,13 +27,14 @@ namespace Stats.API.Controllers
             return Ok(mapped);
         }
 
-        [HttpGet]
+
+
+        [HttpPost]
         [Route("{id}")]
-        public async Task<ActionResult<Team>> Get(string id)
+        public async Task<ActionResult<Team>> ImportTeamAsync(string id)
         {
-            var team = await _db.GetTeamAsync(id);
-            var mapped = _mapper.Map<Team>(team);
-            return Ok(mapped);
+            await _externalApi.ImportTeamInfoAsync(id);
+            return Ok();
         }
 
         [HttpGet]

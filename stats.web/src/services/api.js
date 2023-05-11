@@ -56,6 +56,12 @@ class Service {
         }
         return this.request(url, method).then(res => res.json());
     }
+
+    importTeam(url, id) {
+        const method = "POST";
+        url = `${url}/${id}`;
+        return this.request(url, method).then(res => res.json());
+    }
 }
 
 export default Service;

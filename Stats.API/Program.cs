@@ -37,8 +37,9 @@ IMapper mapper = mappingConfig.CreateMapper();
 
 builder.Services.AddScoped<DatabaseService>();
 builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("DatabaseSettings"));
-builder.Services.AddTransient<GameChangerService>(); 
-builder.Services.AddTransient<AuthorizationService>(); 
+builder.Services.AddScoped<GameChangerService>(); 
+builder.Services.AddScoped<AuthorizationService>(); 
+builder.Services.AddScoped<ExternalAPIService>(); 
 builder.Services.AddSingleton(mapper);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

@@ -14,6 +14,7 @@ COPY Stats.sln ./
 COPY Stats.API/*.csproj ./Stats.API/
 COPY Stats.Database/*.csproj ./Stats.Database/
 COPY Stats.ExtApi/*.csproj ./Stats.ExtApi/
+COPY Stats.CmdApp/*.csproj ./Stats.CmdApp/
 
 RUN dotnet restore
 

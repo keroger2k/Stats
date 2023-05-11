@@ -9,7 +9,7 @@ RUN dotnet publish "./Stats.API/Stats.API.csproj" -c release -o /app --no-restor
 # Build the runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /app
-COPY --from=build /app ./
+COPY --from=build-env /app ./
 
 # Expose the port and start the app
 EXPOSE 5221

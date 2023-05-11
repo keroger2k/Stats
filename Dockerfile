@@ -9,30 +9,22 @@ wget -qO- https://deb.nodesource.com/setup_14.x | bash - && apt-get install -y b
 # End Install
 WORKDIR /app
 
-# Copy csproj and restore as distinct layers
-WORKDIR /src
-COPY Stats.API/*.csproj ./Stats.API/
-COPY Stats.Database/*.csproj ./Stats.Database/
-COPY Stats.ExtApi/*.csproj ./Stats.ExtApi/
-
+# Copy the .csproj files and restore dependencies for all projects
+COPY *.sln ./
+COPY Stats.API/*.csproj Stats.API/
+COPY Stats.Database/*.csproj Stats.Database/
+COPY Stats.ExtApi/*.csproj Stats.ExtApi/
 RUN dotnet restore
 
-RUN dotnet restore
-COPY . .
-WORKDIR /src/Stats.Database
-RUN dotnet build -c Release -o /app
+# Copy the entire solution and build
+COPY . ./
+RUN dotnet publish Stats.API/Stats.API.csproj -c Release -o out
 
-WORKDIR /src/Stats.API
-RUN dotnet build -c Release -o /app
-
-WORKDIR /src/Stats.ExtApi
-RUN dotnet build -c Release -o /app
-
-FROM build AS publish
-RUN dotnet publish -c Release -o /app
-
-# Build runtime image
+# Build the runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /app
-COPY --from=build-env /app/out .
+COPY --from=build-env /app/Stats.API/out .
+
+# Expose the port and start the app
+EXPOSE 80
 ENTRYPOINT ["dotnet", "Stats.API.dll"]

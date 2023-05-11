@@ -1,21 +1,59 @@
 import React, { useState } from 'react';
 import Service from '../services/api';
 import './MainContainer.scss';
-import { Team } from '../models/models';
+import { SearchResult, Team } from '../models/models';
 import TeamNavBar from './TeamNavBar';
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import BaseballLogoLarge from './BaseballLogoLarge';
 
 function OpponentsContainer() {
 
-    const { id } = useParams();
-    const [data, setData] = useState<Team | null>(null);
+    const [data, setData] = useState<SearchResult[]>([]);
+    const [query, setQuery] = useState("");
+
 
     React.useEffect(() => {
         const services = new Service();
-        services.getSchedule('teams', id).then(data => {
-            setData(data);
-        });
-    }, []);
+        if (query) {
+            services.getSearchHits('Search', query).then(data => {
+                setData(data);
+            });
+        }
+    }, [query]);
+
+    function getAvatarImage(item: SearchResult) {
+        if (item.avatar_url !== null) {
+            return <img className="Image__circle" src={item.avatar_url} alt="" />;
+        } else {
+            return <BaseballLogoLarge></BaseballLogoLarge>
+        }
+    }
+
+    const content = Object.entries(data).map((i, index) => {
+        return (
+            <div className="Grid__grid Grid__fixed Grid__grid-item OpponentListing__list" >
+                <div className="Grid__grid-item" >
+                    <span className="Clickable__container OpponentListing__opponentRow" role="button" >
+                        <div className="Avatar__container Avatar__white-background Avatar__medium OpponentListing__avatar">
+                            <div className="Avatar__centered">
+                                {getAvatarImage(data[index])}
+                                
+                            </div>
+                        </div>
+                        <span className="Text__text Text__left Text__off-black Text__base Text__semibold OpponentListing__name">{data[index].name}</span>
+                        <span className="Text__text Text__left Text__cool-grey-dark Text__small Text__regular OpponentListing__details">{data[index].number_of_players} players</span>
+                        <div className="OpponentListing__button">
+                            <div>
+                                <a className="Button__button-link" href="/">
+                                    <button type="button" className="Button__small Button__gc-blue Button__stroke Button__fixed">Import</button>
+                                </a>
+                            </div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+        );
+    });
 
     return (
         <main className="MainContent__mainContentContainer">
@@ -29,10 +67,13 @@ function OpponentsContainer() {
                                 <div className="Grid__grid-item custom-grid" >
                                     <div className="OpponentsPageSearch__opponentSearchContainer">
                                         <label htmlFor="opponentSearch" className="OpponentsPageSearch__opponentSearch">
-                                            <input type="text" className="TextInput__input" data-testid="OpponentSearchBox" name="opponentName" id="opponentName" placeholder="Find or Create Opponent" value="" />
+                                            <input
+                                                onChange={(e) => setQuery(e.target.value)}
+                                                type="text" className="TextInput__input" data-testid="OpponentSearchBox" name="opponentName" id="opponentName"
+                                                placeholder="Find or Create Opponent" />
                                         </label>
                                         <span className="OpponentsPageSearch__opponentSearchIcon">
-                                            <svg  width="16" height="16" viewBox="0 0 20 20">
+                                            <svg width="16" height="16" viewBox="0 0 20 20">
                                                 <path
                                                     className="Icon__gc-blue Icon__fill"
                                                     d="M8.295 2.448c-3.224 0-5.847 2.623-5.847 5.847 0 3.223 2.623 5.845 5.847 5.845s5.846-2.622 5.846-5.845c0-3.224-2.622-5.847-5.846-5.847m0-1.948c4.298 0 7.795 3.497 7.795 7.795 0 1.799-.612 3.457-1.64 4.777l4.765 4.765c.38.38.38.997 0 1.378-.19.19-.44.285-.69.285-.248 0-.497-.095-.688-.285l-4.764-4.765c-1.32 1.027-2.979 1.64-4.778 1.64C3.997 16.09.5 12.593.5 8.295S3.997.5 8.295.5z"
@@ -89,44 +130,8 @@ function OpponentsContainer() {
                         </span>
                     </div>
                 </div>
-                <div className="Grid__grid Grid__fixed Grid__grid-item OpponentListing__list" >
-                    <div className="Grid__grid-item" >
-                        <span className="Clickable__container OpponentListing__opponentRow" role="button" >
-                            <div className="Avatar__container Avatar__white-background Avatar__medium OpponentListing__avatar">
-                                <div className="Avatar__centered">
-                                    <svg width="32" height="32" viewBox="0 0 24 24" data-testid="icon-baseball" xmlns="http://www.w3.org/2000/svg">
-                                        <g id="Baseball" fill="none" fill-rule="evenodd">
-                                            <path d="M0 0h24v24H0z"></path>
-                                            <g fill-rule="nonzero">
-                                                <path
-                                                    d="M19.778 19.778c4.296-4.296 4.296-11.26 0-15.556-4.296-4.296-11.26-4.296-15.556 0-4.296 4.296-4.296 11.26 0 15.556 4.296 4.296 11.26 4.296 15.556 0zM5.636 18.364a9 9 0 1 1 .21.203l-.21-.203z"
-                                                    fill="#0A0B0D"
-                                                ></path>
-                                                <path
-                                                    d="M22.644 12.68A8.038 8.038 0 0 1 11.32 1.355l1.53 1.29a6.038 6.038 0 0 0 8.505 8.506l1.29 1.53zM9.565 21.504a9.209 9.209 0 0 0-2.5-4.57 9.209 9.209 0 0 0-4.57-2.5l.425-1.953a11.209 11.209 0 0 1 5.56 3.04 11.209 11.209 0 0 1 3.04 5.559l-1.955.424z"
-                                                    fill="#FF4054"
-                                                ></path>
-                                                <path
-                                                    d="M19.778 19.778c4.296-4.296 4.296-11.26 0-15.556-4.296-4.296-11.26-4.296-15.556 0-4.296 4.296-4.296 11.26 0 15.556 4.296 4.296 11.26 4.296 15.556 0zM5.636 18.364a9 9 0 1 1 .21.203l-.21-.203z"
-                                                    fill="#0A0B0D"
-                                                ></path>
-                                            </g>
-                                        </g>
-                                    </svg>
-                                </div>
-                            </div>
-                            <span className="Text__text Text__left Text__off-black Text__base Text__semibold OpponentListing__name">13/14U Christian Center Red 14U</span>
-                            <span className="Text__text Text__left Text__cool-grey-dark Text__small Text__regular OpponentListing__details">0 players</span>
-                            <div className="OpponentListing__button">
-                                <div>
-                                    <a className="Button__button-link" href="/teams/gVmCNqvYZdFp/2023-spring-pony-express-blue-13u/opponents/2c53f774-c83c-4419-88fe-65c01dae4843/roster/add-player">
-                                        <button type="button" className="Button__small Button__gc-blue Button__stroke Button__fixed">Add Roster</button>
-                                    </a>
-                                </div>
-                            </div>
-                        </span>
-                    </div>
-                </div>
+                { content }
+               
             </div>
 
         </main>

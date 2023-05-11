@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import Service from '../services/api';
 import { Link } from 'react-router-dom';
 import { Team, formatWeekdayShort, GameDataResponse } from '../models/models';
-import BaseballLogo from './BaseballLogo';
 import Chevron from './Chevron';
 import TeamEvent from './TeamEvent';
 import TeamNavBar from './TeamNavBar';

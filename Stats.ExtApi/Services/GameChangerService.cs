@@ -207,26 +207,27 @@ namespace Stats.ExtApi.Services
 
             public class SearchItem
             {
-                public string id { get; set; } = null!;
-                public string name { get; set; } = null!;
-                public string sport { get; set; } = null!;
-                public SeasonInfo team_season { get; set; } = null!;
+                public string id { get; set; } = string.Empty;
+                public string name { get; set; } = string.Empty;
+                public string sport { get; set; } = string.Empty;
+                public SeasonInfo team_season { get; set; } = new SeasonInfo();
                 public bool is_orphan { get; set; }
-                public string competition_level { get; set; } = null!;
-                public string age_group { get; set; } = null!;
+                public string competition_level { get; set; } = string.Empty;
+                public string age_group { get; set; } = string.Empty;
                 public int number_of_players { get; set; }
                 public string[] staff { get; set; } = null!;
+                public string avatar_url { get; set; } = string.Empty;
                 public Place? location { get; set; }
 
                 public class Place
                 {
-                    public string city { get; set; } = null!;
-                    public string country { get; set; } = null!;
-                    public string state { get; set; } = null!;
+                    public string city { get; set; } = string.Empty;
+                    public string country { get; set; } = string.Empty;
+                    public string state { get; set; } = string.Empty;
                 }
                 public class SeasonInfo
                 {
-                    public string season { get; set; } = null!;
+                    public string season { get; set; } = string.Empty;
 
                     public int year { get; set; }
                 }

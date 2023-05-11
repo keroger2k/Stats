@@ -48,6 +48,14 @@ class Service {
         }
         return this.request(url, method).then(res => res.json());
     }
+
+    getSearchHits(url, query) {
+        const method = "GET";
+        if (query) {
+            url = `${url}?query=${query}&include_avatar=true`;
+        }
+        return this.request(url, method).then(res => res.json());
+    }
 }
 
 export default Service;

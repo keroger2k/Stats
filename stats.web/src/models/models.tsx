@@ -35,6 +35,33 @@ export interface Team {
     season_stats: SeasonStats;
 }
 
+export interface SearchResult {
+    id: string;
+    name: string;
+    sport: string;
+    age_group: string;
+    number_of_players: number;
+    staff: [],
+    location: SearchLocation,
+    team_season: SearchSeason,
+    is_orphan: boolean,
+    competition_level: string;
+    avatar_url: string;
+}
+
+export interface SearchSeason {
+    season: string;
+    year: number;
+}
+
+export interface SearchLocation {
+    city: string;
+    state: string;
+    country: string;
+}
+
+
+
 export interface Player {
     id: string;
     batting_side: string;

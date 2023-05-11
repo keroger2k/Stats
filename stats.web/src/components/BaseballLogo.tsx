@@ -1,7 +1,7 @@
 import './BaseballLogo.scss';
 
 
-function BaseballLogo() {
+function BaseballLogoLarge() {
     return (
         <svg width="16" height="16" viewBox="0 0 24 24" data-testid="icon-baseball" xmlns="http://www.w3.org/2000/svg">
             <g id="Baseball" fill="none" fill-rule="evenodd">
@@ -25,4 +25,4 @@ function BaseballLogo() {
     );
 }
 
-export default BaseballLogo;
+export default BaseballLogoLarge;

@@ -115,6 +115,7 @@ namespace Stats.ExtApi.Services
                 return Convert.ToBase64String(hash);
             }
         }
+        #pragma warning disable NU1701
         private string[] ValuesForSigner(object obj, int indent)
         {
             var propertyArray = new List<string>();
@@ -152,6 +153,8 @@ namespace Stats.ExtApi.Services
             }
             return propertyArray.ToArray();
         }
+
+        #pragma warning restore NU1701
         private string GetPasswordHash(string password, string password_salt, string challenge_salt)
         {
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(password, password_salt);

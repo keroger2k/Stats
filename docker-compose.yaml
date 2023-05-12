@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  api:
+    build: ./
+    container_name: api-gc-stats
+    ports: 
+      - 5221:80
+  gc-stats:
+    build: ./stats.web
+    container_name: gc-stats-web
+    ports:
+      - 3000:3000
+    

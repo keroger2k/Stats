@@ -1,23 +1,21 @@
 ﻿import React, { useState } from 'react';
 import { useParams } from "react-router-dom";
-import Service from '../services/api';
-import { Team, Players } from '../models/models';
-import './TeamScheduleContainer.scss'
-import TeamNavBar from './TeamNavBar';
+import Service from '../../services/api';
+import { Team } from '../../models/models';
+import './TeamSeason.scss'
+import TeamNavBar from '../TeamNavBar/TeamNavBar';
 
-import './TeamSeasonContainer.scss'
-import StandardGrid from './StandardBattingGrid';
-import StandardBattingGrid from './StandardBattingGrid';
-import AdvancedBattingGrid from './AdvancedBattingGrid';
-import { Stats } from 'fs';
-import StandardPitchingGrid from './StandardPitchingGrid';
-import AdvancedPitchingGrid from './AdvancedPitchingGrid';
-import StandardFieldingGrid from './StandardFieldingGrid';
-import StandardCatchingGrid from './StandardCatchingGrid';
-import SeasonStatsTopGrid from "./SeasonStatsTopGrid";
+import './TeamSeason.scss'
+import StandardBattingGrid from '../StatGrids/StandardBattingGrid';
+import AdvancedBattingGrid from '../StatGrids/AdvancedBattingGrid';
+import StandardPitchingGrid from '../StatGrids/StandardPitchingGrid';
+import AdvancedPitchingGrid from '../StatGrids/AdvancedPitchingGrid';
+import StandardFieldingGrid from '../StatGrids/StandardFieldingGrid';
+import StandardCatchingGrid from '../StatGrids/StandardCatchingGrid';
+import SeasonStatsTopGrid from "../StatGrids/StatsTopGrid";
 
 
-function TeamSeasonContainer() {
+function TeamSeason() {
 
     const { id } = useParams();
     const [data, setData] = useState<Team>();
@@ -33,7 +31,7 @@ function TeamSeasonContainer() {
 
     function getGrid() {
         if (data !== undefined) {
-            if (grid === "Batting" && gridType === "Advnaced") {
+            if (grid === "Batting" && gridType === "Advanced") {
                 return <AdvancedBattingGrid {...data!}></AdvancedBattingGrid>;
             } else if (grid === "Pitching" && gridType === "Standard") {
                 return <StandardPitchingGrid {...data!}></StandardPitchingGrid>;
@@ -73,4 +71,4 @@ function TeamSeasonContainer() {
     );
 }
 
-export default TeamSeasonContainer;
+export default TeamSeason;

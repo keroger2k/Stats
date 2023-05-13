@@ -1,5 +1,5 @@
 import { } from "react-bootstrap";
-import { Team, Player } from "../models/models";
+import { Team, Player } from "../../models/models";
 
 function StandardCatchingGrid(team: Team) {
 
@@ -25,6 +25,7 @@ function StandardCatchingGrid(team: Team) {
                     <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["CI:C"]}</td>
                 </tr>);
         }
+        return "";
     });
 
 

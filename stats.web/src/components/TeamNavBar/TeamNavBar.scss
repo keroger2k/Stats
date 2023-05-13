@@ -1,0 +1,23 @@
+.TeamNavBar__stickyItem {
+    width: 100%;
+    z-index: calc(100 - 5)
+}
+
+.TeamNavBar__navBar {
+    background-color: #edf2fa;
+    display: grid;
+    grid-template-rows: minmax(64px, max-content) minmax(32px, 1fr);
+    overflow-y: initial
+}
+
+@media screen and (max-width: 767px) {
+    .TeamNavBar__navBar {
+        grid-template-rows: minmax(100px, max-content) minmax(24px, 1fr)
+    }
+}
+
+@media screen and (max-width: 575px) {
+    .TeamNavBar__nonSticky {
+        position: static
+    }
+}

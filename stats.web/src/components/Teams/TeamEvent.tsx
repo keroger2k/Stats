@@ -1,5 +1,4 @@
-import { Link } from 'react-router-dom';
-import { GameDataResponse } from '../models/models';
+import './TeamEvent.scss'
 
 
 function NonGameEvent(props: any) {

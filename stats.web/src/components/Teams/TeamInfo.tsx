@@ -1,11 +1,13 @@
 ﻿import React, { useState } from 'react';
 import { useParams } from "react-router-dom";
-import Service from '../services/api';
-import { Team } from '../models/models';
-import './TeamScheduleContainer.scss'
-import TeamNavBar from './TeamNavBar';
+import Service from '../../services/api';
+import { Team } from '../../models/models';
+import TeamNavBar from '../TeamNavBar/TeamNavBar';
 
-function TeamInfoContainer() {
+import './TeamInfo.scss'
+
+
+function TeamInfo() {
 
     const { id } = useParams();
     const [data, setData] = useState<Team | null>(null);
@@ -46,4 +48,4 @@ function TeamInfoContainer() {
     );
 }
 
-export default TeamInfoContainer;
+export default TeamInfo;

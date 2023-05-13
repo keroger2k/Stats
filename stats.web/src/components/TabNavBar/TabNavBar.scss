@@ -1,0 +1,81 @@
+
+.TabNavBarItem__tabNavBarItem {
+    height: 40px;
+    display: flex;
+    border-radius: 4px;
+    font-size: 17px;
+    line-height: 1.41;
+    flex-direction: column;
+    padding: 8px 12px;
+    margin-left: 4px;
+    margin-right: 4px
+}
+
+.TabNavBarItem__tabNavBarItem:hover {
+    background-color: rgba(53,55,61,.08)
+}
+
+.TabNavBarItem__activeTabNavBarItem:hover {
+    background: none
+}
+
+.TabNavBarItem__activeTabItemUnderline {
+    margin-top: 6px;
+    margin-left: 16px;
+    margin-right: 16px;
+    content: "";
+    border-bottom: 2px solid #0070c8
+}
+
+.TabNavBarItem__tabNavBarIcon {
+    display: relative
+}
+
+.TabNavBarItem__tabNavBarLabel {
+    padding: 0px;
+    text-transform: uppercase;
+    place-self: center;
+    font-size: 15px
+}
+
+@media screen and (max-width: 767px) {
+    .TabNavBarItem__tabNavBarItem {
+        height: 40px;
+        grid-template-columns: 1fr;
+        padding: 8px 12px;
+        font-size: 20px
+    }
+
+    .TabNavBarItem__tabNavBarLabel {
+        padding-left: 0
+    }
+
+    .TabNavBarItem__tabNavBarIcon {
+        display: none
+    }
+}
+
+.TabNavBar__tabItems {
+    display: flex;
+    flex-direction: row;
+    margin-top: 8px;
+    padding-left: 4px;
+    z-index: 99;
+    width: 100%;
+    white-space: nowrap
+}
+
+.TabNavBar__tabItems a {
+    text-decoration: none
+}
+
+.TabNavBar__tabItems {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none
+}
+
+.TabNavBar__tabItems::-webkit-scrollbar {
+    display: none
+}

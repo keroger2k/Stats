@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import Service from '../services/api';
 import './MainContainer.scss';
-import { SearchResult, Team } from '../models/models';
-import TeamNavBar from './TeamNavBar';
-import { Link, useParams } from "react-router-dom";
-import BaseballLogoLarge from './BaseballLogoLarge';
+import { SearchResult } from '../models/models';
+import BaseballLogoLarge from './SVGImages/BaseballLogoLarge';
 
 function OpponentsContainer() {
 

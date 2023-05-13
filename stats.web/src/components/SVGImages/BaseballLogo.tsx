@@ -1,12 +1,12 @@
 import './BaseballLogo.scss';
 
 
-function BaseballLogoLarge() {
+function BaseballLogo() {
     return (
         <svg width="16" height="16" viewBox="0 0 24 24" data-testid="icon-baseball" xmlns="http://www.w3.org/2000/svg">
-            <g id="Baseball" fill="none" fill-rule="evenodd">
+            <g id="Baseball" fill="none" fillRule="evenodd">
                 <path d="M0 0h24v24H0z"></path>
-                <g fill-rule="nonzero">
+                <g fillRule="nonzero">
                     <path
                         d="M19.778 19.778c4.296-4.296 4.296-11.26 0-15.556-4.296-4.296-11.26-4.296-15.556 0-4.296 4.296-4.296 11.26 0 15.556 4.296 4.296 11.26 4.296 15.556 0zM5.636 18.364a9 9 0 1 1 .21.203l-.21-.203z"
                         fill="#0A0B0D"
@@ -25,4 +25,4 @@ function BaseballLogoLarge() {
     );
 }
 
-export default BaseballLogoLarge;
+export default BaseballLogo;

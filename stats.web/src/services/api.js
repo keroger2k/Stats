@@ -10,7 +10,7 @@ function joinURL(baseURL, url) {
 class Service {
 
     constructor() {
-        this.domain = 'http://localhost:5221/api'
+        this.domain = process.env.REACT_APP_API_URL
     }
 
     request(url, method = "GET", data = null) {
@@ -60,7 +60,7 @@ class Service {
     importTeam(url, id) {
         const method = "POST";
         url = `${url}/${id}`;
-        return this.request(url, method).then(res => res.json());
+        return this.request(url, method);
     }
 }
 

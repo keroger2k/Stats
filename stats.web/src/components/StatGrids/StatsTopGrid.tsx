@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import FilterIcon from "./FilterIcon";
+import FilterIcon from "../SVGImages/FilterIcon";
 
-function SeasonStatsTopGrid({ setGrid, setGridType, grid, gridType }: { setGrid: any, setGridType: any, grid: any, gridType: any }) {
+function StatsTopGrid({ setGrid, setGridType, grid, gridType }: { setGrid: any, setGridType: any, grid: any, gridType: any }) {
 
     function getButton() {
         if (grid === "Fielding") {
@@ -50,7 +49,7 @@ function SeasonStatsTopGrid({ setGrid, setGridType, grid, gridType }: { setGrid:
                     </h1>
                 </div>
                 <div className="SeasonStatsPage__export-stats">
-                    <a download="" className="ExportStatsButton__export-stats-button" target="_self">
+                    <a download="" className="ExportStatsButton__export-stats-button" target="_self" >
                         Export Stats
                     </a>
                 </div>
@@ -96,7 +95,7 @@ function SeasonStatsTopGrid({ setGrid, setGridType, grid, gridType }: { setGrid:
                     </div>
                 </div>
                 <div className="SeasonStatsPage__filter-stats">
-                    <button type="button" className="TextButton__medium TextButton__text-button">
+                    <button type="button" className="TextButton__medium TextButton__text-button" disabled>
                         <span className="TextButton__iconAndBadge TextButton__iconAndBadge--small">
                             <FilterIcon></FilterIcon>
                         </span>
@@ -110,4 +109,4 @@ function SeasonStatsTopGrid({ setGrid, setGridType, grid, gridType }: { setGrid:
     );
 }
 
-export default SeasonStatsTopGrid;
+export default StatsTopGrid;

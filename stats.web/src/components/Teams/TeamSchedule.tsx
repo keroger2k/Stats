@@ -1,26 +1,18 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useParams } from "react-router-dom";
-import Service from '../services/api';
+import Service from '../../services/api';
 import { Link } from 'react-router-dom';
-import { Team, formatWeekdayShort, GameDataResponse } from '../models/models';
-import Chevron from './Chevron';
+import { Team, formatWeekdayShort } from '../../models/models';
+import Chevron from '../SVGImages/Chevron';
 import TeamEvent from './TeamEvent';
-import TeamNavBar from './TeamNavBar';
+import TeamNavBar from '../TeamNavBar/TeamNavBar';
 
-import './TeamScheduleContainer.scss'
+import './TeamSchedule.scss'
 
-class TeamRecord {
-    wins: number = 0;
-    losses: number = 0;
-    ties: number = 0;
-}
-
-
-function TeamScheduleContainer() {
+function TeamSchedule() {
 
     const { id } = useParams();
     const [data, setData] = useState<Team | null>(null);
-
 
     function getDay(date: string | undefined) {
         var d = new Date(date!);
@@ -45,9 +37,21 @@ function TeamScheduleContainer() {
         return data?.completed_game_scores?.filter((teamEvent) => teamEvent.event_id === id);
     }
 
+    function importTeam(id: string) {
+        const services = new Service();
+        services.importTeam('Teams', id).then(() => { 
+            window.location.reload();
+        });
+    }
+
     React.useEffect(() => {
         const services = new Service();
-        services.getSchedule('teams', id).then(data => {
+        services.getSchedule('teams', id).then((data: Team) => {
+            //data.schedule?.map((scheduleItem: Event) => {
+
+            //    return;
+            //});
+
             setData(data);
         });
     }, []);
@@ -60,7 +64,7 @@ function TeamScheduleContainer() {
                     <div className="Text__text Text__center Text__off-black Text__base Text__xbold ScheduleListByMonth__dateText">{getDate(teamEvent.event.start?.datetime)}</div>
                 </div>
                 <div>
-                    <a className="ScheduleListByMonth__event" href="#">
+                    <span className="ScheduleListByMonth__event">
                         <div className="ScheduleListByMonth__title">
                             <div className="ScheduleListByMonth__eventIndicators"></div>
                             <div className="Text__text Text__left Text__off-black Text__base Text__semibold">{teamEvent.event.title}</div>
@@ -72,7 +76,7 @@ function TeamScheduleContainer() {
                                 <Chevron></Chevron>
                             </span>
                         </div>
-                    </a>
+                    </span>
                 </div>
             </div>
         </Link>
@@ -88,7 +92,7 @@ function TeamScheduleContainer() {
                 <div className="Grid__grid-item ScheduleListContainer__scheduleHeader" >
                     <div className="OldGrid__row OldGrid__vertical-align Title__row ScheduleListContainer__scheduleHeaderRow" role="presentation">
                         <h1 className="Text__text Text__left Text__off-black Text__base Text__xbold Title__text Text__inline-header">Schedule</h1>
-                        <button type="button" className="Button__large Button__gc-blue Button__filled Button__fixed" data-testid="add-event-button">
+                        <button type="button" className="Button__large Button__gc-blue Button__filled Button__fixed" data-testid="add-event-button" onClick={() => importTeam(data!.id)}>
                             <span className="Text__text Text__left Text__white Text__base Text__bold">Update Team Data</span>
                         </button>
                     </div>
@@ -107,4 +111,4 @@ function TeamScheduleContainer() {
     );
 }
 
-export default TeamScheduleContainer;
+export default TeamSchedule;

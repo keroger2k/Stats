@@ -1,5 +1,5 @@
 import { } from "react-bootstrap";
-import { Team, Player } from "../models/models";
+import { Team, Player } from "../../models/models";
 
 function AdvancedPitchingGrid(team: Team) {
 

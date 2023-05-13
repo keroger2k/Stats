@@ -1,6 +1,8 @@
 import { } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { Team } from "../models/models";
+import { Team } from "../../models/models";
+
+import './TabNavBar.scss'
 
 function TabNavBar(team: Team) {
 

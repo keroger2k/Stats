@@ -1,7 +1,7 @@
-import './TopNavbar.scss';
 import { Link } from 'react-router-dom';
+import './TopNavBar.scss';
 
-function TopNavbar() {
+function TopNavBar() {
     return (
         <>
             <div className="NavBar__stickyItem StickyItem__stickyItem" data-sticky-name="Navbar" data-sticky="true">
@@ -32,4 +32,4 @@ function TopNavbar() {
     );
 }
 
-export default TopNavbar;
+export default TopNavBar;

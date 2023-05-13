@@ -2,6 +2,61 @@ export type EdenDateOrDateTime = { date: Date } | { datetime: Date };
 export type HomeAway = 'home' | 'away';
 export type AssociationType = 'manager' | 'family' | 'player' | 'fan';
 
+export interface TeamListGroupedBySeason {
+    [season: string]: ListTeam[];
+}
+
+export type Sport = InvalidSport | ValidSport;
+
+export enum InvalidSport {
+    FLAG_FOOTBALL = 'flagFootball',
+    OTHER = 'other',
+}
+
+export type ListTeam = BaseListTeamOrOrg & {
+    id: string | undefined;
+    avatarUrl: string | undefined;
+    playerCount: number;
+};
+
+type BaseListTeamOrOrg = {
+    name: string;
+    sport: Sport;
+    seasonName: Season;
+    seasonYear: number;
+    displaySeason: string;
+};
+
+export enum Season {
+    SPRING = 'spring',
+    SUMMER = 'summer',
+    FALL = 'fall',
+    WINTER = 'winter',
+}
+
+export enum ValidSport {
+    BASEBALL = 'baseball',
+    BASKETBALL = 'basketball',
+    BOWLING = 'bowling',
+    CHEERLEADING = 'cheerleading',
+    CROSS_COUNTY = 'crossCountry',
+    FIELD_HOCKEY = 'fieldHockey',
+    FOOTBALL = 'football',
+    GOLF = 'golf',
+    HOCKEY = 'hockey',
+    LACROSSE = 'lacrosse',
+    ROWING_AND_CREW = 'rowingAndCrew',
+    RUGBY = 'rugby',
+    SOCCER = 'soccer',
+    SOFTBALL = 'softball',
+    SWIMMING_AND_DIVING = 'swimmingAndDiving',
+    TENNIS = 'tennis',
+    TRACK_AND_FIELD = 'trackAndField',
+    VOLLEYBALL = 'volleyball',
+    WATER_POLO = 'waterPolo',
+    WRESTLING = 'wrestling',
+}
+
 export interface Team {
     id: string;
     name: string;
@@ -59,8 +114,6 @@ export interface SearchLocation {
     state: string;
     country: string;
 }
-
-
 
 export interface Player {
     id: string;
@@ -171,17 +224,6 @@ const WEEKDAYS_SHORT = [
     'FRI',
     'SAT',
 ];
-
-const WEEKDAYS_LONG = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-];
-
 
 export function formatWeekdayShort(i: number) {
     return WEEKDAYS_SHORT[i];

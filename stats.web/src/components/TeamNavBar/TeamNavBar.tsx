@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
-import BaseballLogo from "./BaseballLogo";
-import { GameDataResponse, Team } from "../models/models";
-import TabNavBar from "./TabNavBar";
+import BaseballLogoLarge from "../SVGImages/BaseballLogoLarge";
+import { GameDataResponse, Team } from "../../models/models";
+import TabNavBar from "../TabNavBar/TabNavBar";
+
+import './TeamNavBar.scss'
 
 function TeamNavBar(team: Team) {
     return (
@@ -9,14 +10,7 @@ function TeamNavBar(team: Team) {
             <div className="TeamInfoSection__teamInfo" data-testid="TeamInfoSection">
                 <div className="Avatar__container Avatar__white-background Avatar__large TeamInfoSection__teamAvatar TeamInfoSection__teamCustomAvatar">
                     <div className="Avatar__centered">
-                        <img
-                            className="Image__circle"
-                            src={team?.team_avatar_image}
-                            alt=""
-                        />
-                    </div>
-                    <div className="Avatar__sport-accessory Avatar__white-background Avatar__small-border">
-                        <BaseballLogo></BaseballLogo>
+                        <BaseballLogoLarge></BaseballLogoLarge>
                     </div>
                 </div>
                 <div className="TeamInfoSection__teamText">

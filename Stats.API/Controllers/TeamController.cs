@@ -61,10 +61,6 @@ namespace Stats.API.Controllers
         {
             var team = await _db.GetTeamAsync(id);
             var mapped = _mapper.Map<TeamSchedule>(team);
-            //mapped.schedule = mapped.schedule
-            //    .Where(c => c.@event.event_type.Equals("game", StringComparison.OrdinalIgnoreCase))
-            //    .Where(c => !c.@event.status.Equals("canceled", StringComparison.OrdinalIgnoreCase))
-            //    .Where(c => !c.@event.sub_type.Contains("scrimmages"));
             return Ok(mapped);
         }
 

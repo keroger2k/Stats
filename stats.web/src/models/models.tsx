@@ -191,7 +191,26 @@ export type GameData = {
     last_time_to_score_ts: string;
 };
 
-type GameStates =
+export enum GameState {
+    FIRST_HALF = '1st Half',
+    SECOND_HALF = '2nd Half',
+
+    FIRST_QUARTER = '1st Quarter',
+    SECOND_QUARTER = '2nd Quarter',
+    THIRD_QUARTER = '3rd Quarter',
+    FOURTH_QUARTER = '4th Quarter',
+
+    FIRST_PERIOD = '1st Period',
+    SECOND_PERIOD = '2nd Period',
+    THIRD_PERIOD = '3rd Period',
+
+    HALFTIME = 'Halftime',
+    FIRST_OVERTIME = 'Overtime 1',
+    SECOND_OVERTIME = 'Overtime 2',
+    GAME_OVER = 'Game Over',
+}
+
+export type GameStates =
     | '1st Half'
     | '2nd Half'
     | '1st Quarter'

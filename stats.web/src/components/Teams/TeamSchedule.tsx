@@ -57,7 +57,7 @@ function TeamSchedule() {
     }, []);
 
     const content = data?.schedule?.map((teamEvent) =>
-        <Link to={`/teams/${data.id}/schedule/events/${teamEvent.event.id}`}>
+        <Link to={`/teams/${data.id}/schedule/${teamEvent.event.id}`}>
             <div className="ScheduleListByMonth__dayRow">
                 <div className="ScheduleListByMonth__dayDate">
                     <div className="Text__text Text__center Text__cool-grey-dark Text__small Text__regular">{formatWeekdayShort(getDay(teamEvent.event.start?.datetime))}</div>

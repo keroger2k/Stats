@@ -5,6 +5,7 @@ import TeamScheduleContainer from './components/Teams/TeamSchedule';
 import TeamSeasonContainer from './components/Teams/TeamSeason';
 import OpponentsContainer from './components/Opponents';
 import TeamInfo from './components/Teams/TeamInfo';
+import EventPage from './components/Events/Event';
 
 import './App.scss';
 
@@ -17,6 +18,7 @@ function App() {
                 <Route path="/teams/:id/schedule" element={<TeamScheduleContainer />}></Route>
                 <Route path="/teams/:id/teamInfo" element={<TeamInfo />}></Route>
                 <Route path="/teams/:id/season-stats" element={<TeamSeasonContainer />}></Route>
+                <Route path="/teams/:id/schedule/:eventID" element={<EventPage />}></Route>
                 <Route path="/teams/opponents" element={<OpponentsContainer />}></Route>
                 <Route></Route>
             </Routes>

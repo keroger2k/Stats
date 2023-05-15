@@ -14,7 +14,7 @@ namespace Stats.ExtApi.Services
         private const string API_URL = "https://api.team-manager.gc.com";
         private const string AUTH_ENDPOINT = "/auth";
         private const string DEVICE_ID = "ce0827aa5e4051bcf017ab8922f36b0d";
-        private const string CLIENT_ID = "f0d2b966-3baf-4229-8fba-2986ec4dc608";
+        private const string CLIENT_ID = "1d40c9bd-45a9-4e95-838e-b9b837f266dc";
         private const string EDEN_AUTH_KEY = "xkTneFG9IPAqBpNe9qzjWZAS+1gfFPPmjW4ygCydiW8=";
         private readonly HttpClient _httpClient;
         private readonly DatabaseService _db;

@@ -2,7 +2,7 @@ version: "3.8"
 services:
   api:
     build: ./
-    container_name: api-gc-stats
+    container_name: gc-api-stats
     ports: 
       - 5221:80
   gc-stats:

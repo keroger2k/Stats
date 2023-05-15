@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Stats.Database.Models;
 using Stats.Database.Services;
+using Stats.ExtApi.Models;
 using Stats.ExtApi.Services;
 
 namespace Stats.API.Helper
@@ -16,6 +17,19 @@ namespace Stats.API.Helper
             _mapper = mapper;
             _db = db;
         }
+
+        public async Task<IEnumerable<VideoPlayback>> GetTeamEventVideos(string teamId, string eventId)
+        {
+            var results = await _gameChangerService.GetTeamEventVideoAssetsPlaybackAsync(teamId, eventId);
+            return results; 
+        }
+
+        public async Task<IEnumerable<VideoPlayback>> GetTeamEventVideosPlayback(string teamId, string eventId)
+        {
+            var results = await _gameChangerService.GetTeamEventVideoAssetsPlaybackAsync(teamId, eventId);
+            return results;
+        }
+
         public async Task ImportTeamInfoAsync(string id)
         {
             var team = await _gameChangerService.GetTeamAsync(id);

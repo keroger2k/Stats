@@ -34,6 +34,12 @@ export enum Season {
     WINTER = 'winter',
 }
 
+export interface VideoClip {
+    id: string;
+    url: string;
+    cookies: { [key: string]: string };
+}
+
 export enum ValidSport {
     BASEBALL = 'baseball',
     BASKETBALL = 'basketball',

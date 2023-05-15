@@ -3,8 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Stats.API.Helper;
 using Stats.API.Models;
 using Stats.Database.Services;
-using Stats.ExtApi.Services;
-using static Stats.ExtApi.Services.GameChangerService;
+using Stats.ExtApi.Models;
 
 namespace Stats.API.Controllers
 {
@@ -20,10 +19,10 @@ namespace Stats.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Team>> Get()
+        public async Task<ActionResult<Stats.API.Models.Team>> Get()
         {
             var team = await _db.GetTeamsAsync();
-            var mapped = _mapper.Map<IEnumerable<Team>>(team);
+            var mapped = _mapper.Map<IEnumerable<Stats.API.Models.Team>>(team);
             return Ok(mapped);
         }
 
@@ -31,7 +30,7 @@ namespace Stats.API.Controllers
 
         [HttpPost]
         [Route("{id}")]
-        public async Task<ActionResult<Team>> ImportTeamAsync(string id)
+        public async Task<ActionResult<Stats.API.Models.Team>> ImportTeamAsync(string id)
         {
             await _externalApi.ImportTeamInfoAsync(id);
             return Ok();
@@ -57,11 +56,19 @@ namespace Stats.API.Controllers
 
         [HttpGet]
         [Route("{id}/schedule")]
-        public async Task<ActionResult<TeamSchedule>> GetTeamGameSchedule(string id)
+        public async Task<ActionResult<Stats.API.Models.TeamSchedule>> GetTeamGameSchedule(string id)
         {
             var team = await _db.GetTeamAsync(id);
-            var mapped = _mapper.Map<TeamSchedule>(team);
+            var mapped = _mapper.Map<Stats.API.Models.TeamSchedule>(team);
             return Ok(mapped);
+        }
+
+        [HttpGet]
+        [Route("{id}/schedule/{eid}/videos")]
+        public async Task<ActionResult<IEnumerable<VideoPlayback>>> GetTeamEventVideosStream(string id, string eid)
+        {
+            var results = await _externalApi.GetTeamEventVideosPlayback(id, eid);
+            return Ok(results);
         }
 
     }

@@ -22,9 +22,11 @@ namespace Stats.CmdApp
         private readonly DatabaseService _db;
         private readonly IMapper _mapper;
         private readonly StatsOut _statsOut;
+        private readonly AuthorizationService _auth;
         public GCApp(ILogger<GCApp> logger,
             IConfiguration configuration,
             GameChangerService gameChangerService,
+            AuthorizationService auth,
             DatabaseService databaseService,
             StatsOut statsOut,
             IMapper mapper)
@@ -35,6 +37,7 @@ namespace Stats.CmdApp
             _db = databaseService;
             _mapper = mapper;
             _statsOut = statsOut;
+            _auth = auth;
         }
 
         public void Run()
@@ -71,8 +74,94 @@ namespace Stats.CmdApp
 
                     if (int.TryParse(Console.ReadLine(), out selection))
                         SelectTeam(results.hits.ElementAt(selection - 1));
+
+                    //AuthorizatonHelp();
+
+
                 }
             }).GetAwaiter().GetResult();
+        }
+
+        private void AuthorizatonHelp() {
+            int choice = 0;
+            Console.Clear();
+            Console.WriteLine("What would you like to do?\n");
+            Console.WriteLine("1. Show current token in Db?");
+            Console.WriteLine("2. Refresh Token to Db");
+            Console.WriteLine("3. Test Token from Db");
+            Console.WriteLine("4. Back");
+
+            if (int.TryParse(Console.ReadLine(), out choice))
+            {
+                switch (choice)
+                {
+                    case 1:
+                        DisplayTokenAsync();
+                        return;
+                    case 2:
+                        RefreshTokenAsync();
+                        return;
+                    case 3:
+                        TestTokenAsync();
+                        return;
+                    default:
+                        // Invalid choice.
+                        Console.WriteLine("Invalid choice.");
+                        break;
+                }
+            }
+
+        }
+
+        private async void DisplayTokenAsync()
+        {
+            var token = await _db.GetTokenAsync();
+            Console.WriteLine($"{token.access.data}");
+            Console.WriteLine($"{token.refresh.data}");
+        }
+        private async void RefreshTokenAsync()
+        {
+            var token = await _db.GetTokenAsync();
+            Console.WriteLine("Access:");
+            Console.WriteLine(token.access.data);
+            Console.WriteLine("Refresh:");
+            Console.WriteLine(token.refresh.data);
+            Console.WriteLine("Sending request.....");
+            
+            var newToken =  await _auth.GetRefreshTokenAsync(token.refresh.data);
+            Thread.Sleep(5000);
+            Console.WriteLine("Received new token.");
+            Console.WriteLine("Access:");
+            Console.WriteLine(newToken.access.data);
+            Console.WriteLine("Refresh:");
+            Console.WriteLine(newToken.refresh.data);
+            Console.WriteLine("trying to refresh again.....");
+
+            var newToken1 = await _auth.GetRefreshTokenAsync(newToken.refresh.data);
+            Thread.Sleep(5000);
+
+            Console.WriteLine("Received new token.");
+            Console.WriteLine("Access:");
+            Console.WriteLine(newToken1.access.data);
+            Console.WriteLine("Refresh:");
+            Console.WriteLine(newToken1.refresh.data);
+        }
+        private async void TestTokenAsync()
+        {
+            Console.WriteLine("Tokens before testing.");
+            Console.WriteLine("------------------------------------------------");
+            DisplayTokenAsync();
+            var result = await _gameChangerService.SearchTeamsAsync("Pony");
+            if(result != null)
+            {
+                Console.WriteLine("------------------------------------------------");
+                Console.WriteLine("Access token is working.");
+                Console.WriteLine($"Found:{result.hits.Count()} results");
+                Console.WriteLine("------------------------------------------------");
+            }
+            Console.WriteLine("Tokens after testing.");
+            Console.WriteLine("------------------------------------------------");
+            DisplayTokenAsync();
         }
 
         private void SelectTeam(SearchResults.SearchItem item)

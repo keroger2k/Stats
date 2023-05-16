@@ -58,7 +58,9 @@ namespace Stats.CmdApp
                     services.AddScoped(sp =>
                     {
                         var http = new HttpClient();
-                        http.BaseAddress = new Uri("https://api.Team-manager.gc.com");
+                        if (http.BaseAddress == null) { 
+                            http.BaseAddress = new Uri("https://api.Team-manager.gc.com");
+                        }
                         return http;
                     });
                 })

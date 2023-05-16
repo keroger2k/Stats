@@ -41,30 +41,43 @@ namespace Stats.ExtApi.Services
             else if (refresh1.ValidTo > DateTime.UtcNow)
             {
                 var newToken = await GetRefreshTokenAsync(token.refresh.data);
-                await _db.CreateTokenAsync(new Stats.Database.Models.AuthorizationToken()
-                {
-                    type = newToken.type,
-                    access = new Stats.Database.Models.AuthorizationToken.Token()
-                    {
-                        data = newToken.access.data,
-                        expires = newToken.access.expires
-                    },
-                    //this is wrong, but I'm not getting back a good refresh token with my request.
-                    //need to either figure out a way to get a new refresh token, or create a UI input
-                    //to put in either a refresh token or access token.
-                    refresh = new Stats.Database.Models.AuthorizationToken.Token()
-                    {
-                        data = token.refresh.data,
-                        expires = token.refresh.expires
-                    }
-                });
+                WriteTokenToDb(newToken);
+                return newToken.access.data;
             }
-            return token.access.data;
+            else
+            {
+                throw new Exception("Access token was not able to refresh.");
+            }
         }
+
+        public async void WriteTokenToDb(AuthorizationToken token)
+        {
+            await _db.CreateTokenAsync(new Stats.Database.Models.AuthorizationToken()
+            {
+                type = token.type,
+                access = new Stats.Database.Models.AuthorizationToken.Token()
+                {
+                    data = token.access.data,
+                    expires = token.access.expires
+                },
+                //this is wrong, but I'm not getting back a good refresh token with my request.
+                //need to either figure out a way to get a new refresh token, or create a UI input
+                //to put in either a refresh token or access token.
+                refresh = new Stats.Database.Models.AuthorizationToken.Token()
+                {
+                    data = token.refresh.data,
+                    expires = token.refresh.expires
+                }
+            });
+        }
+
         private async Task<HttpResponseMessage> MakePostRequestAsync(GCContext context, string payload, string signature, string token = "")
         {
-
-            _httpClient.BaseAddress = new Uri(API_URL);
+            if(_httpClient.BaseAddress == null)
+            {
+                _httpClient.BaseAddress = new Uri(API_URL);
+            }
+            _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Add("Gc-Signature", context.nonce + "." + signature);
             if (!string.IsNullOrEmpty(token))
             {
@@ -78,14 +91,14 @@ namespace Stats.ExtApi.Services
             var clientRequestContent = new StringContent(payload, Encoding.UTF8, "application/json");
             return await _httpClient.PostAsync(AUTH_ENDPOINT, clientRequestContent);
         }
-        private async Task<AuthorizationToken> GetRefreshTokenAsync(string oldToken)
+        public async Task<AuthorizationToken> GetRefreshTokenAsync(string refreshToken)
         {
             var payload = new { type = "refresh" };
             var context = GetNewContext();
             var clientRequestSignature = SignPayload(context, payload);
-            var response = await MakePostRequestAsync(context, JsonSerializer.Serialize(payload), clientRequestSignature, oldToken);
-            var refreshToken = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<AuthorizationToken>(refreshToken) ?? new AuthorizationToken();
+            var response = await MakePostRequestAsync(context, JsonSerializer.Serialize(payload), clientRequestSignature, refreshToken);
+            var newToken = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<AuthorizationToken>(newToken) ?? new AuthorizationToken();
         }
         private GCContext GetNewContext()
         {

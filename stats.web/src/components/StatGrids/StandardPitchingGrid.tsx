@@ -8,38 +8,75 @@ function StandardPitchingGrid(team: Team) {
     }
 
     const content = Object.keys(team.season_stats.stats_data.players).map<any>((player) => {
-        return (
-            <tr className="whiteRow odd">
-                <td className="playerNameCell invertLinkUnderline strong">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.ip.toFixed(2)}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.general.gp}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.gs}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.bf}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["#P"]}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.w}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.l}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.sv}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.svo}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.bs}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.SVPercent}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.h}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.r}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.er}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.bb}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.so}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.sol}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.hbp}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.era.toFixed(3)}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.whip.toFixed(3)}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.lob}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.bk}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.pik}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.cs}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.sb}</td>
-                <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["SB%"] * 100).toFixed(3)}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.wp}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.baa.toFixed(3).replace(/^0+/, '')}</td>
-            </tr>);
+        if (team.season_stats.stats_data.players[player].stats.defense) {
+            return (
+                <tr className="whiteRow odd">
+                    <td className="playerNameCell invertLinkUnderline strong">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.ip.toFixed(2)}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.general.gp}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.gs}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.bf}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["#P"]}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.w}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.l}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.sv}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.svo}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.bs}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.SVPercent}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.h}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.r}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.er}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.bb}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.so}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.sol}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.hbp}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.era.toFixed(3)}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.whip.toFixed(3)}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.lob}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.bk}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.pik}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.cs}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.sb}</td>
+                    <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["SB%"] * 100).toFixed(3)}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.wp}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense?.baa.toFixed(3).replace(/^0+/, '')}</td>
+                </tr>);
+        } else {
+            return (
+                <tr className="whiteRow odd">
+                    <td className="playerNameCell invertLinkUnderline strong">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+            );
+        }
     });
 
     return (

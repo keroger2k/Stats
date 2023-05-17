@@ -12,6 +12,7 @@ import './App.scss';
 function App() {
     return (
         <>
+            <script src="https://vjs.zencdn.net/8.3.0/video.min.js"></script>
             <TopNavbar></TopNavbar>
             <Routes>
                 <Route path="/" element={<MainContainer />}></Route>

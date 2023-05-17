@@ -1,7 +1,5 @@
 import { VideoClip } from '../../models/models';
 import ReactPlayer from 'react-player'
-import videojs from 'video.js';
-import 'video.js/dist/video-js.css';
 
 export interface VideoArchiveProps {
     videos: VideoClip[];

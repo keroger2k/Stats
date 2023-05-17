@@ -8,42 +8,45 @@ function AdvancedPitchingGrid(team: Team) {
     }
 
     const content = Object.keys(team.season_stats.stats_data.players).map<any>((player) => {
-        return (
-            <tr className="whiteRow odd">
-                <td className="playerNameCell invertLinkUnderline strong">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.ip.toFixed(1)}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.bf}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["P/IP"].toFixed(1)}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["P/BF"].toFixed(3)}</td>
-                <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["<3%"] * 100).toFixed(2)}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.loo}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["1ST2OUT"]}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["123INN"]}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["<13"]}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.fip.toFixed(3)}</td>
-                <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["S%"] * 100).toFixed(2)}</td>
-                <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["FPS%"] * 100).toFixed(2)}</td>
-                <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["FPSO%"] * 100).toFixed(2)}</td>
-                <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["FPSW%"] * 100).toFixed(2)}</td>
-                <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["FPSH%"] * 100).toFixed(2)}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["BB/INN"].toFixed(3).replace(/^0+/, '')}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["0BBINN"]}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.bbs}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.lobb}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.lobbs}</td>
-                <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["SM%"] * 100).toFixed(2)}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["K/BF"].toFixed(3).replace(/^0+/, '')}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["K/BB"].toFixed(3)}</td>
-                <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["WEAK%"] * 100).toFixed(2)}</td>
-                <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["HARD%"] * 100).toFixed(2)}</td>
-                <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["GO/AO"] * 100).toFixed(3)}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.hr}</td>
-                <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["LND%"] * 100).toFixed(2)}</td>
-                <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["FLB%"] * 100).toFixed(3)}</td>
-                <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["GB%"] * 100).toFixed(3)}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.babip.toFixed(3).replace(/^0+/, '')}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["BA/RISP"].toFixed(3).replace(/^0+/, '')}</td>
-            </tr>);
+        if (team.season_stats.stats_data.players[player].stats.defense) {
+            return (
+                <tr className="whiteRow odd">
+                    <td className="playerNameCell invertLinkUnderline strong">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.ip.toFixed(1)}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.bf}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["P/IP"].toFixed(1)}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["P/BF"].toFixed(3)}</td>
+                    <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["<3%"] * 100).toFixed(2)}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.loo}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["1ST2OUT"]}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["123INN"]}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["<13"]}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.fip.toFixed(3)}</td>
+                    <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["S%"] * 100).toFixed(2)}</td>
+                    <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["FPS%"] * 100).toFixed(2)}</td>
+                    <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["FPSO%"] * 100).toFixed(2)}</td>
+                    <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["FPSW%"] * 100).toFixed(2)}</td>
+                    <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["FPSH%"] * 100).toFixed(2)}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["BB/INN"].toFixed(3).replace(/^0+/, '')}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["0BBINN"]}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.bbs}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.lobb}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.lobbs}</td>
+                    <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["SM%"] * 100).toFixed(2)}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["K/BF"].toFixed(3).replace(/^0+/, '')}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["K/BB"].toFixed(3)}</td>
+                    <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["WEAK%"] * 100).toFixed(2)}</td>
+                    <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["HARD%"] * 100).toFixed(2)}</td>
+                    <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["GO/AO"] * 100).toFixed(3)}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.hr}</td>
+                    <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["LND%"] * 100).toFixed(2)}</td>
+                    <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["FLB%"] * 100).toFixed(3)}</td>
+                    <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["GB%"] * 100).toFixed(3)}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.babip.toFixed(3).replace(/^0+/, '')}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["BA/RISP"].toFixed(3).replace(/^0+/, '')}</td>
+                </tr>);
+        }
+        return "";
     });
 
 

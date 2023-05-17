@@ -8,38 +8,43 @@ function AdvancedBattingGrid(team: Team) {
     }
 
     const content = Object.keys(team.season_stats.stats_data.players).map<any>((player) => {
-        return (
-            <tr className="whiteRow odd">
-                <td className="playerNameCell invertLinkUnderline strong">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.general.gp}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.pa}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.ab}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.qab}</td>
-                <td className="statCell">{(team.season_stats.stats_data.players[player].stats.offense["QAB%"] * 100).toFixed(2)}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["PA/BB"].toFixed(1)}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["BB/K"].toFixed(3).replace(/^0+/, '')}</td>
-                <td className="statCell">{(team.season_stats.stats_data.players[player].stats.offense["C%"] * 100).toFixed(2)}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.hard}</td>
-                <td className="statCell">{(team.season_stats.stats_data.players[player].stats.offense["LND%"] * 100).toFixed(2)}</td>
-                <td className="statCell">{(team.season_stats.stats_data.players[player].stats.offense["FLB%"] * 100).toFixed(2)}</td>
-                <td className="statCell">{(team.season_stats.stats_data.players[player].stats.offense["GB%"] * 100).toFixed(2)}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.babip.toFixed(3)}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["BA/RISP"].toFixed(3).replace(/^0+/, '')}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.lob}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["_2OUTRBI"]}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.xbh}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.tb}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.ps}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["PS/PA"].toFixed(3)}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["2S+3"]}</td>
-                <td className="statCell">{(team.season_stats.stats_data.players[player].stats.offense["2S+3%"] * 100).toFixed(2)}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["6+"]}</td>
-                <td className="statCell">{(team.season_stats.stats_data.players[player].stats.offense["6+%"] * 100).toFixed(2)}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["AB/HR"]}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.gidp}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.gitp}</td>
-                <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.ci}</td>
-            </tr>);
+        if (team.season_stats.stats_data.players[player].stats.offense) {
+            return (
+                <tr className="whiteRow odd">
+                    <td className="playerNameCell invertLinkUnderline strong">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.general.gp}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.pa}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.ab}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.qab}</td>
+                    <td className="statCell">{(team.season_stats.stats_data.players[player].stats.offense["QAB%"] * 100).toFixed(2)}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["PA/BB"].toFixed(1)}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["BB/K"].toFixed(3).replace(/^0+/, '')}</td>
+                    <td className="statCell">{(team.season_stats.stats_data.players[player].stats.offense["C%"] * 100).toFixed(2)}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.hard}</td>
+                    <td className="statCell">{(team.season_stats.stats_data.players[player].stats.offense["LND%"] * 100).toFixed(2)}</td>
+                    <td className="statCell">{(team.season_stats.stats_data.players[player].stats.offense["FLB%"] * 100).toFixed(2)}</td>
+                    <td className="statCell">{(team.season_stats.stats_data.players[player].stats.offense["GB%"] * 100).toFixed(2)}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.babip.toFixed(3)}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["BA/RISP"].toFixed(3).replace(/^0+/, '')}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.lob}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["_2OUTRBI"]}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.xbh}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.tb}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.ps}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["PS/PA"].toFixed(3)}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["2S+3"]}</td>
+                    <td className="statCell">{(team.season_stats.stats_data.players[player].stats.offense["2S+3%"] * 100).toFixed(2)}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["6+"]}</td>
+                    <td className="statCell">{(team.season_stats.stats_data.players[player].stats.offense["6+%"] * 100).toFixed(2)}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense["AB/HR"]}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.gidp}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.gitp}</td>
+                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.offense.ci}</td>
+                </tr>);
+        } else {
+            return "";
+        }
+
     });
 
 

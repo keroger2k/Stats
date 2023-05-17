@@ -10,7 +10,7 @@ function StandardCatchingGrid(team: Team) {
 
 
     const content = Object.keys(team.season_stats.stats_data.players).map<any>((player) => {
-        if (team.season_stats.stats_data.players[player].stats.defense["GP:C"] !== 0) {
+        if (team.season_stats.stats_data.players[player].stats.defense && team.season_stats.stats_data.players[player].stats.defense["GP:C"] !== 0) {
             return (
 
                 <tr className="whiteRow odd">
@@ -25,7 +25,19 @@ function StandardCatchingGrid(team: Team) {
                     <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["CI:C"]}</td>
                 </tr>);
         }
-        return "";
+        return (
+            <tr>
+                <td className="statCell"></td>
+                <td className="statCell"></td>
+                <td className="statCell"></td>
+                <td className="statCell"></td>
+                <td className="statCell"></td>
+                <td className="statCell"></td>
+                <td className="statCell"></td>
+                <td className="statCell"></td>
+                <td className="statCell"></td>
+            </tr>
+        );
     });
 
 

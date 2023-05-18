@@ -12,7 +12,6 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\build</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src\components\SearchBar\" />
     <Folder Include="src\models\" />
   </ItemGroup>
 </Project>

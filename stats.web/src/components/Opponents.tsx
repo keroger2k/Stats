@@ -65,7 +65,7 @@ function OpponentsContainer() {
                 <div className="OpponentsPageDisplay__stickyItem StickyItem__stickyItem" data-sticky-name="Opponents" data-sticky="true" >
                     <h1 className="Text__text Text__left Text__off-black Text__xlarge Text__xbold Text__inline-header">Import New Team</h1>
                     <div className="OpponentsPageSearch__searchContainer">
-                        <div className="Text__text Text__left Text__off-black Text__medium Text__bold OpponentsPageSearch__searchBarTitle">Add New Opponent</div>
+                        <div className="Text__text Text__left Text__off-black Text__medium Text__bold OpponentsPageSearch__searchBarTitle">Add New Team</div>
                         <span>
                             <div className="Grid__grid Grid__fixed">
                                 <div className="Grid__grid-item custom-grid" >
@@ -74,7 +74,7 @@ function OpponentsContainer() {
                                             <input
                                                 onChange={(e) => setQuery(e.target.value)}
                                                 type="text" className="TextInput__input" data-testid="OpponentSearchBox" name="opponentName" id="opponentName"
-                                                placeholder="Find or Create Opponent" />
+                                                placeholder="Find or Create Team," />
                                         </label>
                                         <span className="OpponentsPageSearch__opponentSearchIcon">
                                             <svg width="16" height="16" viewBox="0 0 20 20">

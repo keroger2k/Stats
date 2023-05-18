@@ -94,6 +94,15 @@ export interface Team {
     completed_game_scores: GameDataResponse[] | null;
     players: Player[];
     season_stats: SeasonStats;
+    opponents: Opponent[];
+}
+
+export interface Opponent {
+    root_team_id: string;
+    owning_team_id: string;
+    progenitor_team_id: string;
+    name: string;
+    is_hidden: boolean;
 }
 
 export interface SearchResult {

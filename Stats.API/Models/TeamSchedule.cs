@@ -20,6 +20,7 @@ namespace Stats.API.Models
         public string team_avatar_image { get; set; } = string.Empty;
         public IEnumerable<Schedule> schedule { get; set; } = new List<Schedule>();
         public IEnumerable<Game> completed_game_scores { get; set; } = new List<Game>();
+        public IEnumerable<Opponent> opponents { get; set; } = new List<Opponent>();
         public class Schedule
         {
             public Event @event { get; set; } = null!;

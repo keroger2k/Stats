@@ -54,9 +54,19 @@ namespace Stats.Database.Services
 
         public async Task<IEnumerable<TeamTransform>> GetTeamsAsync()
         {
+            var filter = Builders<TeamTransform>.Filter.Empty;
+            var projection = Builders<TeamTransform>.Projection.Expression(c => new TeamTransform
+            {
+                id = c.id,
+                name = c.name,
+            });
+            var options = new FindOptions<TeamTransform, TeamTransform> {  Projection = projection };
+
+
             var teamCollection = ConnectToMongo<TeamTransform>(_statsDatabaseSettings.Value.TeamCollectionName);
-            var existingTeam = await teamCollection.Find(_ => true).ToListAsync();
-            return existingTeam;
+            var existingTeam = await teamCollection.FindAsync(filter, options);
+            var r = await existingTeam.ToListAsync();
+            return r;
         }
         public async Task<TeamTransform> GetTeamAsync(string id)
         {

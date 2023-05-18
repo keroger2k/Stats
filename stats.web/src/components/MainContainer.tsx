@@ -95,6 +95,22 @@ function MainContainer() {
                                 </span>
                             </div>
                             <div className="TeamsList__seasonContainer">
+                                <span className="Clickable__container TeamsList__teamRow TeamsList__enabled" role="button" >
+                                    <div className="Avatar__container Avatar__white-background Avatar__medium">
+                                        <div className="Avatar__centered">
+                                        </div>
+
+                                    </div>
+                                    <div className="TeamsList__teamName">
+                                        <span className="Text__text Text__left Text__off-black Text__base Text__semibold">
+                                            Teams below are stored locally, to add new ones click "Add Team". If you click on an opponent link and its blank, click "Update Team Data" to import.
+                                        </span>
+                                    </div>
+                                    <div className="TeamsList__teamGroup">
+                                        <div className="TeamsList__chevron">
+                                        </div>
+                                    </div>
+                                </span>
                                 {content}
                             </div>
                         </div>

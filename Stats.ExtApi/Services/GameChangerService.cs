@@ -41,10 +41,10 @@ namespace Stats.ExtApi.Services
             return result!;
         }
 
-        public async Task<IEnumerable<TeamOpponents>> GetTeamOpponentsAsync(string teamId)
+        public async Task<IEnumerable<Opponent>> GetTeamOpponentsAsync(string teamId)
         {
             var url = string.Format(APIEndpoint.TEAM_OPPONENTS, teamId);
-            var result = JsonSerializer.Deserialize<IEnumerable<TeamOpponents>>(await GetRequestAsync(url));
+            var result = JsonSerializer.Deserialize<IEnumerable<Opponent>>(await GetRequestAsync(url));
             return result!;
         }
 

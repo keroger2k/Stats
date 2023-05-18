@@ -38,6 +38,7 @@ namespace Stats.API.Helper
             var scores = await _gameChangerService.GetTeamGameDataAsync(id);
             var season_stats = await _gameChangerService.GetTeamSeasonStatsAsync(id);
             var video_assets1 = await _gameChangerService.GetTeamVideoAssetsAsync(id);
+            var opponents = await _gameChangerService.GetTeamOpponentsAsync(id);
             var avatar = await _gameChangerService.GetTeamAvatarAsync(id);
 
             var teamTransform = new TeamTransform()
@@ -57,7 +58,8 @@ namespace Stats.API.Helper
                 schedule = _mapper.Map<List<TeamTransform.TeamSchedule>>(teamSchedule.ToList()),
                 completed_game_scores = _mapper.Map<List<TeamTransform.Game>>(scores),
                 season_stats = _mapper.Map<TeamTransform.SeasonStats>(season_stats),
-                video_assets = _mapper.Map<List<TeamTransform.VideoAsset>>(video_assets1)
+                video_assets = _mapper.Map<List<TeamTransform.VideoAsset>>(video_assets1),
+                opponents = _mapper.Map<List<TeamTransform.Opponent>>(opponents)
             };
 
             foreach (var playerId in teamPlayers.stats_data.players.Keys)

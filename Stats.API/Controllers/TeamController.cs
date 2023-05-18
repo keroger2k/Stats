@@ -26,8 +26,6 @@ namespace Stats.API.Controllers
             return Ok(mapped);
         }
 
-
-
         [HttpPost]
         [Route("{id}")]
         public async Task<ActionResult<Stats.API.Models.Team>> ImportTeamAsync(string id)
@@ -70,6 +68,6 @@ namespace Stats.API.Controllers
             var results = await _externalApi.GetTeamEventVideosPlayback(id, eid);
             return Ok(results);
         }
-
+        
     }
 }

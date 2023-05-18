@@ -21,6 +21,7 @@ namespace Stats.Database.Models
         public List<Player> players { get; set; } = new List<TeamTransform.Player>();
         public List<EventStats> completed_games { get; set; } = new List<TeamTransform.EventStats>();
         public List<Game> completed_game_scores { get; set; } = new List<TeamTransform.Game>();
+        public List<Opponent> opponents { get; set; } = new List<TeamTransform.Opponent>();
         public List<TeamSchedule> schedule { get; set; } = new List<TeamTransform.TeamSchedule>();
         public SeasonStats season_stats { get; set; } = null!;
         public List<VideoAsset> video_assets { get; set; } = new List<VideoAsset>();
@@ -59,6 +60,15 @@ namespace Stats.Database.Models
                 }
             }
 
+        }
+
+        public class Opponent
+        {
+            public string root_team_id { get; set; } = null!;
+            public string owning_team_id { get; set; } = null!;
+            public string progenitor_team_id { get; set; } = null!;
+            public string name { get; set; } = null!;
+            public bool is_hidden { get; set; }
         }
         public class Player
         {

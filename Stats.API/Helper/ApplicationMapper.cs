@@ -26,14 +26,18 @@ namespace Stats.API.Helper
             CreateMap<Stats.ExtApi.Models.Game, Stats.Database.Models.TeamTransform.Game>().ReverseMap();
             CreateMap<Stats.ExtApi.Models.Game.GameData, Stats.Database.Models.TeamTransform.Game.GameData>().ReverseMap();
             CreateMap<Stats.ExtApi.Models.TeamSeasonStats, Stats.Database.Models.TeamTransform.SeasonStats>().ReverseMap();
-            CreateMap<Stats.ExtApi.Models.StatsData, Stats.Database.Models.TeamTransform.SeasonStats.StatsData>().ReverseMap();
-            CreateMap<Stats.ExtApi.Models.StatsData.Player, Stats.Database.Models.TeamTransform.SeasonStats.StatsData.Player>().ReverseMap();
+            CreateMap<Stats.ExtApi.Models.StatsData, Stats.Database.Models.TeamTransform.StatsData>().ReverseMap();
+            CreateMap<Stats.ExtApi.Models.StatsData.Player, Stats.Database.Models.TeamTransform.StatsData.Player>().ReverseMap();
             CreateMap<Stats.ExtApi.Models.StatsData.PlayerStats, Stats.Database.Models.TeamTransform.PlayerStats>().ReverseMap();
+
             CreateMap<Stats.ExtApi.Models.StatsData.PlayerStats.Defense, Stats.Database.Models.TeamTransform.PlayerStats.Defense>().ReverseMap();
             CreateMap<Stats.ExtApi.Models.StatsData.PlayerStats.Offense, Stats.Database.Models.TeamTransform.PlayerStats.Offense>().ReverseMap();
             CreateMap<Stats.ExtApi.Models.StatsData.PlayerStats.General, Stats.Database.Models.TeamTransform.PlayerStats.General>().ReverseMap();
             CreateMap<Stats.ExtApi.Models.VideoAsset, Stats.Database.Models.TeamTransform.VideoAsset>().ReverseMap();
             CreateMap<Stats.ExtApi.Models.Opponent, Stats.Database.Models.TeamTransform.Opponent>().ReverseMap();
+            
+            CreateMap<Stats.ExtApi.Models.TeamEvent, Stats.Database.Models.TeamTransform.TeamEvent>().ReverseMap();
+
 
 
             // TeamStats
@@ -43,9 +47,9 @@ namespace Stats.API.Helper
             CreateMap<Stats.Database.Models.TeamTransform.PlayerStats.Offense, Stats.API.Models.TeamStats.PlayerStats.Offense>().ReverseMap();
             CreateMap<Stats.Database.Models.TeamTransform.PlayerStats.General, Stats.API.Models.TeamStats.PlayerStats.General>().ReverseMap();
             CreateMap<Stats.Database.Models.TeamTransform.PlayerStats.Defense, Stats.API.Models.TeamStats.PlayerStats.Defense>().ReverseMap();
-            CreateMap<Stats.Database.Models.TeamTransform.SeasonStats.StatsData, Stats.API.Models.TeamStats.SeasonStats.StatsData>().ReverseMap();
-            CreateMap<Stats.Database.Models.TeamTransform.SeasonStats.StatsData.Player, Stats.API.Models.TeamStats.SeasonStats.StatsData.Player>().ReverseMap();
-            CreateMap<Stats.Database.Models.TeamTransform.SeasonStats.StatsData.Player, Stats.API.Models.TeamStats.SeasonStats.StatsData.Player>().ReverseMap();
+            CreateMap<Stats.Database.Models.TeamTransform.StatsData, Stats.API.Models.TeamStats.SeasonStats.StatsData>().ReverseMap();
+            CreateMap<Stats.Database.Models.TeamTransform.StatsData.Player, Stats.API.Models.TeamStats.SeasonStats.StatsData.Player>().ReverseMap();
+            CreateMap<Stats.Database.Models.TeamTransform.StatsData.Player, Stats.API.Models.TeamStats.SeasonStats.StatsData.Player>().ReverseMap();
             CreateMap<Stats.Database.Models.TeamTransform.Player, Stats.API.Models.TeamStats.Player>().ReverseMap();
             CreateMap<Stats.Database.Models.TeamTransform.Game, Stats.API.Models.TeamStats.Game>().ReverseMap();
             CreateMap<Stats.Database.Models.TeamTransform.Game.GameData, Stats.API.Models.TeamStats.Game.GameData>().ReverseMap();

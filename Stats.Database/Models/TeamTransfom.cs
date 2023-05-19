@@ -19,7 +19,7 @@ namespace Stats.Database.Models
         public int season_year { get; set; }
         public string team_avatar_image { get; set; } = string.Empty;
         public List<Player> players { get; set; } = new List<TeamTransform.Player>();
-        public List<EventStats> completed_games { get; set; } = new List<TeamTransform.EventStats>();
+        public List<TeamEvent> completed_games { get; set; } = new List<TeamEvent>();
         public List<Game> completed_game_scores { get; set; } = new List<TeamTransform.Game>();
         public List<Opponent> opponents { get; set; } = new List<TeamTransform.Opponent>();
         public List<TeamSchedule> schedule { get; set; } = new List<TeamTransform.TeamSchedule>();
@@ -50,16 +50,32 @@ namespace Stats.Database.Models
             public DateTime created_at { get; set; }
             public DateTime updated_at { get; set; }
 
-            public class StatsData
+            
+
+        }
+
+
+        public class TeamEvent
+        {
+            public string stream_id { get; set; } = null!;
+            public string team_id { get; set; } = null!;
+            public string event_id { get; set; } = null!;
+            public StatsData player_stats { get; set; } = null!;
+            public StatsData cumulative_player_stats { get; set; } = null!;
+            /// <summary>
+            /// Dictionary events are the playersId for the string, and the outcomes with
+            /// the BallInPlayEvent.  
+            /// </summary>
+        }
+
+        public class StatsData
+        {
+            public PlayerStats stats { get; set; } = null!;
+            public Dictionary<string, Player> players { get; set; } = null!;
+            public class Player
             {
                 public PlayerStats stats { get; set; } = null!;
-                public Dictionary<string, Player> players { get; set; } = null!;
-                public class Player
-                {
-                    public PlayerStats stats { get; set; } = null!;
-                }
             }
-
         }
 
         public class Opponent
@@ -83,13 +99,10 @@ namespace Stats.Database.Models
             public string batting_side { get; set; } = null!;
             public string throwing_hand { get; set; } = null!;
         }
-        public class EventStats
+        public class EventStats : StatsData
         {
             [BsonId]
             public string id { get; set; } = null!;
-            public PlayerStats boxscore { get; set; } = null!;
-            public Dictionary<string, PlayerStats> players { get; set; } = null!;
-            
         }
         public class Game
         {

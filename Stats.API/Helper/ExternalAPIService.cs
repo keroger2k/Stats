@@ -21,7 +21,7 @@ namespace Stats.API.Helper
         public async Task<IEnumerable<VideoPlayback>> GetTeamEventVideos(string teamId, string eventId)
         {
             var results = await _gameChangerService.GetTeamEventVideoAssetsPlaybackAsync(teamId, eventId);
-            return results; 
+            return results;
         }
 
         public async Task<IEnumerable<VideoPlayback>> GetTeamEventVideosPlayback(string teamId, string eventId)
@@ -85,28 +85,20 @@ namespace Stats.API.Helper
                 .Where(c => c.@event.start.datetime < DateTime.Now)
                 .Where(c => !c.@event.sub_type.Contains("scrimmages")))
             {
-                try
-                {
-                    var game = await _gameChangerService.GetTeamEventStatsAsync(team.id, evt.@event.id);
-                    var eventPlayers = new TeamTransform.EventStats()
-                    {
-                        id = game.event_id,
-                        boxscore = _mapper.Map<TeamTransform.PlayerStats>(game.player_stats.stats)
-                    };
-                    eventPlayers.players = new Dictionary<string, TeamTransform.PlayerStats>();
+                TeamEvent game = await _gameChangerService.GetTeamEventStatsAsync(team.id, evt.@event.id);
+                //var eventPlayers = new TeamTransform.EventStats()
+                //{
+                //    id = game.event_id,
+                //    stats = _mapper.Map<TeamTransform.PlayerStats>(game.player_stats.stats)
+                //};
+                //eventPlayers.players = new Dictionary<string, TeamTransform.StatsData.Player>();
 
-                    foreach (var player in game.player_stats.players)
-                    {
-                        eventPlayers.players.Add(player.Key, _mapper.Map<TeamTransform.PlayerStats>(player.Value.stats));
-                    }
+                //foreach (var player in game.player_stats.players)
+                //{
+                //    eventPlayers.players.Add(player.Key, _mapper.Map<TeamTransform.StatsData.Player>(player.Value.stats));
+                //}
 
-                    teamTransform.completed_games.Add(eventPlayers);
-                }
-                catch (Exception)
-                {
-
-
-                }
+                teamTransform.completed_games.Add(_mapper.Map<TeamTransform.TeamEvent>(game));
 
             }
 

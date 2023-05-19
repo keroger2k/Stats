@@ -28,7 +28,6 @@
 
         public DateTime updated_at { get; set; }
 
-
         public BattingThrowingInfo bats { get; set; } = null!;
 
         public string person_id { get; set; } = null!;

@@ -93,18 +93,18 @@ namespace Stats.ExtApi.Services
         /// </summary>
         /// <param name="teamId"></param>
         /// <returns></returns>
-        public async Task<TeamAvatar> GetTeamAvatarAsync(string teamId)
+        public async Task<Avatar> GetTeamAvatarAsync(string teamId)
         {
             try
             {
                 var url = string.Format(APIEndpoint.TEAM_AVATAR, teamId);
-                var result = JsonSerializer.Deserialize<TeamAvatar>(await GetRequestAsync(url));
+                var result = JsonSerializer.Deserialize<Avatar>(await GetRequestAsync(url));
                 return result!;
             }
             catch (Exception)
             {
             }
-            return new TeamAvatar();
+            return new Avatar();
         }
 
         /// <summary>

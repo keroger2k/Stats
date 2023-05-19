@@ -23,8 +23,8 @@ namespace Stats.CmdApp.Helper
             CreateMap<Stats.ExtApi.Models.Game, TeamTransform.Game>();
             CreateMap<Stats.ExtApi.Models.Game.GameData, TeamTransform.Game.GameData>();
             CreateMap<Stats.ExtApi.Models.TeamSeasonStats, TeamTransform.SeasonStats>();
-            CreateMap<Stats.ExtApi.Models.StatsData, TeamTransform.SeasonStats.StatsData>();
-            CreateMap<Stats.ExtApi.Models.StatsData.Player, TeamTransform.SeasonStats.StatsData.Player>();
+            CreateMap<Stats.ExtApi.Models.StatsData, TeamTransform.StatsData>();
+            CreateMap<Stats.ExtApi.Models.StatsData.Player, TeamTransform.StatsData.Player>();
             CreateMap<Stats.ExtApi.Models.StatsData.PlayerStats, TeamTransform.PlayerStats>();
             CreateMap<Stats.ExtApi.Models.VideoAsset, TeamTransform.VideoAsset>();
         }

@@ -3,6 +3,7 @@ using Stats.Database.Models;
 using Stats.Database.Services;
 using Stats.ExtApi.Models;
 using Stats.ExtApi.Services;
+using System.Diagnostics;
 
 namespace Stats.API.Helper
 {
@@ -33,13 +34,10 @@ namespace Stats.API.Helper
         public async Task ImportTeamInfoAsync(string id)
         {
             var team = await _gameChangerService.GetTeamAsync(id);
-            var teamPlayers = await _gameChangerService.GetTeamSeasonStatsAsync(id);
             var teamSchedule = await _gameChangerService.GetTeamScheduledEventsAsync(id);
             var scores = await _gameChangerService.GetTeamGameDataAsync(id);
             var season_stats = await _gameChangerService.GetTeamSeasonStatsAsync(id);
-            var video_assets1 = await _gameChangerService.GetTeamVideoAssetsAsync(id);
             var opponents = await _gameChangerService.GetTeamOpponentsAsync(id);
-            var avatar = await _gameChangerService.GetTeamAvatarAsync(id);
 
             var teamTransform = new TeamTransform()
             {
@@ -54,15 +52,14 @@ namespace Stats.API.Helper
                 age_group = team.age_group,
                 season_name = team.season_name,
                 season_year = team.season_year,
-                team_avatar_image = avatar.full_media_url,
+                team_avatar_image = "",
                 schedule = _mapper.Map<List<TeamTransform.TeamSchedule>>(teamSchedule.ToList()),
                 completed_game_scores = _mapper.Map<List<TeamTransform.Game>>(scores),
                 season_stats = _mapper.Map<TeamTransform.SeasonStats>(season_stats),
-                video_assets = _mapper.Map<List<TeamTransform.VideoAsset>>(video_assets1),
                 opponents = _mapper.Map<List<TeamTransform.Opponent>>(opponents)
             };
 
-            foreach (var playerId in teamPlayers.stats_data.players.Keys)
+            foreach (var playerId in season_stats.stats_data.players.Keys)
             {
                 var player = await _gameChangerService.GetPlayer(playerId);
                 teamTransform.players.Add(new TeamTransform.Player()
@@ -85,8 +82,15 @@ namespace Stats.API.Helper
                 .Where(c => c.@event.start.datetime < DateTime.Now)
                 .Where(c => !c.@event.sub_type.Contains("scrimmages")))
             {
-                TeamEvent game = await _gameChangerService.GetTeamEventStatsAsync(team.id, evt.@event.id);
-                teamTransform.completed_games.Add(_mapper.Map<TeamTransform.TeamEvent>(game));
+                try
+                {
+                    TeamEvent game = await _gameChangerService.GetTeamEventStatsAsync(team.id, evt.@event.id);
+                    teamTransform.completed_games.Add(_mapper.Map<TeamTransform.TeamEvent>(game));
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine($"Not Found Event: {evt.@event.id}");
+                }
             }
             await _db.CreateTeamAsync(teamTransform);
         }

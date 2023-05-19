@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver.GeoJsonObjectModel;
 using Stats.API.Helper;
 using Stats.API.Models;
+using Stats.Database.Models;
 using Stats.Database.Services;
 using Stats.ExtApi.Models;
 
@@ -68,6 +70,15 @@ namespace Stats.API.Controllers
             var results = await _externalApi.GetTeamEventVideosPlayback(id, eid);
             return Ok(results);
         }
-        
+
+        [HttpGet]
+        [Route("{id}/schedule/{eid}")]
+        public async Task<ActionResult<TeamTransform.TeamEvent>> GetTeamEvent(string id, string eid)
+        {
+            var results = await _db.GetTeamAsync(id);
+            var teamEvent = results.completed_games.FirstOrDefault(game => game.event_id == eid);
+            return Ok(teamEvent);
+        }
+
     }
 }

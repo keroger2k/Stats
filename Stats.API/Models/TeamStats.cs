@@ -18,7 +18,7 @@ namespace Stats.API.Models
         public int season_year { get; set; }
         public string team_avatar_image { get; set; } = string.Empty;
         public SeasonStats season_stats { get; set; } = null!;
-        public List<Player> players { get; set; } = new List<Player>();
+        public List<TeamStatsPlayer> players { get; set; } = new List<TeamStatsPlayer>();
 
         public IEnumerable<Game> completed_game_scores { get; set; } = new List<Game>();
         public class SeasonStats
@@ -516,7 +516,7 @@ namespace Stats.API.Models
                 public int _2STRIKES { get; set; }
             }
         }
-        public class Player
+        public class TeamStatsPlayer
         {
             public string id { get; set; } = null!;
             public string first_name { get; set; } = null!;

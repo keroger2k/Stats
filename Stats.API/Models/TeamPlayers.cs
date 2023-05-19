@@ -19,8 +19,8 @@ namespace Stats.API.Models
         public string season_name { get; set; } = string.Empty;
         public int season_year { get; set; }
         public string team_avatar_image { get; set; } = string.Empty;
-        public List<Player> players { get; set; } = new List<Player>();
-        public class Player
+        public List<TeamPlayer> players { get; set; } = new List<TeamPlayer>();
+        public class TeamPlayer
         {
             public string id { get; set; } = null!;
             public string first_name { get; set; } = null!;

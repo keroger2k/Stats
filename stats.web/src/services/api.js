@@ -63,6 +63,12 @@ class Service {
         return this.request(url, method).then(res => res.json());
     }
 
+    getEvent(url, id, eid) {
+        const method = "GET";
+        url = `${url}/${id}/schedule/${eid}`;
+        return this.request(url, method).then(res => res.json());
+    }
+
     importTeam(url, id) {
         const method = "POST";
         url = `${url}/${id}`;

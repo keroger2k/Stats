@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using Stats.Database.Models;
 using System.Text.Json.Serialization;
+using static Stats.API.Models.TeamStats;
 
 namespace Stats.API.Models
 {
@@ -19,6 +20,8 @@ namespace Stats.API.Models
         public int season_year { get; set; }
         public string team_avatar_image { get; set; } = string.Empty;
         public IEnumerable<Schedule> schedule { get; set; } = new List<Schedule>();
+
+        public List<TeamStatsPlayer> players { get; set; } = new List<TeamStatsPlayer>();
         public IEnumerable<Game> completed_game_scores { get; set; } = new List<Game>();
         public IEnumerable<TeamOpponent> opponents { get; set; } = new List<TeamOpponent>();
         public class Schedule

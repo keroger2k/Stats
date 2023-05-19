@@ -148,6 +148,20 @@ export interface Players {
     };
 }
 
+export interface TeamEventData {
+    event_id: string;
+    stream_id: string;
+    game_date: string;
+    player_stats: {
+        players: Players;
+        stats: StatData;
+    };
+    cumulative_stats: {
+        players: Players;
+        stats: StatData;
+    };
+}
+
 export interface SeasonStats {
     id: string;
     stats_data: {

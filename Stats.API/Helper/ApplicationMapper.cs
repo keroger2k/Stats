@@ -10,7 +10,7 @@ namespace Stats.API.Helper
             CreateMap<Stats.Database.Models.TeamTransform, Stats.API.Models.Team>().ReverseMap();
             // TeamPlayers
             CreateMap<Stats.Database.Models.TeamTransform, Stats.API.Models.TeamPlayers>().ReverseMap();
-            CreateMap<Stats.Database.Models.TeamTransform.Player, Stats.API.Models.TeamPlayers.Player>().ReverseMap();
+            CreateMap<Stats.Database.Models.TeamTransform.Player, Stats.API.Models.TeamPlayers.TeamPlayer>().ReverseMap();
             CreateMap<Stats.Database.Models.TeamTransform.Opponent, Stats.API.Models.TeamOpponent>().ReverseMap();
 
             //Testing
@@ -50,7 +50,7 @@ namespace Stats.API.Helper
             CreateMap<Stats.Database.Models.TeamTransform.StatsData, Stats.API.Models.TeamStats.SeasonStats.StatsData>().ReverseMap();
             CreateMap<Stats.Database.Models.TeamTransform.StatsData.Player, Stats.API.Models.TeamStats.SeasonStats.StatsData.Player>().ReverseMap();
             CreateMap<Stats.Database.Models.TeamTransform.StatsData.Player, Stats.API.Models.TeamStats.SeasonStats.StatsData.Player>().ReverseMap();
-            CreateMap<Stats.Database.Models.TeamTransform.Player, Stats.API.Models.TeamStats.Player>().ReverseMap();
+            CreateMap<Stats.Database.Models.TeamTransform.Player, Stats.API.Models.TeamStats.TeamStatsPlayer>().ReverseMap();
             CreateMap<Stats.Database.Models.TeamTransform.Game, Stats.API.Models.TeamStats.Game>().ReverseMap();
             CreateMap<Stats.Database.Models.TeamTransform.Game.GameData, Stats.API.Models.TeamStats.Game.GameData>().ReverseMap();
             //TeamSchedule

@@ -1,43 +1,35 @@
 import { } from "react-bootstrap";
-import { Team, Player } from "../../models/models";
+import {  Player, StatData, Players } from "../../models/models";
 
-function StandardCatchingGrid(team: Team) {
+
+export interface GridProps {
+    summary: StatData,
+    player_stats: Players,
+    player_names: Player[]
+}
+
+export const StandardCatchingGrid = ({ summary, player_stats, player_names }: GridProps) => {
 
     function getPlayer(id: string) {
-        return team.players.find((player: Player) => player.id === id);
+        return player_names.find((player: Player) => player.id === id);
     }
 
-
-
-    const content = Object.keys(team.season_stats.stats_data.players).map<any>((player) => {
-        if (team.season_stats.stats_data.players[player].stats.defense && team.season_stats.stats_data.players[player].stats.defense["GP:C"] !== 0) {
+    const content = Object.keys(player_stats).map<any>((player) => {
+        if (player_stats[player].stats.defense && player_stats[player].stats.defense["GP:C"] !== 0) {
             return (
 
                 <tr className="whiteRow odd">
                     <td className="playerNameCell invertLinkUnderline strong">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</td>
-                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["IC:C"].toFixed(1)}</td>
-                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["PB:C"]}</td>
-                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["SB:C"]}</td>
-                    <td className="statCell">{`${team.season_stats.stats_data.players[player].stats.defense["SB:C"]}-${team.season_stats.stats_data.players[player].stats.defense["SBATT:C"]}`}</td>
-                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["CS:C"]}</td>
-                    <td className="statCell">{(team.season_stats.stats_data.players[player].stats.defense["CS:C%"] * 100).toFixed(2)}</td>
-                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["PIK:C"]}</td>
-                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense["CI:C"]}</td>
+                    <td className="statCell">{player_stats[player].stats.defense["IC:C"].toFixed(1)}</td>
+                    <td className="statCell">{player_stats[player].stats.defense["PB:C"]}</td>
+                    <td className="statCell">{player_stats[player].stats.defense["SB:C"]}</td>
+                    <td className="statCell">{`${player_stats[player].stats.defense["SB:C"]}-${player_stats[player].stats.defense["SBATT:C"]}`}</td>
+                    <td className="statCell">{player_stats[player].stats.defense["CS:C"]}</td>
+                    <td className="statCell">{(player_stats[player].stats.defense["CS:C%"] * 100).toFixed(2)}</td>
+                    <td className="statCell">{player_stats[player].stats.defense["PIK:C"]}</td>
+                    <td className="statCell">{player_stats[player].stats.defense["CI:C"]}</td>
                 </tr>);
         }
-        return (
-            <tr>
-                <td className="statCell"></td>
-                <td className="statCell"></td>
-                <td className="statCell"></td>
-                <td className="statCell"></td>
-                <td className="statCell"></td>
-                <td className="statCell"></td>
-                <td className="statCell"></td>
-                <td className="statCell"></td>
-                <td className="statCell"></td>
-            </tr>
-        );
     });
 
 
@@ -65,14 +57,14 @@ function StandardCatchingGrid(team: Team) {
                         <tfoot>
                             <tr>
                                 <td className="footerTitleCell">Team</td>
-                                <td className="statCell">{team.season_stats.stats_data.stats.defense["IC:C"].toFixed(1)}</td>
-                                <td className="statCell">{team.season_stats.stats_data.stats.defense["PB:C"]}</td>
-                                <td className="statCell">{team.season_stats.stats_data.stats.defense["SB:C"]}</td>
-                                <td className="statCell">{`${team.season_stats.stats_data.stats.defense["SB:C"]}-${team.season_stats.stats_data.stats.defense["SBATT:C"]}`}</td>
-                                <td className="statCell">{team.season_stats.stats_data.stats.defense["CS:C"]}</td>
-                                <td className="statCell">{(team.season_stats.stats_data.stats.defense["CS:C%"] * 100).toFixed(2)}</td>
-                                <td className="statCell">{team.season_stats.stats_data.stats.defense["PIK:C"]}</td>
-                                <td className="statCell">{team.season_stats.stats_data.stats.defense["CI:C"]}</td>
+                                <td className="statCell">{summary.defense["IC:C"].toFixed(1)}</td>
+                                <td className="statCell">{summary.defense["PB:C"]}</td>
+                                <td className="statCell">{summary.defense["SB:C"]}</td>
+                                <td className="statCell">{`${summary.defense["SB:C"]}-${summary.defense["SBATT:C"]}`}</td>
+                                <td className="statCell">{summary.defense["CS:C"]}</td>
+                                <td className="statCell">{(summary.defense["CS:C%"] * 100).toFixed(2)}</td>
+                                <td className="statCell">{summary.defense["PIK:C"]}</td>
+                                <td className="statCell">{summary.defense["CI:C"]}</td>
                             </tr>
                         </tfoot>
                     </table>

@@ -32,21 +32,21 @@ function TeamSeason() {
     function getGrid() {
         if (data !== undefined) {
             if (grid === "Batting" && gridType === "Advanced") {
-                return <AdvancedBattingGrid {...data!}></AdvancedBattingGrid>;
+                return <AdvancedBattingGrid player_names={data.players} player_stats={data.season_stats.stats_data.players} summary={data.season_stats.stats_data.stats}></AdvancedBattingGrid>;
             } else if (grid === "Pitching" && gridType === "Standard") {
-                return <StandardPitchingGrid {...data!}></StandardPitchingGrid>;
+                return <StandardPitchingGrid player_names={data.players} player_stats={data.season_stats.stats_data.players} summary={data.season_stats.stats_data.stats}></StandardPitchingGrid>;
             }
             else if (grid === "Pitching" && gridType === "Advanced") {
-                return <AdvancedPitchingGrid {...data!}></AdvancedPitchingGrid>;
+                return <AdvancedPitchingGrid player_names={data.players} player_stats={data.season_stats.stats_data.players} summary={data.season_stats.stats_data.stats}></AdvancedPitchingGrid>;
             }
             else if (grid === "Fielding" && gridType === "Standard") {
-                return <StandardFieldingGrid {...data!}></StandardFieldingGrid>;
+                return <StandardFieldingGrid player_names={data.players} player_stats={data.season_stats.stats_data.players} summary={data.season_stats.stats_data.stats}></StandardFieldingGrid>;
             }
             else if (grid === "Fielding" && gridType === "Catching") {
-                return <StandardCatchingGrid {...data!}></StandardCatchingGrid>;
+                return <StandardCatchingGrid player_names={data.players} player_stats={data.season_stats.stats_data.players} summary={data.season_stats.stats_data.stats}></StandardCatchingGrid>;
             }
             else {
-                return <StandardBattingGrid {...data!}></StandardBattingGrid>;
+                return <StandardBattingGrid player_names={data.players} player_stats={data.season_stats.stats_data.players} summary={data.season_stats.stats_data.stats}></StandardBattingGrid>;
             }
         }
         return "";

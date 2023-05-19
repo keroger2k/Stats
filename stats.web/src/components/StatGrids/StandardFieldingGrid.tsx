@@ -1,23 +1,30 @@
 import { } from "react-bootstrap";
-import { Team, Player } from "../../models/models";
+import { Player, StatData, Players } from "../../models/models";
 
-function StandardFieldingGrid(team: Team) {
+
+export interface GridProps {
+    summary: StatData,
+    player_stats: Players,
+    player_names: Player[]
+}
+
+export const StandardFieldingGrid = ({ summary, player_stats, player_names }: GridProps) => {
 
     function getPlayer(id: string) {
-        return team.players.find((player: Player) => player.id === id);
+        return player_names.find((player: Player) => player.id === id);
     }
 
-    const content = Object.keys(team.season_stats.stats_data.players).map<any>((player) => {
-        if (team.season_stats.stats_data.players[player].stats.defense) {
+    const content = Object.keys(player_stats).map<any>((player) => {
+        if (player_stats[player].stats.defense) {
             return (
                 <tr className="whiteRow odd">
                     <td className="playerNameCell invertLinkUnderline strong">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</td>
-                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.tc}</td>
-                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.a}</td>
-                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.po}</td>
-                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.fpct.toFixed(3).replace(/^0+/, '')}</td>
-                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.e}</td>
-                    <td className="statCell">{team.season_stats.stats_data.players[player].stats.defense.dp}</td>
+                    <td className="statCell">{player_stats[player].stats.defense.tc}</td>
+                    <td className="statCell">{player_stats[player].stats.defense.a}</td>
+                    <td className="statCell">{player_stats[player].stats.defense.po}</td>
+                    <td className="statCell">{player_stats[player].stats.defense.fpct.toFixed(3).replace(/^0+/, '')}</td>
+                    <td className="statCell">{player_stats[player].stats.defense.e}</td>
+                    <td className="statCell">{player_stats[player].stats.defense.dp}</td>
                 </tr>);
         } else {
             return (
@@ -57,12 +64,12 @@ function StandardFieldingGrid(team: Team) {
                         <tfoot>
                             <tr>
                                 <td className="footerTitleCell">Team</td>
-                                <td className="statCell">{team.season_stats.stats_data.stats.defense.tc}</td>
-                                <td className="statCell">{team.season_stats.stats_data.stats.defense.a}</td>
-                                <td className="statCell">{team.season_stats.stats_data.stats.defense.po}</td>
-                                <td className="statCell">{team.season_stats.stats_data.stats.defense.fpct.toFixed(3).replace(/^0+/, '')}</td>
-                                <td className="statCell">{team.season_stats.stats_data.stats.defense.e}</td>
-                                <td className="statCell">{team.season_stats.stats_data.stats.defense.dp}</td>
+                                <td className="statCell">{summary.defense.tc}</td>
+                                <td className="statCell">{summary.defense.a}</td>
+                                <td className="statCell">{summary.defense.po}</td>
+                                <td className="statCell">{summary.defense.fpct.toFixed(3).replace(/^0+/, '')}</td>
+                                <td className="statCell">{summary.defense.e}</td>
+                                <td className="statCell">{summary.defense.dp}</td>
                             </tr>
                         </tfoot>
                     </table>

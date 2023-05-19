@@ -86,22 +86,8 @@ namespace Stats.API.Helper
                 .Where(c => !c.@event.sub_type.Contains("scrimmages")))
             {
                 TeamEvent game = await _gameChangerService.GetTeamEventStatsAsync(team.id, evt.@event.id);
-                //var eventPlayers = new TeamTransform.EventStats()
-                //{
-                //    id = game.event_id,
-                //    stats = _mapper.Map<TeamTransform.PlayerStats>(game.player_stats.stats)
-                //};
-                //eventPlayers.players = new Dictionary<string, TeamTransform.StatsData.Player>();
-
-                //foreach (var player in game.player_stats.players)
-                //{
-                //    eventPlayers.players.Add(player.Key, _mapper.Map<TeamTransform.StatsData.Player>(player.Value.stats));
-                //}
-
                 teamTransform.completed_games.Add(_mapper.Map<TeamTransform.TeamEvent>(game));
-
             }
-
             await _db.CreateTeamAsync(teamTransform);
         }
     }

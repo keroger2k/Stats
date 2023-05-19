@@ -6,7 +6,7 @@ namespace Stats.API.Models
     /// Referenced API Endpoint: "/teams/:teamID/opponents"
     /// 
     /// </summary>
-    public class Opponent
+    public class TeamOpponent
     {   
         public string root_team_id { get; set; } = null!;
         public string owning_team_id { get; set; } = null!;

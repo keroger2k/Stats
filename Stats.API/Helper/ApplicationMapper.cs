@@ -11,7 +11,7 @@ namespace Stats.API.Helper
             // TeamPlayers
             CreateMap<Stats.Database.Models.TeamTransform, Stats.API.Models.TeamPlayers>().ReverseMap();
             CreateMap<Stats.Database.Models.TeamTransform.Player, Stats.API.Models.TeamPlayers.Player>().ReverseMap();
-            CreateMap<Stats.Database.Models.TeamTransform.Opponent, Stats.API.Models.Opponent>().ReverseMap();
+            CreateMap<Stats.Database.Models.TeamTransform.Opponent, Stats.API.Models.TeamOpponent>().ReverseMap();
 
             //Testing
             CreateMap<Stats.ExtApi.Models.TeamSchedule, Stats.Database.Models.TeamTransform.TeamSchedule>().ReverseMap();

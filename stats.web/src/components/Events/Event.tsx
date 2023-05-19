@@ -29,7 +29,6 @@ function EventPage() {
         return (
             <>
                 <EventDetails event={event!} team={team} gameData={gameData!} />
-                <VideoArchivePage videos={videos!} />
             </>
         );
     }

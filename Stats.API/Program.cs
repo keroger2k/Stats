@@ -7,9 +7,18 @@ using Stats.ExtApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors();
-
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+        });
+});
 
 var configBuilder = new ConfigurationBuilder();
 
@@ -28,12 +37,11 @@ var mappingConfig = new MapperConfiguration(mc =>
 
 IMapper mapper = mappingConfig.CreateMapper();
 
-
 builder.Services.AddScoped<DatabaseService>();
 builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("DatabaseSettings"));
-builder.Services.AddScoped<GameChangerService>(); 
-builder.Services.AddScoped<AuthorizationService>(); 
-builder.Services.AddScoped<ExternalAPIService>(); 
+builder.Services.AddScoped<GameChangerService>();
+builder.Services.AddScoped<AuthorizationService>();
+builder.Services.AddScoped<ExternalAPIService>();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -47,9 +55,7 @@ builder.Services.AddScoped(sp =>
 
 
 var app = builder.Build();
-
-
-app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+app.UseCors("AllowAll");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

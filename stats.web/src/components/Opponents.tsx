@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Service from '../services/api';
-import './MainContainer.scss';
 import { SearchResult } from '../models/models';
 import BaseballLogoLarge from './SVGImages/BaseballLogoLarge';
+import './Opponents.scss';
 
 function OpponentsContainer() {
 
@@ -44,8 +44,10 @@ function OpponentsContainer() {
                                 
                             </div>
                         </div>
-                        <span className="Text__text Text__left Text__off-black Text__base Text__semibold OpponentListing__name">{data[index].name}</span>
+                        <span className="Text__text Text__left Text__off-black Text__base Text__semibold OpponentListing__name"><span className="name">{data[index].name}</span> (<span className="season">{data[index].team_season.season}::{data[index].team_season.year}::{data[index].age_group}</span>)</span>
                         <span className="Text__text Text__left Text__cool-grey-dark Text__small Text__regular OpponentListing__details">{data[index].number_of_players} players</span>
+                        <span className="Text__text Text__left Text__cool-grey-dark Text__small Text__regular OpponentListing__details location">{data[index].location?.city}, {data[index].location?.state}</span>
+                        <span className="Text__text Text__left Text__cool-grey-dark Text__small Text__regular OpponentListing__details staff">{data[index].staff.join(', ')}</span>
                         <div className="OpponentListing__button">
                             <div>
                                 <a className="Button__button-link" href="/">
@@ -86,50 +88,7 @@ function OpponentsContainer() {
                                         </span>
                                     </div>
                                 </div>
-                                <div className="Grid__grid-item custom-grid">
-                                    <div className="OpponentsPageSearch__filterContainer">
-                                        <div className="Grid__grid Grid__fixed">
-                                            <div className="Grid__grid-item OpponentsPageSearch__filterByContainer custom-grid-item2" >
-                                                <label htmlFor="seasonSelector" className="OpponentsPageSearch__filterBy"><span>Filter by</span></label>
-                                            </div>
-                                            <div className="Grid__grid-item OpponentsPageSearch__cityStatePickerGridItem custom-grid-item5" >
-                                                <div className="OpponentsPageSearch__cityStatePickerDropdown">
-                                                    <span>
-                                                        <span><input type="text" className="TextInput__input" id="locationFilter" placeholder="City" value="" /></span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div className="Grid__grid-item OpponentsPageSearch__seasonSelectorGridItem custom-grid-item5" >
-                                                <select className="Select__select" id="seasonSelector" name="seasonFilter" placeholder="Select Season">
-                                                    <option value="{}" label="Select Season">Select Season</option>
-                                                    <option value='{"season":"summer","year":2024}' label="Summer 2024">Summer 2024</option>
-                                                    <option value='{"season":"spring","year":2024}' label="Spring 2024">Spring 2024</option>
-                                                    <option value='{"season":"winter","year":2023}' label="Winter 2023-2024">Winter 2023-2024</option>
-                                                    <option value='{"season":"fall","year":2023}' label="Fall 2023">Fall 2023</option>
-                                                    <option value='{"season":"summer","year":2023}' label="Summer 2023">Summer 2023</option>
-                                                    <option value='{"season":"spring","year":2023}' label="Spring 2023">Spring 2023</option>
-                                                    <option value='{"season":"winter","year":2022}' label="Winter 2022-2023">Winter 2022-2023</option>
-                                                    <option value='{"season":"fall","year":2022}' label="Fall 2022">Fall 2022</option>
-                                                    <option value='{"season":"summer","year":2022}' label="Summer 2022">Summer 2022</option>
-                                                    <option value='{"season":"spring","year":2022}' label="Spring 2022">Spring 2022</option>
-                                                    <option value='{"season":"winter","year":2021}' label="Winter 2021-2022">Winter 2021-2022</option>
-                                                    <option value='{"season":"fall","year":2021}' label="Fall 2021">Fall 2021</option>
-                                                    <option value='{"season":"summer","year":2021}' label="Summer 2021">Summer 2021</option>
-                                                    <option value='{"season":"spring","year":2021}' label="Spring 2021">Spring 2021</option>
-                                                    <option value='{"season":"winter","year":2020}' label="Winter 2020-2021">Winter 2020-2021</option>
-                                                    <option value='{"season":"fall","year":2020}' label="Fall 2020">Fall 2020</option>
-                                                    <option value='{"season":"summer","year":2020}' label="Summer 2020">Summer 2020</option>
-                                                    <option value='{"season":"spring","year":2020}' label="Spring 2020">Spring 2020</option>
-                                                    <option value='{"season":"winter","year":2019}' label="Winter 2019-2020">Winter 2019-2020</option>
-                                                    <option value='{"season":"fall","year":2019}' label="Fall 2019">Fall 2019</option>
-                                                    <option value='{"season":"summer","year":2019}' label="Summer 2019">Summer 2019</option>
-                                                    <option value='{"season":"spring","year":2019}' label="Spring 2019">Spring 2019</option>
-                                                    <option value='{"year":-1}' label="All Seasons Before 2019">All Seasons Before 2019</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                       
                             </div>
                         </span>
                     </div>

@@ -123,7 +123,7 @@ namespace Stats.Database.Services
         {
             var teamCollection = ConnectToMongo<TeamTransform>(_statsDatabaseSettings.Value.TeamCollectionName);
             var existingTeam = await teamCollection.FindAsync(t => t.id == id);
-            return existingTeam.First();
+            return existingTeam.FirstOrDefault();
         }
 
         public async Task<AuthorizationToken> GetTokenAsync()

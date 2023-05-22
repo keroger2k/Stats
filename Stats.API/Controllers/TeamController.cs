@@ -41,7 +41,7 @@ namespace Stats.API.Controllers
         public async Task<ActionResult<TeamPlayers>> GetTeamPlayers(string id)
         {
             var team = await _db.GetTeamAsync(id);
-            if(_externalApi.TeamNeedsUpdated(team))
+            if (team == null || _externalApi.TeamNeedsUpdated(team))
             {
                 await _externalApi.ImportTeamInfoAsync(id);
                 team = await _db.GetTeamAsync(id);
@@ -55,7 +55,7 @@ namespace Stats.API.Controllers
         public async Task<ActionResult<TeamPlayers>> GetTeamSeasonStats(string id)
         {
             var team = await _db.GetTeamAsync(id);
-            if (_externalApi.TeamNeedsUpdated(team))
+            if (team == null || _externalApi.TeamNeedsUpdated(team))
             {
                 await _externalApi.ImportTeamInfoAsync(id);
                 team = await _db.GetTeamAsync(id);
@@ -69,7 +69,7 @@ namespace Stats.API.Controllers
         public async Task<ActionResult<Stats.API.Models.TeamSchedule>> GetTeamGameSchedule(string id)
         {
             var team = await _db.GetTeamAsync(id);
-            if (_externalApi.TeamNeedsUpdated(team))
+            if (team == null || _externalApi.TeamNeedsUpdated(team))
             {
                 await _externalApi.ImportTeamInfoAsync(id);
                 team = await _db.GetTeamAsync(id);
@@ -91,7 +91,7 @@ namespace Stats.API.Controllers
         public async Task<ActionResult<TeamTransform.TeamEvent>> GetTeamEvent(string id, string eid)
         {
             var team = await _db.GetTeamAsync(id);
-            if (_externalApi.TeamNeedsUpdated(team))
+            if (team == null || _externalApi.TeamNeedsUpdated(team))
             {
                 await _externalApi.ImportTeamInfoAsync(id);
                 team = await _db.GetTeamAsync(id);
@@ -105,7 +105,7 @@ namespace Stats.API.Controllers
         public async Task<ActionResult<TeamTransform>> GetTeamPitchSmart(string id)
         {
             var team = await _db.GetTeamAsync(id);
-            if (_externalApi.TeamNeedsUpdated(team))
+            if (team == null || _externalApi.TeamNeedsUpdated(team))
             {
                 await _externalApi.ImportTeamInfoAsync(id);
                 team = await _db.GetTeamAsync(id);

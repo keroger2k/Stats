@@ -36,7 +36,7 @@ function TeamPitchSmart() {
 
 
     function getContent() {
-        if (data) {
+        if (data && team) {
             var content = team!.players.map((value: Player, index: number) => {
                 return (
                     <tr className="whiteRow odd">

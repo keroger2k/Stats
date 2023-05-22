@@ -103,7 +103,7 @@ function MainContainer() {
                                     </div>
                                     <div className="TeamsList__teamName">
                                         <span className="Text__text Text__left Text__off-black Text__base Text__semibold">
-                                            Teams below are stored locally, to add new ones click "Add Team". Teams not in database are now imported and updated automatically. May take a moment to import.
+                                            Teams below are stored locally, to add new ones click "Add Team".
                                         </span>
                                     </div>
                                     <div className="TeamsList__teamGroup">

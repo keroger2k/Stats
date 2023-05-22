@@ -2,7 +2,6 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Stats.Database.Models;
-using System.Security.Cryptography;
 
 namespace Stats.Database.Services
 {
@@ -70,22 +69,19 @@ namespace Stats.Database.Services
             return r;
         }
 
-        public async Task<Dictionary<int, Dictionary<string, int>>> GetTeamPitchSmart(string id)
+        public Dictionary<int, Dictionary<string, int>> GetTeamPitchSmart(TeamTransform team)
         {
-            var teamCollection = ConnectToMongo<TeamTransform>(_statsDatabaseSettings.Value.TeamCollectionName);
-            var exitingTeamBson = await teamCollection.FindAsync(c => c.id == id);
-            var existingTeam = exitingTeamBson.First();
-            var interestingGames = existingTeam.schedule.Where(e => e.@event.event_type == "game")
+            var interestingGames = team.schedule.Where(e => e.@event.event_type == "game")
                 .Where(e => e.@event.start.datetime < DateTime.Today && e.@event.start.datetime > DateTime.Today.AddDays(-5))
                 .ToList();
             var result = new TeamTransform
             {
-                id = existingTeam.id,
-                name = existingTeam.name,
-                players = existingTeam.players,
+                id = team.id,
+                name = team.name,
+                players = team.players,
                 schedule = interestingGames,
-                completed_games = existingTeam.completed_games
-                .Skip(existingTeam.completed_games.Count - interestingGames.Count)
+                completed_games = team.completed_games
+                .Skip(team.completed_games.Count - interestingGames.Count)
                 .Take(interestingGames.Count).ToList()
             };
 

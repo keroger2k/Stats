@@ -31,6 +31,13 @@ namespace Stats.API.Helper
             return results;
         }
 
+        public bool TeamNeedsUpdated(TeamTransform result)
+        {
+            var lastScheduledGame = result.schedule.Last(c => c.@event.event_type == "game" && c.@event.start.datetime != DateTime.MinValue && c.@event.start.datetime < DateTime.UtcNow);
+            var lastCompletedGame = result.completed_games.Any(c => c.event_id == lastScheduledGame.@event.id);
+            return !lastCompletedGame; 
+        }
+
         public async Task ImportTeamInfoAsync(string id)
         {
             var team = await _gameChangerService.GetTeamAsync(id);

@@ -41,6 +41,11 @@ namespace Stats.API.Controllers
         public async Task<ActionResult<TeamPlayers>> GetTeamPlayers(string id)
         {
             var team = await _db.GetTeamAsync(id);
+            if(_externalApi.TeamNeedsUpdated(team))
+            {
+                await _externalApi.ImportTeamInfoAsync(id);
+                team = await _db.GetTeamAsync(id);
+            }
             var mapped = _mapper.Map<TeamPlayers>(team);
             return Ok(mapped);
         }
@@ -50,6 +55,11 @@ namespace Stats.API.Controllers
         public async Task<ActionResult<TeamPlayers>> GetTeamSeasonStats(string id)
         {
             var team = await _db.GetTeamAsync(id);
+            if (_externalApi.TeamNeedsUpdated(team))
+            {
+                await _externalApi.ImportTeamInfoAsync(id);
+                team = await _db.GetTeamAsync(id);
+            }
             var mapped = _mapper.Map<TeamStats>(team);
             return Ok(mapped);
         }
@@ -59,6 +69,11 @@ namespace Stats.API.Controllers
         public async Task<ActionResult<Stats.API.Models.TeamSchedule>> GetTeamGameSchedule(string id)
         {
             var team = await _db.GetTeamAsync(id);
+            if (_externalApi.TeamNeedsUpdated(team))
+            {
+                await _externalApi.ImportTeamInfoAsync(id);
+                team = await _db.GetTeamAsync(id);
+            }
             var mapped = _mapper.Map<Stats.API.Models.TeamSchedule>(team);
             return Ok(mapped);
         }
@@ -75,8 +90,13 @@ namespace Stats.API.Controllers
         [Route("{id}/schedule/{eid}")]
         public async Task<ActionResult<TeamTransform.TeamEvent>> GetTeamEvent(string id, string eid)
         {
-            var results = await _db.GetTeamAsync(id);
-            var teamEvent = results.completed_games.FirstOrDefault(game => game.event_id == eid);
+            var team = await _db.GetTeamAsync(id);
+            if (_externalApi.TeamNeedsUpdated(team))
+            {
+                await _externalApi.ImportTeamInfoAsync(id);
+                team = await _db.GetTeamAsync(id);
+            }
+            var teamEvent = team.completed_games.FirstOrDefault(game => game.event_id == eid);
             return Ok(teamEvent);
         }
 
@@ -84,7 +104,13 @@ namespace Stats.API.Controllers
         [Route("{id}/pitch-smart/")]
         public async Task<ActionResult<TeamTransform>> GetTeamPitchSmart(string id)
         {
-            var results = await _db.GetTeamPitchSmart(id);
+            var team = await _db.GetTeamAsync(id);
+            if (_externalApi.TeamNeedsUpdated(team))
+            {
+                await _externalApi.ImportTeamInfoAsync(id);
+                team = await _db.GetTeamAsync(id);
+            }
+            var results = _db.GetTeamPitchSmart(team);
             return Ok(results);
         }
 

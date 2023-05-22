@@ -134,9 +134,6 @@ function TeamSchedule() {
                 <div className="Grid__grid-item ScheduleListContainer__scheduleHeader" >
                     <div className="OldGrid__row OldGrid__vertical-align Title__row ScheduleListContainer__scheduleHeaderRow" role="presentation">
                         <h1 className="Text__text Text__left Text__off-black Text__base Text__xbold Title__text Text__inline-header">Schedule</h1>
-                        <button type="button" className="Button__large Button__gc-blue Button__filled Button__fixed" data-testid="add-event-button" onClick={() => importTeam(getId())}>
-                            <span className="Text__text Text__left Text__white Text__base Text__bold">Update Team Data</span>
-                        </button>
                     </div>
                 </div>
                 <br />

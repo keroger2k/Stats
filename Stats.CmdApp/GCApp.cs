@@ -337,8 +337,8 @@ namespace Stats.CmdApp
                 season_name = team.season_name,
                 season_year = team.season_year,
                 team_avatar_image = avatar.full_media_url,
-                schedule = _mapper.Map<List<TeamTransform.TeamSchedule>>(teamSchedule.ToList()),
-                completed_game_scores = _mapper.Map<List<TeamTransform.Game>>(scores),
+                schedule = _mapper.Map<List<TeamTransform.TeamSchedule1>>(teamSchedule.ToList()),
+                completed_game_scores = _mapper.Map<List<TeamTransform.TeamGame>>(scores),
                 season_stats = _mapper.Map<TeamTransform.SeasonStats>(season_stats),
                 video_assets = _mapper.Map<List<TeamTransform.VideoAsset>>(video_assets1)
 
@@ -373,11 +373,11 @@ namespace Stats.CmdApp
                         id = game.event_id,
                         stats = _mapper.Map<TeamTransform.PlayerStats>(game.player_stats.stats)
                     };
-                    eventPlayers.players = new Dictionary<string, TeamTransform.StatsData.Player>();
+                    eventPlayers.players = new Dictionary<string, TeamTransform.StatsData.StatsPlayer>();
 
                     foreach (var player in game.player_stats.players)
                     {
-                        eventPlayers.players.Add(player.Key, _mapper.Map<TeamTransform.StatsData.Player>(player.Value.stats));
+                        eventPlayers.players.Add(player.Key, _mapper.Map<TeamTransform.StatsData.StatsPlayer>(player.Value.stats));
                     }
 
                     teamTransform.completed_games.Add(_mapper.Map<TeamTransform.TeamEvent>(game));

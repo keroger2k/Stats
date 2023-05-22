@@ -8,7 +8,7 @@ export interface GridProps {
     player_names: Player[]
 }
 
-export const StandardPitchingGrid = ({ summary, player_stats, player_names }: GridProps) => {
+export const PitchSmart = ({ summary, player_stats, player_names }: GridProps) => {
 
     function getPlayer(id: string) {
         return player_names.find((player: Player) => player.id === id);
@@ -231,4 +231,4 @@ export const StandardPitchingGrid = ({ summary, player_stats, player_names }: Gr
     );
 }
 
-export default StandardPitchingGrid;
+export default PitchSmart;

@@ -4,8 +4,6 @@ import Service from '../../services/api';
 import { Team } from '../../models/models';
 import './TeamSeason.scss'
 import TeamNavBar from '../TeamNavBar/TeamNavBar';
-
-import './TeamSeason.scss'
 import StandardBattingGrid from '../StatGrids/StandardBattingGrid';
 import AdvancedBattingGrid from '../StatGrids/AdvancedBattingGrid';
 import StandardPitchingGrid from '../StatGrids/StandardPitchingGrid';

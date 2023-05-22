@@ -49,6 +49,14 @@ class Service {
         return this.request(url, method).then(res => res.json());
     }
 
+    getPitchSmart(url, id) {
+        const method = "GET";
+        if (id) {
+            url = `${url}/${id}/pitch-smart`;
+        }
+        return this.request(url, method).then(res => res.json());
+    }
+
     getSearchHits(url, query) {
         const method = "GET";
         if (query) {

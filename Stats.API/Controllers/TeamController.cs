@@ -80,5 +80,13 @@ namespace Stats.API.Controllers
             return Ok(teamEvent);
         }
 
+        [HttpGet]
+        [Route("{id}/pitch-smart/")]
+        public async Task<ActionResult<TeamTransform>> GetTeamPitchSmart(string id)
+        {
+            var results = await _db.GetTeamPitchSmart(id);
+            return Ok(results);
+        }
+
     }
 }

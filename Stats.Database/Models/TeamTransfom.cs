@@ -20,9 +20,9 @@ namespace Stats.Database.Models
         public string team_avatar_image { get; set; } = string.Empty;
         public List<Player> players { get; set; } = new List<TeamTransform.Player>();
         public List<TeamEvent> completed_games { get; set; } = new List<TeamEvent>();
-        public List<Game> completed_game_scores { get; set; } = new List<TeamTransform.Game>();
-        public List<Opponent> opponents { get; set; } = new List<TeamTransform.Opponent>();
-        public List<TeamSchedule> schedule { get; set; } = new List<TeamTransform.TeamSchedule>();
+        public List<TeamGame> completed_game_scores { get; set; } = new List<TeamTransform.TeamGame>();
+        public List<TeamOpponent1> opponents { get; set; } = new List<TeamTransform.TeamOpponent1>();
+        public List<TeamSchedule1> schedule { get; set; } = new List<TeamTransform.TeamSchedule1>();
         public SeasonStats season_stats { get; set; } = null!;
         public List<VideoAsset> video_assets { get; set; } = new List<VideoAsset>();
         public class VideoAsset
@@ -69,14 +69,14 @@ namespace Stats.Database.Models
         public class StatsData
         {
             public PlayerStats stats { get; set; } = null!;
-            public Dictionary<string, Player> players { get; set; } = null!;
-            public class Player
+            public Dictionary<string, StatsPlayer> players { get; set; } = null!;
+            public class StatsPlayer
             {
                 public PlayerStats stats { get; set; } = null!;
             }
         }
 
-        public class Opponent
+        public class TeamOpponent1
         {
             public string root_team_id { get; set; } = null!;
             public string owning_team_id { get; set; } = null!;
@@ -102,12 +102,12 @@ namespace Stats.Database.Models
             [BsonId]
             public string id { get; set; } = null!;
         }
-        public class Game
+        public class TeamGame
         {
             [BsonId]
             public string event_id { get; set; } = null!;
-            public GameData game_data { get; set; } = null!;
-            public class GameData
+            public TeamGameData game_data { get; set; } = null!;
+            public class TeamGameData
             {
                 [BsonId]
                 public string game_id { get; set; } = null!;
@@ -118,10 +118,10 @@ namespace Stats.Database.Models
                 public DateTime last_time_to_score_ts { get; set; }
             }
         }
-        public class TeamSchedule
+        public class TeamSchedule1
         {
-            public Event @event { get; set; } = null!;
-            public class Event
+            public Event1 @event { get; set; } = null!;
+            public class Event1
             {
                 [BsonId]
                 public string id { get; set; } = null!;
@@ -130,42 +130,42 @@ namespace Stats.Database.Models
                 public string status { get; set; } = null!;
                 public bool full_day { get; set; }
                 public string team_id { get; set; } = null!;
-                public Start start { get; set; } = null!;
-                public End end { get; set; } = null!;
-                public Arrive arrive { get; set; } = null!;
-                public Location location { get; set; } = null!;
+                public Start1 start { get; set; } = null!;
+                public End1 end { get; set; } = null!;
+                public Arrive1 arrive { get; set; } = null!;
+                public Location1 location { get; set; } = null!;
                 public string timezone { get; set; } = null!;
                 public string notes { get; set; } = null!;
                 public string title { get; set; } = null!;
                 public string series_id { get; set; } = null!;
-                public class Start
+                public class Start1
                 {
                     public DateTime datetime { get; set; }
                 }
 
-                public class End
+                public class End1
                 {
                     public DateTime datetime { get; set; }
                 }
 
-                public class Arrive
+                public class Arrive1
                 {
                     public DateTime datetime { get; set; }
                 }
 
-                public class Location
+                public class Location1
                 {
-                    public Coordinates coordinates { get; set; } = null!;
+                    public Coordinates1 coordinates { get; set; } = null!;
                     public string[] address { get; set; } = null!;
-                    public class Coordinates
+                    public class Coordinates1
                     {
                         public double latitude { get; set; }
                         public double longitude { get; set; }
                     }
                 }
             }
-            public PregameData pregame_data { get; set; } = null!;
-            public class PregameData
+            public PregameData1 pregame_data { get; set; } = null!;
+            public class PregameData1
             {
                 [BsonId]
                 public string id { get; set; } = string.Empty!;
@@ -177,8 +177,8 @@ namespace Stats.Database.Models
                 public string meta_seq { get; set; } = null!;
                 public DateTime created_at { get; set; }
                 public DateTime updated_at { get; set; }
-                public Opponent opponent { get; set; } = null!;
-                public class Opponent
+                public Opponent1 opponent { get; set; } = null!;
+                public class Opponent1
                 {
                     public string root_team_id { get; set; } = null!;
                     public string owning_team_id { get; set; } = null!;
@@ -186,8 +186,8 @@ namespace Stats.Database.Models
                     public string meta_seq { get; set; } = null!;
                     public DateTime created_at { get; set; }
                     public DateTime updated_at { get; set; }
-                    public RootTeam rootTeam { get; set; } = null!;
-                    public class RootTeam
+                    public RootTeam1 rootTeam { get; set; } = null!;
+                    public class RootTeam1
                     {
                         [BsonId]
                         public string id { get; set; } = null!;

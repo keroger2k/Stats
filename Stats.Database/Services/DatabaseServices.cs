@@ -2,6 +2,7 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Stats.Database.Models;
+using System.Security.Cryptography;
 
 namespace Stats.Database.Services
 {
@@ -60,7 +61,7 @@ namespace Stats.Database.Services
                 id = c.id,
                 name = c.name,
             });
-            var options = new FindOptions<TeamTransform, TeamTransform> {  Projection = projection };
+            var options = new FindOptions<TeamTransform, TeamTransform> { Projection = projection };
 
 
             var teamCollection = ConnectToMongo<TeamTransform>(_statsDatabaseSettings.Value.TeamCollectionName);
@@ -68,6 +69,60 @@ namespace Stats.Database.Services
             var r = await existingTeam.ToListAsync();
             return r;
         }
+
+        public async Task<Dictionary<int, Dictionary<string, int>>> GetTeamPitchSmart(string id)
+        {
+            var teamCollection = ConnectToMongo<TeamTransform>(_statsDatabaseSettings.Value.TeamCollectionName);
+            var exitingTeamBson = await teamCollection.FindAsync(c => c.id == id);
+            var existingTeam = exitingTeamBson.First();
+            var interestingGames = existingTeam.schedule.Where(e => e.@event.event_type == "game")
+                .Where(e => e.@event.start.datetime < DateTime.Today && e.@event.start.datetime > DateTime.Today.AddDays(-5))
+                .ToList();
+            var result = new TeamTransform
+            {
+                id = existingTeam.id,
+                name = existingTeam.name,
+                players = existingTeam.players,
+                schedule = interestingGames,
+                completed_games = existingTeam.completed_games
+                .Skip(existingTeam.completed_games.Count - interestingGames.Count)
+                .Take(interestingGames.Count).ToList()
+            };
+
+            var data = new Dictionary<int, Dictionary<string, int>>();
+
+            for(var i = 0; i < 5; i++)
+            {
+                var pData = new Dictionary<string, int>();
+                var games = interestingGames.Where(c => c.@event.start.datetime.Date == DateTime.Today.AddDays(i * -1));
+                foreach(var game in games)
+                {
+                    var gameData = result.completed_games.FirstOrDefault(c => c.event_id == game.@event.id);
+                    if(gameData != null)
+                    {
+                        foreach (var player in gameData.player_stats.players)
+                        {
+                            if(player.Value.stats.defense != null)
+                            {
+                                if (pData.ContainsKey(player.Key))
+                                {
+                                    pData[player.Key] = pData[player.Key] + player.Value.stats.defense.P;
+
+                                }
+                                else if(result.players.Any(c => c.id == player.Key))
+                                {
+                                    pData.Add(player.Key, player.Value.stats.defense.P);
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+                data.Add(i, pData);
+            }
+            return data;
+        }
+
         public async Task<TeamTransform> GetTeamAsync(string id)
         {
             var teamCollection = ConnectToMongo<TeamTransform>(_statsDatabaseSettings.Value.TeamCollectionName);

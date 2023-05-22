@@ -40,7 +40,7 @@ function TeamPitchSmart() {
             var content = team!.players.map((value: Player, index: number) => {
                 return (
                     <tr className="whiteRow odd">
-                        <td className="statCell">{value.first_name}</td>
+                        <td className="statCell">{value.first_name} {value.last_name}</td>
                         <td className="statCell">{data[0][value.id] ? data[0][value.id] : "0" }</td>
                         <td className="statCell">{data[1][value.id] ? data[1][value.id] : "0" }</td>
                         <td className="statCell">{data[2][value.id] ? data[2][value.id] : "0" }</td>

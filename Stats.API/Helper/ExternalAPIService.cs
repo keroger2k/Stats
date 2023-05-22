@@ -33,7 +33,7 @@ namespace Stats.API.Helper
 
         public bool TeamNeedsUpdated(TeamTransform result)
         {
-            var lastScheduledGame = result.schedule.Last(c => c.@event.event_type == "game" && c.@event.start.datetime != DateTime.MinValue && c.@event.start.datetime < DateTime.UtcNow);
+            var lastScheduledGame = result.schedule.Last(c => c.@event.event_type == "game" && c.@event.status != "canceled" && c.@event.start.datetime != DateTime.MinValue && c.@event.start.datetime < DateTime.UtcNow);
             var lastCompletedGame = result.completed_games.Any(c => c.event_id == lastScheduledGame.@event.id);
             return !lastCompletedGame; 
         }

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver.GeoJsonObjectModel;
 using Stats.API.Helper;
 using Stats.API.Models;
 using Stats.Database.Models;
@@ -40,12 +39,7 @@ namespace Stats.API.Controllers
         [Route("{id}/players")]
         public async Task<ActionResult<TeamPlayers>> GetTeamPlayers(string id)
         {
-            var team = await _db.GetTeamAsync(id);
-            if (team == null || _externalApi.TeamNeedsUpdated(team))
-            {
-                await _externalApi.ImportTeamInfoAsync(id);
-                team = await _db.GetTeamAsync(id);
-            }
+            var team = await _externalApi.CheckTeamStatus(id);
             var mapped = _mapper.Map<TeamPlayers>(team);
             return Ok(mapped);
         }
@@ -54,12 +48,7 @@ namespace Stats.API.Controllers
         [Route("{id}/season-stats")]
         public async Task<ActionResult<TeamPlayers>> GetTeamSeasonStats(string id)
         {
-            var team = await _db.GetTeamAsync(id);
-            if (team == null || _externalApi.TeamNeedsUpdated(team))
-            {
-                await _externalApi.ImportTeamInfoAsync(id);
-                team = await _db.GetTeamAsync(id);
-            }
+            var team = await _externalApi.CheckTeamStatus(id);
             var mapped = _mapper.Map<TeamStats>(team);
             return Ok(mapped);
         }
@@ -68,12 +57,7 @@ namespace Stats.API.Controllers
         [Route("{id}/schedule")]
         public async Task<ActionResult<Stats.API.Models.TeamSchedule>> GetTeamGameSchedule(string id)
         {
-            var team = await _db.GetTeamAsync(id);
-            if (team == null || _externalApi.TeamNeedsUpdated(team))
-            {
-                await _externalApi.ImportTeamInfoAsync(id);
-                team = await _db.GetTeamAsync(id);
-            }
+            var team = await _externalApi.CheckTeamStatus(id);
             var mapped = _mapper.Map<Stats.API.Models.TeamSchedule>(team);
             return Ok(mapped);
         }
@@ -90,12 +74,7 @@ namespace Stats.API.Controllers
         [Route("{id}/schedule/{eid}")]
         public async Task<ActionResult<TeamTransform.TeamEvent>> GetTeamEvent(string id, string eid)
         {
-            var team = await _db.GetTeamAsync(id);
-            if (team == null || _externalApi.TeamNeedsUpdated(team))
-            {
-                await _externalApi.ImportTeamInfoAsync(id);
-                team = await _db.GetTeamAsync(id);
-            }
+            var team = await _externalApi.CheckTeamStatus(id);
             var teamEvent = team.completed_games.FirstOrDefault(game => game.event_id == eid);
             return Ok(teamEvent);
         }
@@ -104,12 +83,7 @@ namespace Stats.API.Controllers
         [Route("{id}/pitch-smart/")]
         public async Task<ActionResult<TeamTransform>> GetTeamPitchSmart(string id)
         {
-            var team = await _db.GetTeamAsync(id);
-            if (team == null || _externalApi.TeamNeedsUpdated(team))
-            {
-                await _externalApi.ImportTeamInfoAsync(id);
-                team = await _db.GetTeamAsync(id);
-            }
+            var team = await _externalApi.CheckTeamStatus(id);
             var results = _db.GetTeamPitchSmart(team);
             return Ok(results);
         }

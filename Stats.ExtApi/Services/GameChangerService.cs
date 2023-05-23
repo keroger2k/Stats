@@ -1,5 +1,5 @@
 ﻿using Stats.ExtApi.Models;
-using System.Runtime.InteropServices;
+using System.Net;
 using System.Text;
 using System.Text.Json;
 
@@ -9,13 +9,13 @@ namespace Stats.ExtApi.Services
     {
         private readonly HttpClient _httpClient;
         private readonly AuthorizationService _authorizationService;
-        
-         public GameChangerService(HttpClient httpClient, AuthorizationService authorizationService)
+
+        public GameChangerService(HttpClient httpClient, AuthorizationService authorizationService)
         {
             _httpClient = httpClient;
             _authorizationService = authorizationService;
         }
-        
+
         public async Task<TeamPlayer> GetPlayer(string playerId)
         {
             var url = string.Format(APIEndpoint.PLAYER_INFO, playerId);
@@ -176,7 +176,7 @@ namespace Stats.ExtApi.Services
         /// </returns>
         public async Task<SearchResults> SearchTeamsAsync(string query, string city = "Bloomington", string state = "", string season = "", string year = "", string sport = "baseball")
         {
-            StringBuilder st1 = new StringBuilder(); 
+            StringBuilder st1 = new StringBuilder();
             if (!string.IsNullOrEmpty(city)) st1.Append($"&city={city}");
             if (!string.IsNullOrEmpty(state)) st1.Append($"&state={state}");
             if (!string.IsNullOrEmpty(season)) st1.Append($"&season={season}");
@@ -191,14 +191,28 @@ namespace Stats.ExtApi.Services
         /// </summary>
         /// <param name="url">API Endpoint</param>
         /// <returns>JSON results from external API</returns>
-        private async Task<string> GetRequestAsync(string url)
+        private async Task<string> GetRequestAsync(string url, int retries = 0)
         {
+            Console.Write($"\nURL:{url}, Retries: {retries}");
             _httpClient.DefaultRequestHeaders.Clear();
             var token = await _authorizationService.GetAccessTokenAsync();
             _httpClient.DefaultRequestHeaders.Add("gc-token", token);
             var response = await _httpClient.GetAsync(url);
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
+            if (response.StatusCode == HttpStatusCode.Unauthorized && retries < 3)
+            {
+                Console.WriteLine("Unauthorized: Access denied.");
+                return await GetRequestAsync(url, ++retries);
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                Console.WriteLine("Not Found: Resource not found.");
+                throw new HttpRequestException();
+            }
+            else
+            {
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync();
+            }
         }
 
         public class SearchResults

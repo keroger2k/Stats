@@ -3,7 +3,6 @@ using Stats.Database.Models;
 using Stats.Database.Services;
 using Stats.ExtApi.Models;
 using Stats.ExtApi.Services;
-using System.Diagnostics;
 
 namespace Stats.API.Helper
 {
@@ -31,9 +30,20 @@ namespace Stats.API.Helper
             return results;
         }
 
-        public bool TeamNeedsUpdated(TeamTransform result)
+        public async Task<TeamTransform> CheckTeamStatus(string id)
         {
-            var lastScheduledGame = result.schedule.Last(c => c.@event.event_type == "game" && c.@event.status != "canceled" && c.@event.start.datetime != DateTime.MinValue && c.@event.start.datetime < DateTime.UtcNow);
+            var team = await _db.GetTeamAsync(id);
+            if (team == null || TeamNeedsUpdated(team))
+            {
+                await ImportTeamInfoAsync(id);
+                team = await _db.GetTeamAsync(id);
+            }
+            return team;
+        }
+
+        private bool TeamNeedsUpdated(TeamTransform result)
+        {
+            var lastScheduledGame = result.schedule.Last(c => c.@event.event_type == "game" && c.@event.status != "canceled" && c.@event.start.datetime != DateTime.MinValue && c.@event.end.datetime < DateTime.UtcNow);
             var lastCompletedGame = result.completed_games.Any(c => c.event_id == lastScheduledGame.@event.id);
             return !lastCompletedGame; 
         }

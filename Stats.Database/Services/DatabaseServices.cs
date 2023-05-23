@@ -72,7 +72,7 @@ namespace Stats.Database.Services
         public Dictionary<int, Dictionary<string, int>> GetTeamPitchSmart(TeamTransform team)
         {
             var interestingGames = team.schedule.Where(e => e.@event.event_type == "game")
-                .Where(e => e.@event.start.datetime < DateTime.Today && e.@event.start.datetime > DateTime.Today.AddDays(-5))
+                .Where(e => e.@event.start.datetime < DateTime.UtcNow && e.@event.start.datetime > DateTime.Today.AddDays(-5))
                 .ToList();
             var result = new TeamTransform
             {
@@ -90,7 +90,7 @@ namespace Stats.Database.Services
             for(var i = 0; i < 5; i++)
             {
                 var pData = new Dictionary<string, int>();
-                var games = interestingGames.Where(c => c.@event.start.datetime.Date == DateTime.Today.AddDays(i * -1));
+                var games = interestingGames.Where(c => c.@event.start.datetime.Date == DateTime.Now.ToUniversalTime().AddDays(i * -1).Date);
                 foreach(var game in games)
                 {
                     var gameData = result.completed_games.FirstOrDefault(c => c.event_id == game.@event.id);

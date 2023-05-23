@@ -89,6 +89,9 @@ namespace Stats.API.Models
 
                 [JsonPropertyName("S%")]
                 public double S { get; set; }
+
+                [JsonPropertyName("SV%")]
+                public double SVPercent { get; set; }
                 public int SB { get; set; }
                 public int SM { get; set; }
                 public int SO { get; set; }

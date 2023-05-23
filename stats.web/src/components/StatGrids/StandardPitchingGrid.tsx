@@ -29,7 +29,7 @@ export const PitchSmart = ({ summary, player_stats, player_names }: GridProps) =
                     <td className="statCell">{player_stats[player].stats.defense?.sv}</td>
                     <td className="statCell">{player_stats[player].stats.defense?.svo}</td>
                     <td className="statCell">{player_stats[player].stats.defense?.bs}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.SVPercent}</td>
+                    <td className="statCell">{(player_stats[player].stats.defense["SV%"] * 100).toFixed(1)}</td>
                     <td className="statCell">{player_stats[player].stats.defense?.h}</td>
                     <td className="statCell">{player_stats[player].stats.defense?.r}</td>
                     <td className="statCell">{player_stats[player].stats.defense?.er}</td>
@@ -140,7 +140,7 @@ export const PitchSmart = ({ summary, player_stats, player_names }: GridProps) =
                                 <td className="statCell">{summary.defense.sv}</td>
                                 <td className="statCell">{summary.defense.svo}</td>
                                 <td className="statCell">{summary.defense.bs}</td>
-                                <td className="statCell">{summary.defense.SVPercent}</td>
+                                <td className="statCell">{(summary.defense["SV%"] * 100).toFixed(1)}</td>
                                 <td className="statCell">{summary.defense.h}</td>
                                 <td className="statCell">{summary.defense.r}</td>
                                 <td className="statCell">{summary.defense.er}</td>

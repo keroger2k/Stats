@@ -345,7 +345,7 @@ export type Defense = {
     sv: number;
     svo: number;
     bs: number;
-    SVPercent: number;
+    'SV%': number;
     h: number;
     r: number;
     er: number;

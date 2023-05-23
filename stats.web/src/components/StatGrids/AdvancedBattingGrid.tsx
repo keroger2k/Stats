@@ -135,64 +135,64 @@ export const AdvancedBattingGrid = ({ summary, player_stats, player_names }: Gri
             <div className="Spacer__spacer Spacer__md Spacer__vertical" />
             <div className="StatsLegend__legendRow" data-testid="stats-legend">
                 <dl>
-                    <dt>IP</dt>
-                    <dd>Innings pitched</dd>
                     <dt>GP</dt>
-                    <dd>Games pitched</dd>
-                    <dt>GS</dt>
-                    <dd>Games started</dd>
-                    <dt>BF</dt>
-                    <dd>Total batters faced</dd>
-                    <dt>#P</dt>
-                    <dd>Total pitches</dd>
-                    <dt>W</dt>
-                    <dd>Wins</dd>
-                    <dt>L</dt>
-                    <dd>Losses</dd>
-                    <dt>SV</dt>
-                    <dd>Saves</dd>
-                    <dt>SVO</dt>
-                    <dd>Save opportunities</dd>
-                    <dt>BS</dt>
-                    <dd>Blown saves</dd>
-                    <dt>SV%</dt>
-                    <dd>Save percentage</dd>
-                    <dt>H</dt>
-                    <dd>Hits allowed</dd>
-                    <dt>R</dt>
-                    <dd>Runs allowed</dd>
-                    <dt>ER</dt>
-                    <dd>Earned runs allowed</dd>
+                    <dd>Games played</dd>
+                    <dt>PA</dt>
+                    <dd>Plate appearances</dd>
+                    <dt>AB</dt>
+                    <dd>At bats</dd>
+                    <dt>QAB</dt>
+                    <dd>Quality at bats (any one of: 3 pitches after 2 strikes, 6+ pitch ABs, XBH, HHB, BB, SAC Bunt, SAC Fly)</dd>
+                    <dt>QAB%</dt>
+                    <dd>Quality at bats per plate appearance</dd>
+                    <dt>PA/BB</dt>
+                    <dd>Plate appearances per walk</dd>
+                    <dt>BB/K</dt>
+                    <dd>Walks per strikeout</dd>
+                    <dt>C%</dt>
+                    <dd>Contact percentage/Contact rate: AB-K/AB</dd>
+                    <dt>HHB</dt>
+                    <dd>Hard hit balls: Total line drives and hard ground balls</dd>
+                    <dt>LD%</dt>
+                    <dd>Line drive percentage</dd>
+                    <dt>FB%</dt>
+                    <dd>Fly ball percentage</dd>
+                    <dt>GB%</dt>
+                    <dd>Ground ball percentage</dd>
+                    <dt>BABIP</dt>
+                    <dd>Batting average on balls in play</dd>
+                    <dt>BA/RISP</dt>
+                    <dd>Batting average with runners in scoring position</dd>
                 </dl>
                 <dl>
-                    <dt>BB</dt>
-                    <dd>Base on balls (walks)</dd>
-                    <dt>SO</dt>
-                    <dd>Strikeouts</dd>
-                    <dt>K-L</dt>
-                    <dd>Strikeouts looking</dd>
-                    <dt>HBP</dt>
-                    <dd>Hit batters</dd>
-                    <dt>ERA</dt>
-                    <dd>Earned run average</dd>
-                    <dt>WHIP</dt>
-                    <dd>Walks plus hits per innings pitched</dd>
                     <dt>LOB</dt>
                     <dd>Runners left on base</dd>
-                    <dt>BK</dt>
-                    <dd>Balks</dd>
-                    <dt>PIK</dt>
-                    <dd>Runners picked off</dd>
-                    <dt>CS</dt>
-                    <dd>Runners caught stealing</dd>
-                    <dt>SB</dt>
-                    <dd>Stolen bases allowed</dd>
-                    <dt>SB%</dt>
-                    <dd>Stolen bases allowed percentage</dd>
-                    <dt>WP</dt>
-                    <dd>Wild pitches</dd>
-                    <dt>BAA</dt>
-                    <dd>Opponent batting average</dd>
+                    <dt>2OUTRBI</dt>
+                    <dd>2-out RBI</dd>
+                    <dt>XBH</dt>
+                    <dd>Extra-base hits</dd>
+                    <dt>TB</dt>
+                    <dd>Total bases</dd>
+                    <dt>PS</dt>
+                    <dd>Pitches seen</dd>
+                    <dt>PS/PA</dt>
+                    <dd>Pitches seen per plate appearance</dd>
+                    <dt>2S+3</dt>
+                    <dd>Plate appearances in which batter sees 3+ pitches after 2 strikes</dd>
+                    <dt>2S+3%</dt>
+                    <dd>% of plate appearances in which batter sees 3+ pitches after 2 strikes</dd>
+                    <dt>6+</dt>
+                    <dd>Plate appearances with 6+ pitches</dd>
+                    <dt>6+%</dt>
+                    <dd>% of plate appearances of 6+ pitches</dd>
+                    <dt>AB/HR</dt>
+                    <dd>At bats per home run</dd>
+                    <dt>GIDP</dt>
+                    <dd>Hit into double play</dd>
+                    <dt>GITP</dt>
+                    <dd>Hit into triple play</dd>
+                    <dt>CI</dt>
+                    <dd>Batter advances on catcher's interference</dd>
                 </dl>
             </div>
         </>

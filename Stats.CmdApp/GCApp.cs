@@ -202,19 +202,15 @@ namespace Stats.CmdApp
                 .Where(c => c.@event.start.datetime < DateTime.Now.AddDays(1))
                 .Where(c => !c.@event.sub_type.Contains("scrimmages"));
             int choice = 0;
+            int ii = 1;
+            Console.WriteLine("\n");
             foreach (var evt in games)
             {
-                Console.WriteLine($"Id:{evt.@event.id}, Title:{evt.@event.title}");
+                Console.WriteLine($"{ii++}: Id:{evt.@event.id}, Title:{evt.@event.title}");
             }
             if (int.TryParse(Console.ReadLine(), out choice))
             {
-                var assets = await _gameChangerService.GetTeamEventVideoAssetsAsync(item.id, games.ElementAt(choice).@event.id);
-                if (assets.Any(c => !c.audience_type.Equals("players_family_fans")))
-                {
-                    Console.WriteLine("Unable to find any videos available to fans.");
-                    Console.ReadLine();
-                    return;
-                }
+                var assets = await _gameChangerService.GetTeamEventVideoAssetsAsync(item.id, games.ElementAt(choice - 1).@event.id);
                 var asset = assets.OrderByDescending(c => c.duration).First();
                 var game = await _gameChangerService.GetTeamEventStatsAsync(item.id, asset.schedule_event_id);
                 var clipmeta = await _gameChangerService.GetPlayerClipMeta(item.id, game.player_stats.players.First().Key);
@@ -290,7 +286,7 @@ namespace Stats.CmdApp
                 string inputDirectoryPath = @"C:\gc-downloads";
 
                 // Get the name of the output file.
-                string outputFileName = @"combined_file.ts";
+                string outputFileName = game.event_id;
 
                 string[] inputFilePaths = Directory.GetFiles(inputDirectoryPath);
                 Console.WriteLine("Number of files: {0}.", inputFilePaths.Length);
@@ -306,6 +302,13 @@ namespace Stats.CmdApp
                         }
                         Console.WriteLine("The file {0} has been processed.", inputFilePath);
                     }
+                }
+
+                string[] tsFiles = Directory.GetFiles(inputDirectoryPath, "*.ts");
+                foreach (string file in tsFiles)
+                {
+                    File.Delete(file);
+                    Console.WriteLine($"Deleted file: {file}");
                 }
 
                 Console.ReadLine();

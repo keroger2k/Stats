@@ -19,13 +19,28 @@ function TeamPitchSmart() {
         return team?.players.find((player: Player) => player.id === id);
     }
 
+    function formatInningsPitched(ip: number) {
+        var innings = ip % 1;
+        var result = "";
+        if (parseFloat(innings.toFixed(2)) === .33) {
+            result = parseInt(ip.toString()) + ".1"
+
+        } else if (parseFloat(innings.toFixed(2)) === .67) {
+            result = parseInt(ip.toString()) + ".2"
+
+        } else {
+            result = parseInt(ip.toString()) + ".0"
+        }
+        return result;
+    }
+
     const { id } = useParams();
     const [data, setData] = useState<PitchSmartData | undefined>();
     const [team, setTeam] = useState<Team>();
 
     React.useEffect(() => {
         const services = new Service();
-        services.getSchedule('teams', id).then(data => {
+        services.getSeasonStats('teams', id).then(data => {
             setTeam(data);
         });
 
@@ -41,9 +56,12 @@ function TeamPitchSmart() {
                 return (
                     <tr className="whiteRow odd">
                         <td className="statCell">{value.first_name} {value.last_name}</td>
-                        <td className="statCell">{data[0][value.id] ? data[0][value.id] : "0" }</td>
-                        <td className="statCell">{data[1][value.id] ? data[1][value.id] : "0" }</td>
-                        <td className="statCell">{data[2][value.id] ? data[2][value.id] : "0" }</td>
+                        <td className="statCell">{formatInningsPitched(team.season_stats.stats_data.players[value.id].stats.defense.ip)}</td>
+                        <td className="statCell">{team.season_stats.stats_data.players[value.id].stats.defense['#P']}</td>
+                        <td className="statCell">{(team.season_stats.stats_data.players[value.id].stats.defense['S%'] * 100).toFixed(2)}</td>
+                        <td className="statCell">{data[0][value.id] ? data[0][value.id] : "0"}</td>
+                        <td className="statCell">{data[1][value.id] ? data[1][value.id] : "0"}</td>
+                        <td className="statCell">{data[2][value.id] ? data[2][value.id] : "0"}</td>
                         <td className="statCell">{data[3][value.id] ? data[3][value.id] : "0"}</td>
                         <td className="statCell">{data[4][value.id] ? data[4][value.id] : "0"}</td>
                     </tr>
@@ -71,12 +89,21 @@ function TeamPitchSmart() {
                             <table className="gcTable statTable withGridLines withOutline withHoverHighlighting">
                                 <thead>
                                     <tr>
+                                        <td className="statCell header">&nbsp;</td>
+                                        <td className="statCell header"  colSpan={3} >Season Stats</td>
+                                        <td className="statCell header"  colSpan={5} >Previous Days</td>
+                                        
+                                    </tr>
+                                    <tr>
                                         <td className="playerNameCell invertLinkUnderline strong header">Player</td>
-                                        <td className="statCell header">Today</td>
-                                        <td className="statCell header">Today - 1</td>
-                                        <td className="statCell header">Today - 2</td>
-                                        <td className="statCell header">Today - 3</td>
-                                        <td className="statCell header">Today - 4</td>
+                                        <td className="statCell header">IP</td>
+                                        <td className="statCell header">#P</td>
+                                        <td className="statCell header">S%</td>
+                                        <td className="statCell header">0</td>
+                                        <td className="statCell header">-1</td>
+                                        <td className="statCell header">-2</td>
+                                        <td className="statCell header">-3</td>
+                                        <td className="statCell header">-4</td>
                                     </tr>
                                 </thead>
                                 <tbody>

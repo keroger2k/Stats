@@ -14,12 +14,27 @@ export const AdvancedPitchingGrid = ({ summary, player_stats, player_names }: Gr
         return player_names.find((player: Player) => player.id === id);
     }
 
+    function formatInningsPitched(ip: number) {
+        var innings = ip % 1;
+        var result = "";
+        if (parseFloat(innings.toFixed(2)) === .33) {
+            result = parseInt(ip.toString()) + ".1"
+
+        } else if (parseFloat(innings.toFixed(2)) === .67) {
+            result = parseInt(ip.toString()) + ".2"
+
+        } else {
+            result = parseInt(ip.toString()) + ".0"
+        }
+        return result;
+    }
+
     const content = Object.keys(player_stats).map<any>((player) => {
         if (player_stats[player].stats.defense) {
             return (
                 <tr className="whiteRow odd">
                     <td className="playerNameCell invertLinkUnderline strong">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</td>
-                    <td className="statCell">{player_stats[player].stats.defense.ip.toFixed(1)}</td>
+                    <td className="statCell">{formatInningsPitched(player_stats[player].stats.defense.ip)}</td>
                     <td className="statCell">{player_stats[player].stats.defense.bf}</td>
                     <td className="statCell">{player_stats[player].stats.defense["P/IP"].toFixed(1)}</td>
                     <td className="statCell">{player_stats[player].stats.defense["P/BF"].toFixed(3)}</td>

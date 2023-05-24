@@ -21,7 +21,6 @@ namespace Stats.API.Controllers
         [HttpGet(Name = "Teams")]
         public async Task<ActionResult<SearchResults>> Search(string query, string city = "", string state = "", string season = "", string year = "", string sport = "baseball")
         {
-            Log.Logger.Information($"Search - Query: {query}, City: {city}, State: {state}, Season: {season}, Year: {year}, Sport: {sport}");
             var teams = await _gameChangerService.SearchTeamsAsync(query: query, city: city, state: state, season: season, year: year, sport: sport);
             return Ok(teams.hits);
         }

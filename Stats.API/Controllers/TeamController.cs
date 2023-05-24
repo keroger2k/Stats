@@ -23,7 +23,6 @@ namespace Stats.API.Controllers
         [HttpGet]
         public async Task<ActionResult<Stats.API.Models.Team>> Get()
         {
-            Log.Logger.Information($"TeamsController::Get()");
             var team = await _db.GetTeamsAsync();
             var mapped = _mapper.Map<IEnumerable<Stats.API.Models.Team>>(team);
             return Ok(mapped);
@@ -33,7 +32,6 @@ namespace Stats.API.Controllers
         [Route("{id}")]
         public async Task<ActionResult<Stats.API.Models.Team>> ImportTeamAsync(string id)
         {
-            Log.Logger.Information($"TeamsController::ImportAsync({id})");
             await _externalApi.ImportTeamInfoAsync(id);
             return Ok();
         }
@@ -42,7 +40,6 @@ namespace Stats.API.Controllers
         [Route("{id}/players")]
         public async Task<ActionResult<TeamPlayers>> GetTeamPlayers(string id)
         {
-            Log.Logger.Information($"TeamsController::GetTeamPlayers({id})");
             var team = await _externalApi.CheckTeamStatus(id);
             var mapped = _mapper.Map<TeamPlayers>(team);
             return Ok(mapped);
@@ -52,7 +49,6 @@ namespace Stats.API.Controllers
         [Route("{id}/season-stats")]
         public async Task<ActionResult<TeamPlayers>> GetTeamSeasonStats(string id)
         {
-            Log.Logger.Information($"TeamsController::GetTeamSeasonStats({id})");
             var team = await _externalApi.CheckTeamStatus(id);
             var mapped = _mapper.Map<TeamStats>(team);
             return Ok(mapped);
@@ -62,7 +58,6 @@ namespace Stats.API.Controllers
         [Route("{id}/schedule")]
         public async Task<ActionResult<Stats.API.Models.TeamSchedule>> GetTeamGameSchedule(string id)
         {
-            Log.Logger.Information($"TeamsController::GetTeamGameSchedule({id})");
             var team = await _externalApi.CheckTeamStatus(id);
             var mapped = _mapper.Map<Stats.API.Models.TeamSchedule>(team);
             return Ok(mapped);
@@ -72,7 +67,6 @@ namespace Stats.API.Controllers
         [Route("{id}/schedule/{eid}/videos")]
         public async Task<ActionResult<IEnumerable<VideoPlayback>>> GetTeamEventVideosStream(string id, string eid)
         {
-            Log.Logger.Information($"TeamsController::GetTeamEventVideosStream(id:{id},edi:{eid})");
             var results = await _externalApi.GetTeamEventVideosPlayback(id, eid);
             return Ok(results);
         }
@@ -81,7 +75,6 @@ namespace Stats.API.Controllers
         [Route("{id}/schedule/{eid}")]
         public async Task<ActionResult<TeamTransform.TeamEvent>> GetTeamEvent(string id, string eid)
         {
-            Log.Logger.Information($"TeamsController::GetTeamEvent(id:{id},edi:{eid})");
             var team = await _externalApi.CheckTeamStatus(id);
             var teamEvent = team.completed_games.FirstOrDefault(game => game.event_id == eid);
             return Ok(teamEvent);
@@ -91,7 +84,6 @@ namespace Stats.API.Controllers
         [Route("{id}/pitch-smart/")]
         public async Task<ActionResult<TeamTransform>> GetTeamPitchSmart(string id)
         {
-            Log.Logger.Information($"TeamsController::GetTeamPitchSmart({id})");
             var team = await _externalApi.CheckTeamStatus(id);
             var results = _db.GetTeamPitchSmart(team);
             return Ok(results);

@@ -24,6 +24,8 @@ var configBuilder = new ConfigurationBuilder();
 Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(configBuilder.Build())
                 .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
 
 Log.Logger.Information("Application Starting");

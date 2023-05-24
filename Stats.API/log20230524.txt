@@ -1,0 +1,7 @@
+2023-05-24 07:12:26.476 -05:00 [INF] Application Starting
+2023-05-24 07:12:32.436 -05:00 [INF] TeamsController::GetTeamSeasonStats(9bea5d79-1ba3-4bf1-a750-adc99706bd37)
+2023-05-24 07:15:19.778 -05:00 [INF] Application Starting
+2023-05-24 07:15:27.740 -05:00 [INF] TeamsController::GetTeamSeasonStats(9bea5d79-1ba3-4bf1-a750-adc99706bd37)
+2023-05-24 07:15:34.585 -05:00 [INF] TeamsController::GetTeamGameSchedule(9bea5d79-1ba3-4bf1-a750-adc99706bd37)
+2023-05-24 07:15:37.876 -05:00 [INF] TeamsController::GetTeamGameSchedule(9bea5d79-1ba3-4bf1-a750-adc99706bd37)
+2023-05-24 07:15:37.876 -05:00 [INF] TeamsController::GetTeamPitchSmart(9bea5d79-1ba3-4bf1-a750-adc99706bd37)

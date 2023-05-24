@@ -6,7 +6,6 @@ using Serilog;
 using Stats.CmdApp.Helper;
 using Stats.Database.Models;
 using Stats.Database.Services;
-using Stats.ExtApi.Models;
 using Stats.ExtApi.Services;
 
 namespace Stats.CmdApp

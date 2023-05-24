@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Serilog;
 using Stats.Database.Models;
 using Stats.Database.Services;
 using Stats.ExtApi.Models;
@@ -50,6 +51,7 @@ namespace Stats.API.Helper
 
         public async Task ImportTeamInfoAsync(string id)
         {
+            Log.Logger.Information($"ExternalAPIService::ImportTeamInfoAsync({id})");
             var team = await _gameChangerService.GetTeamAsync(id);
             var teamSchedule = await _gameChangerService.GetTeamScheduledEventsAsync(id);
             var scores = await _gameChangerService.GetTeamGameDataAsync(id);
@@ -106,7 +108,7 @@ namespace Stats.API.Helper
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine($"Not Found Event: {evt.@event.id}");
+                    Log.Logger.Information($"ExternalAPIService::EventNotFound({evt.@event.id})");
                 }
             }
             await _db.CreateTeamAsync(teamTransform);

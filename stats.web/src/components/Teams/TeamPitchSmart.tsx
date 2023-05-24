@@ -59,6 +59,9 @@ function TeamPitchSmart() {
                         <td className="statCell">{formatInningsPitched(team.season_stats.stats_data.players[value.id].stats.defense.ip)}</td>
                         <td className="statCell">{team.season_stats.stats_data.players[value.id].stats.defense['#P']}</td>
                         <td className="statCell">{(team.season_stats.stats_data.players[value.id].stats.defense['S%'] * 100).toFixed(2)}</td>
+                        <td className="statCell">{(team.season_stats.stats_data.players[value.id].stats.defense.bf)}</td>
+                        <td className="statCell">{(team.season_stats.stats_data.players[value.id].stats.defense.so)}</td>
+                        <td className="statCell">{((team.season_stats.stats_data.players[value.id].stats.defense.so) / (team.season_stats.stats_data.players[value.id].stats.defense.bf) * 100).toFixed(2)}</td>
                         <td className="statCell">{data[0][value.id] ? data[0][value.id] : "0"}</td>
                         <td className="statCell">{data[1][value.id] ? data[1][value.id] : "0"}</td>
                         <td className="statCell">{data[2][value.id] ? data[2][value.id] : "0"}</td>
@@ -90,7 +93,7 @@ function TeamPitchSmart() {
                                 <thead>
                                     <tr>
                                         <td className="statCell header">&nbsp;</td>
-                                        <td className="statCell header"  colSpan={3} >Season Stats</td>
+                                        <td className="statCell header"  colSpan={5} >Season Stats</td>
                                         <td className="statCell header"  colSpan={5} >Previous Days</td>
                                         
                                     </tr>
@@ -99,6 +102,9 @@ function TeamPitchSmart() {
                                         <td className="statCell header">IP</td>
                                         <td className="statCell header">#P</td>
                                         <td className="statCell header">S%</td>
+                                        <td className="statCell header">BF</td>
+                                        <td className="statCell header">SO</td>
+                                        <td className="statCell header">K%</td>
                                         <td className="statCell header">0</td>
                                         <td className="statCell header">-1</td>
                                         <td className="statCell header">-2</td>

@@ -53,20 +53,38 @@ function TeamPitchSmart() {
     function getContent() {
         if (data && team) {
             var content = team!.players.map((value: Player, index: number) => {
+                if (team.season_stats.stats_data.players[value.id].stats.defense) {
+                    return (
+                        <tr>
+                            <th scope="row">{`${value.first_name} ${value.last_name}, #${value.number}`}</th>
+                            <td className="divider">{formatInningsPitched(team.season_stats.stats_data.players[value.id].stats.defense.ip)}</td>
+                            <td>{team.season_stats.stats_data.players[value.id].stats.defense['#P']}</td>
+                            <td>{(team.season_stats.stats_data.players[value.id].stats.defense['S%'] * 100).toFixed(2)}</td>
+                            <td>{(team.season_stats.stats_data.players[value.id].stats.defense.bf)}</td>
+                            <td>{(team.season_stats.stats_data.players[value.id].stats.defense.so)}</td>
+                            <td>{team.season_stats.stats_data.players[value.id].stats.defense.bf === 0 ? "0.00" : ((team.season_stats.stats_data.players[value.id].stats.defense.so) / (team.season_stats.stats_data.players[value.id].stats.defense.bf) * 100).toFixed(2)}</td>
+                            <td className="divider">{data[0][value.id] ? data[0][value.id] : "0"}</td>
+                            <td>{data[1][value.id] ? data[1][value.id] : "0"}</td>
+                            <td>{data[2][value.id] ? data[2][value.id] : "0"}</td>
+                            <td>{data[3][value.id] ? data[3][value.id] : "0"}</td>
+                            <td>{data[4][value.id] ? data[4][value.id] : "0"}</td>
+                        </tr>
+                    );
+                }
                 return (
                     <tr>
                         <th scope="row">{`${value.first_name} ${value.last_name}, #${value.number}`}</th>
-                        <td className="divider">{formatInningsPitched(team.season_stats.stats_data.players[value.id].stats.defense.ip)}</td>
-                        <td>{team.season_stats.stats_data.players[value.id].stats.defense['#P']}</td>
-                        <td>{(team.season_stats.stats_data.players[value.id].stats.defense['S%'] * 100).toFixed(2)}</td>
-                        <td>{(team.season_stats.stats_data.players[value.id].stats.defense.bf)}</td>
-                        <td>{(team.season_stats.stats_data.players[value.id].stats.defense.so)}</td>
-                        <td>{team.season_stats.stats_data.players[value.id].stats.defense.bf  === 0 ? "0.00" : ((team.season_stats.stats_data.players[value.id].stats.defense.so) / (team.season_stats.stats_data.players[value.id].stats.defense.bf) * 100).toFixed(2) }</td>
-                        <td className="divider">{data[0][value.id] ? data[0][value.id] : "0"}</td>
-                        <td>{data[1][value.id] ? data[1][value.id] : "0"}</td>
-                        <td>{data[2][value.id] ? data[2][value.id] : "0"}</td>
-                        <td>{data[3][value.id] ? data[3][value.id] : "0"}</td>
-                        <td>{data[4][value.id] ? data[4][value.id] : "0"}</td>
+                        <td className="divider">0.0</td>
+                        <td className="">0</td>
+                        <td className="">0.0</td>
+                        <td className="">0</td>
+                        <td className="">0</td>
+                        <td className="">0.0</td>
+                        <td className="divider">0</td>
+                        <td className="">0</td>
+                        <td className="">0</td>
+                        <td className="">0</td>
+                        <td className="">0</td>
                     </tr>
                 );
             });

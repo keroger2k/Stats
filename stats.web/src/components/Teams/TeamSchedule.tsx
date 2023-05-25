@@ -6,13 +6,14 @@ import { Team, formatWeekdayShort, formatMonthShort } from '../../models/models'
 import Chevron from '../SVGImages/Chevron';
 import TeamEvent from './TeamEvent';
 import TeamNavBar from '../TeamNavBar/TeamNavBar';
-
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner"
 import './TeamSchedule.scss'
 
 function TeamSchedule() {
 
     const { id } = useParams();
     const [data, setData] = useState<Team | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     function getDay(date: string | undefined) {
         var d = new Date(date!);
@@ -51,15 +52,19 @@ function TeamSchedule() {
 
     function importTeam(id: string | undefined) {
         const services = new Service();
+        setIsLoading(true)
         services.importTeam('Teams', id).then(() => {
-            window.location.reload();
+            //window.location.reload();
+            setIsLoading(false)
         });
     }
 
     React.useEffect(() => {
         const services = new Service();
+        setIsLoading(true)
         services.getSchedule('teams', id).then((data: Team) => {
             setData(data);
+            setIsLoading(false)
         });
     }, []);
 
@@ -114,7 +119,7 @@ function TeamSchedule() {
                 <div className="Grid__grid-item" >
                     <div className="Grid__grid-item" >
                         <div className="ScheduleSection__section ScheduleListByMonth__eventMonth">
-                            {content}
+                            {isLoading ? <LoadingSpinner /> : content}
                         </div>
                     </div>
                 </div>

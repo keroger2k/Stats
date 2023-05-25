@@ -14,39 +14,37 @@ export const StandardBattingGrid = ({ summary, player_stats, player_names }: Gri
         return player_names.find((player: Player) => player.id === id);
     }
 
-
-
     const content = Object.keys(player_stats).map<any>((player) => {
         if (player_stats[player].stats.offense) {
             return (
-                <tr className="whiteRow odd">
-                    <td className="playerNameCell invertLinkUnderline strong">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</td>
-                    <td className="statCell">{player_stats[player].stats.general.gp}</td>
-                    <td className="statCell">{player_stats[player].stats.offense.pa}</td>
-                    <td className="statCell">{player_stats[player].stats.offense.ab}</td>
-                    <td className="statCell">{player_stats[player].stats.offense.avg.toFixed(3).replace(/^0+/, '')}</td>
-                    <td className="statCell">{player_stats[player].stats.offense.obp.toFixed(3).replace(/^0+/, '')}</td>
-                    <td className="statCell">{player_stats[player].stats.offense.ops.toFixed(3).replace(/^0+/, '')}</td>
-                    <td className="statCell">{player_stats[player].stats.offense.slg.toFixed(3).replace(/^0+/, '')}</td>
-                    <td className="statCell">{player_stats[player].stats.offense.h}</td>
-                    <td className="statCell">{player_stats[player].stats.offense["1B"]}</td>
-                    <td className="statCell">{player_stats[player].stats.offense["2B"]}</td>
-                    <td className="statCell">{player_stats[player].stats.offense["3B"]}</td>
-                    <td className="statCell">{player_stats[player].stats.offense.hr}</td>
-                    <td className="statCell">{player_stats[player].stats.offense.rbi}</td>
-                    <td className="statCell">{player_stats[player].stats.offense.r}</td>
-                    <td className="statCell">{player_stats[player].stats.offense.bb}</td>
-                    <td className="statCell">{player_stats[player].stats.offense.so}</td>
-                    <td className="statCell">{player_stats[player].stats.offense.sol}</td>
-                    <td className="statCell">{player_stats[player].stats.offense.hbp}</td>
-                    <td className="statCell">{player_stats[player].stats.offense.shb}</td>
-                    <td className="statCell">{player_stats[player].stats.offense.shf}</td>
-                    <td className="statCell">{player_stats[player].stats.offense.roe}</td>
-                    <td className="statCell">{player_stats[player].stats.offense.fc}</td>
-                    <td className="statCell">{player_stats[player].stats.offense.sb}</td>
-                    <td className="statCell">{(player_stats[player].stats.offense["SB%"] * 100).toFixed(2)}</td>
-                    <td className="statCell">{player_stats[player].stats.offense.cs}</td>
-                    <td className="statCell">{player_stats[player].stats.offense.pik}</td>
+                <tr >
+                    <th scope="row" >{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</th>
+                    <td>{player_stats[player].stats.general.gp}</td>
+                    <td>{player_stats[player].stats.offense.pa}</td>
+                    <td>{player_stats[player].stats.offense.ab}</td>
+                    <td>{player_stats[player].stats.offense.avg.toFixed(3).replace(/^0+/, '')}</td>
+                    <td>{player_stats[player].stats.offense.obp.toFixed(3).replace(/^0+/, '')}</td>
+                    <td>{player_stats[player].stats.offense.ops.toFixed(3).replace(/^0+/, '')}</td>
+                    <td>{player_stats[player].stats.offense.slg.toFixed(3).replace(/^0+/, '')}</td>
+                    <td>{player_stats[player].stats.offense.h}</td>
+                    <td>{player_stats[player].stats.offense["1B"]}</td>
+                    <td>{player_stats[player].stats.offense["2B"]}</td>
+                    <td>{player_stats[player].stats.offense["3B"]}</td>
+                    <td>{player_stats[player].stats.offense.hr}</td>
+                    <td>{player_stats[player].stats.offense.rbi}</td>
+                    <td>{player_stats[player].stats.offense.r}</td>
+                    <td>{player_stats[player].stats.offense.bb}</td>
+                    <td>{player_stats[player].stats.offense.so}</td>
+                    <td>{player_stats[player].stats.offense.sol}</td>
+                    <td>{player_stats[player].stats.offense.hbp}</td>
+                    <td>{player_stats[player].stats.offense.shb}</td>
+                    <td>{player_stats[player].stats.offense.shf}</td>
+                    <td>{player_stats[player].stats.offense.roe}</td>
+                    <td>{player_stats[player].stats.offense.fc}</td>
+                    <td>{player_stats[player].stats.offense.sb}</td>
+                    <td>{(player_stats[player].stats.offense["SB%"] * 100).toFixed(2)}</td>
+                    <td>{player_stats[player].stats.offense.cs}</td>
+                    <td>{player_stats[player].stats.offense.pik}</td>
                 </tr>);
         }
         return "";
@@ -57,70 +55,70 @@ export const StandardBattingGrid = ({ summary, player_stats, player_names }: Gri
         <>
             <div id="stats_container">
                 <div className="statsPageContainer grid">
-                    <table className="gcTable statTable withGridLines withOutline withHoverHighlighting">
+                    <table className="table table-hover table-border">
                         <thead>
                             <tr>
-                                <th className="playerNameCell invertLinkUnderline strong header headerSortDown">Player</th>
-                                <th className="statCell header">GP</th>
-                                <th className="statCell header">PA</th>
-                                <th className="statCell header">AB</th>
-                                <th className="statCell header">AVG</th>
-                                <th className="statCell header">OBP</th>
-                                <th className="statCell header">OPS</th>
-                                <th className="statCell header">SLG</th>
-                                <th className="statCell header">H</th>
-                                <th className="statCell header">1B</th>
-                                <th className="statCell header">2B</th>
-                                <th className="statCell header">3B</th>
-                                <th className="statCell header">HR</th>
-                                <th className="statCell header">RBI</th>
-                                <th className="statCell header">R</th>
-                                <th className="statCell header">BB</th>
-                                <th className="statCell header">SO</th>
-                                <th className="statCell header">K-L</th>
-                                <th className="statCell header">HPB</th>
-                                <th className="statCell header">SAC</th>
-                                <th className="statCell header">SF</th>
-                                <th className="statCell header">ROE</th>
-                                <th className="statCell header">FC</th>
-                                <th className="statCell header">SB</th>
-                                <th className="statCell header">SB%</th>
-                                <th className="statCell header">CS</th>
-                                <th className="statCell header">PIK</th>
+                                <th scope="col" >Player</th>
+                                <th scope="col" >GP</th>
+                                <th scope="col" >PA</th>
+                                <th scope="col" >AB</th>
+                                <th scope="col" >AVG</th>
+                                <th scope="col" >OBP</th>
+                                <th scope="col" >OPS</th>
+                                <th scope="col" >SLG</th>
+                                <th scope="col" >H</th>
+                                <th scope="col" >1B</th>
+                                <th scope="col" >2B</th>
+                                <th scope="col" >3B</th>
+                                <th scope="col" >HR</th>
+                                <th scope="col" >RBI</th>
+                                <th scope="col" >R</th>
+                                <th scope="col" >BB</th>
+                                <th scope="col" >SO</th>
+                                <th scope="col" >K-L</th>
+                                <th scope="col" >HPB</th>
+                                <th scope="col" >SAC</th>
+                                <th scope="col" >SF</th>
+                                <th scope="col" >ROE</th>
+                                <th scope="col" >FC</th>
+                                <th scope="col" >SB</th>
+                                <th scope="col" >SB%</th>
+                                <th scope="col" >CS</th>
+                                <th scope="col" >PIK</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="table-group-divider">
                             {content}
                         </tbody>
-                        <tfoot>
+                        <tfoot className="table-group-divider">
                             <tr>
-                                <td className="footerTitleCell">Team</td>
-                                <td className="statCell">{summary.general.gp}</td>
-                                <td className="statCell">{summary.offense.pa}</td>
-                                <td className="statCell">{summary.offense.ab}</td>
-                                <td className="statCell">{summary.offense.avg.toFixed(3).replace(/^0+/, '')}</td>
-                                <td className="statCell">{summary.offense.obp.toFixed(3).replace(/^0+/, '')}</td>
-                                <td className="statCell">{summary.offense.ops.toFixed(3).replace(/^0+/, '')}</td>
-                                <td className="statCell">{summary.offense.slg.toFixed(3).replace(/^0+/, '')}</td>
-                                <td className="statCell">{summary.offense.h}</td>
-                                <td className="statCell">{summary.offense["1B"]}</td>
-                                <td className="statCell">{summary.offense["2B"]}</td>
-                                <td className="statCell">{summary.offense["3B"]}</td>
-                                <td className="statCell">{summary.offense.hr}</td>
-                                <td className="statCell">{summary.offense.rbi}</td>
-                                <td className="statCell">{summary.offense.r}</td>
-                                <td className="statCell">{summary.offense.bb}</td>
-                                <td className="statCell">{summary.offense.so}</td>
-                                <td className="statCell">{summary.offense.sol}</td>
-                                <td className="statCell">{summary.offense.hbp}</td>
-                                <td className="statCell">{summary.offense.shb}</td>
-                                <td className="statCell">{summary.offense.shf}</td>
-                                <td className="statCell">{summary.offense.roe}</td>
-                                <td className="statCell">{summary.offense.fc}</td>
-                                <td className="statCell">{summary.offense.sb}</td>
-                                <td className="statCell">{(summary.offense["SB%"] * 100).toFixed(2)}</td>
-                                <td className="statCell">{summary.offense.cs}</td>
-                                <td className="statCell">{summary.offense.pik}</td>
+                                <td >Team</td>
+                                <td >{summary.general.gp}</td>
+                                <td >{summary.offense.pa}</td>
+                                <td >{summary.offense.ab}</td>
+                                <td >{summary.offense.avg.toFixed(3).replace(/^0+/, '')}</td>
+                                <td >{summary.offense.obp.toFixed(3).replace(/^0+/, '')}</td>
+                                <td >{summary.offense.ops.toFixed(3).replace(/^0+/, '')}</td>
+                                <td >{summary.offense.slg.toFixed(3).replace(/^0+/, '')}</td>
+                                <td >{summary.offense.h}</td>
+                                <td >{summary.offense["1B"]}</td>
+                                <td >{summary.offense["2B"]}</td>
+                                <td >{summary.offense["3B"]}</td>
+                                <td >{summary.offense.hr}</td>
+                                <td >{summary.offense.rbi}</td>
+                                <td >{summary.offense.r}</td>
+                                <td >{summary.offense.bb}</td>
+                                <td >{summary.offense.so}</td>
+                                <td >{summary.offense.sol}</td>
+                                <td >{summary.offense.hbp}</td>
+                                <td >{summary.offense.shb}</td>
+                                <td >{summary.offense.shf}</td>
+                                <td >{summary.offense.roe}</td>
+                                <td >{summary.offense.fc}</td>
+                                <td >{summary.offense.sb}</td>
+                                <td >{(summary.offense["SB%"] * 100).toFixed(2)}</td>
+                                <td >{summary.offense.cs}</td>
+                                <td >{summary.offense.pik}</td>
                             </tr>
                         </tfoot>
                     </table>

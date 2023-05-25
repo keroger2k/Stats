@@ -54,19 +54,19 @@ function TeamPitchSmart() {
         if (data && team) {
             var content = team!.players.map((value: Player, index: number) => {
                 return (
-                    <tr className="whiteRow odd">
-                        <td className="statCell">{value.first_name} {value.last_name}</td>
-                        <td className="statCell">{formatInningsPitched(team.season_stats.stats_data.players[value.id].stats.defense.ip)}</td>
-                        <td className="statCell">{team.season_stats.stats_data.players[value.id].stats.defense['#P']}</td>
-                        <td className="statCell">{(team.season_stats.stats_data.players[value.id].stats.defense['S%'] * 100).toFixed(2)}</td>
-                        <td className="statCell">{(team.season_stats.stats_data.players[value.id].stats.defense.bf)}</td>
-                        <td className="statCell">{(team.season_stats.stats_data.players[value.id].stats.defense.so)}</td>
-                        <td className="statCell">{((team.season_stats.stats_data.players[value.id].stats.defense.so) / (team.season_stats.stats_data.players[value.id].stats.defense.bf) * 100).toFixed(2)}</td>
-                        <td className="statCell">{data[0][value.id] ? data[0][value.id] : "0"}</td>
-                        <td className="statCell">{data[1][value.id] ? data[1][value.id] : "0"}</td>
-                        <td className="statCell">{data[2][value.id] ? data[2][value.id] : "0"}</td>
-                        <td className="statCell">{data[3][value.id] ? data[3][value.id] : "0"}</td>
-                        <td className="statCell">{data[4][value.id] ? data[4][value.id] : "0"}</td>
+                    <tr>
+                        <th scope="row">{value.first_name} {value.last_name}</th>
+                        <td>{formatInningsPitched(team.season_stats.stats_data.players[value.id].stats.defense.ip)}</td>
+                        <td>{team.season_stats.stats_data.players[value.id].stats.defense['#P']}</td>
+                        <td>{(team.season_stats.stats_data.players[value.id].stats.defense['S%'] * 100).toFixed(2)}</td>
+                        <td>{(team.season_stats.stats_data.players[value.id].stats.defense.bf)}</td>
+                        <td>{(team.season_stats.stats_data.players[value.id].stats.defense.so)}</td>
+                        <td>{((team.season_stats.stats_data.players[value.id].stats.defense.so) / (team.season_stats.stats_data.players[value.id].stats.defense.bf) * 100).toFixed(2)}</td>
+                        <td>{data[0][value.id] ? data[0][value.id] : "0"}</td>
+                        <td>{data[1][value.id] ? data[1][value.id] : "0"}</td>
+                        <td>{data[2][value.id] ? data[2][value.id] : "0"}</td>
+                        <td>{data[3][value.id] ? data[3][value.id] : "0"}</td>
+                        <td>{data[4][value.id] ? data[4][value.id] : "0"}</td>
                     </tr>
                 );
             });
@@ -89,30 +89,30 @@ function TeamPitchSmart() {
                     <div className="Spacer__spacer Spacer__md Spacer__vertical" />
                     <div id="stats_container">
                         <div className="statsPageContainer grid">
-                            <table className="gcTable statTable withGridLines withOutline withHoverHighlighting">
+                            <table className="table table-hover table-border">
                                 <thead>
                                     <tr>
-                                        <td className="statCell header">&nbsp;</td>
-                                        <td className="statCell header"  colSpan={5} >Season Stats</td>
-                                        <td className="statCell header"  colSpan={5} >Previous Days</td>
+                                        <td scope="col">&nbsp;</td>
+                                        <td scope="col" colSpan={5} >Season Stats</td>
+                                        <td scope="col" colSpan={5} >Previous Days</td>
                                         
                                     </tr>
-                                    <tr>
-                                        <td className="playerNameCell invertLinkUnderline strong header">Player</td>
-                                        <td className="statCell header">IP</td>
-                                        <td className="statCell header">#P</td>
-                                        <td className="statCell header">S%</td>
-                                        <td className="statCell header">BF</td>
-                                        <td className="statCell header">SO</td>
-                                        <td className="statCell header">K%</td>
-                                        <td className="statCell header">0</td>
-                                        <td className="statCell header">-1</td>
-                                        <td className="statCell header">-2</td>
-                                        <td className="statCell header">-3</td>
-                                        <td className="statCell header">-4</td>
+                                    <tr className="table-group-divider">
+                                        <td scope="col">Player</td>
+                                        <td scope="col">IP</td>
+                                        <td scope="col">#P</td>
+                                        <td scope="col">S%</td>
+                                        <td scope="col">BF</td>
+                                        <td scope="col">SO</td>
+                                        <td scope="col">K%</td>
+                                        <td scope="col">0</td>
+                                        <td scope="col">-1</td>
+                                        <td scope="col">-2</td>
+                                        <td scope="col">-3</td>
+                                        <td scope="col">-4</td>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody className="table-group-divider">
                                     {getContent()}
                                 </tbody>
                             </table>

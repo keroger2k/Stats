@@ -17,25 +17,25 @@ export const StandardFieldingGrid = ({ summary, player_stats, player_names }: Gr
     const content = Object.keys(player_stats).map<any>((player) => {
         if (player_stats[player].stats.defense) {
             return (
-                <tr className="whiteRow odd">
-                    <td className="playerNameCell invertLinkUnderline strong">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</td>
-                    <td className="statCell">{player_stats[player].stats.defense.tc}</td>
-                    <td className="statCell">{player_stats[player].stats.defense.a}</td>
-                    <td className="statCell">{player_stats[player].stats.defense.po}</td>
-                    <td className="statCell">{player_stats[player].stats.defense.fpct.toFixed(3).replace(/^0+/, '')}</td>
-                    <td className="statCell">{player_stats[player].stats.defense.e}</td>
-                    <td className="statCell">{player_stats[player].stats.defense.dp}</td>
+                <tr>
+                    <th scope="row">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</th>
+                    <td>{player_stats[player].stats.defense.tc}</td>
+                    <td>{player_stats[player].stats.defense.a}</td>
+                    <td>{player_stats[player].stats.defense.po}</td>
+                    <td>{player_stats[player].stats.defense.fpct.toFixed(3).replace(/^0+/, '')}</td>
+                    <td>{player_stats[player].stats.defense.e}</td>
+                    <td>{player_stats[player].stats.defense.dp}</td>
                 </tr>);
         } else {
             return (
                 <tr>
+                    <th scope="row"></th>
                     <td></td>
-                    <td className="statCell"></td>
-                    <td className="statCell"></td>
-                    <td className="statCell"></td>
-                    <td className="statCell"></td>
-                    <td className="statCell"></td>
-                    <td className="statCell"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
             );
         }
@@ -46,30 +46,30 @@ export const StandardFieldingGrid = ({ summary, player_stats, player_names }: Gr
         <>
             <div id="stats_container">
                 <div className="statsPageContainer grid">
-                    <table className="gcTable statTable withGridLines withOutline withHoverHighlighting">
+                    <table className="table table-hover table-border">
                         <thead>
                             <tr>
-                                <th className="playerNameCell invertLinkUnderline strong header headerSortDown">Player</th>
-                                <th className="statCell header">TC</th>
-                                <th className="statCell header">A</th>
-                                <th className="statCell header">PO</th>
-                                <th className="statCell header">FPCT</th>
-                                <th className="statCell header">E</th>
-                                <th className="statCell header">DP</th>
+                                <th scope="col">Player</th>
+                                <th scope="col">TC</th>
+                                <th scope="col">A</th>
+                                <th scope="col">PO</th>
+                                <th scope="col">FPCT</th>
+                                <th scope="col">E</th>
+                                <th scope="col">DP</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="table-group-divider">
                             {content}
                         </tbody>
-                        <tfoot>
+                        <tfoot className="table-group-divider">
                             <tr>
-                                <td className="footerTitleCell">Team</td>
-                                <td className="statCell">{summary.defense.tc}</td>
-                                <td className="statCell">{summary.defense.a}</td>
-                                <td className="statCell">{summary.defense.po}</td>
-                                <td className="statCell">{summary.defense.fpct.toFixed(3).replace(/^0+/, '')}</td>
-                                <td className="statCell">{summary.defense.e}</td>
-                                <td className="statCell">{summary.defense.dp}</td>
+                                <td>Team</td>
+                                <td>{summary.defense.tc}</td>
+                                <td>{summary.defense.a}</td>
+                                <td>{summary.defense.po}</td>
+                                <td>{summary.defense.fpct.toFixed(3).replace(/^0+/, '')}</td>
+                                <td>{summary.defense.e}</td>
+                                <td>{summary.defense.dp}</td>
                             </tr>
                         </tfoot>
                     </table>

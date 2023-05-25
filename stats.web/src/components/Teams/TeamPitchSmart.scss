@@ -3,6 +3,15 @@
     box-sizing: border-box;
 }
 
+th:first-child, td:first-child {
+    position: sticky;
+    left: 0px;
+    background-color: white;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
 .playerNameCell {
     display:block;
     width: 200px;

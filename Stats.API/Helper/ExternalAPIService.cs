@@ -51,12 +51,12 @@ namespace Stats.API.Helper
 
         public async Task ImportTeamInfoAsync(string id)
         {
-            Log.Logger.Information($"ExternalAPIService::ImportTeamInfoAsync({id})");
             var team = await _gameChangerService.GetTeamAsync(id);
             var teamSchedule = await _gameChangerService.GetTeamScheduledEventsAsync(id);
             var scores = await _gameChangerService.GetTeamGameDataAsync(id);
             var season_stats = await _gameChangerService.GetTeamSeasonStatsAsync(id);
             var opponents = await _gameChangerService.GetTeamOpponentsAsync(id);
+            var players = await _gameChangerService.GetPlayers(season_stats.stats_data.players.Keys.ToArray());
 
             var teamTransform = new TeamTransform()
             {
@@ -75,26 +75,9 @@ namespace Stats.API.Helper
                 schedule = _mapper.Map<List<TeamTransform.TeamSchedule1>>(teamSchedule.ToList()),
                 completed_game_scores = _mapper.Map<List<TeamTransform.TeamGame>>(scores),
                 season_stats = _mapper.Map<TeamTransform.SeasonStats>(season_stats),
-                opponents = _mapper.Map<List<TeamTransform.TeamOpponent1>>(opponents)
+                opponents = _mapper.Map<List<TeamTransform.TeamOpponent1>>(opponents),
+                players = _mapper.Map<List<TeamTransform.Player>>(players)
             };
-
-            foreach (var playerId in season_stats.stats_data.players.Keys)
-            {
-                var player = await _gameChangerService.GetPlayer(playerId);
-                teamTransform.players.Add(new TeamTransform.Player()
-                {
-                    id = player.id,
-                    first_name = player.first_name,
-                    last_name = player.last_name,
-                    number = player.number,
-                    status = player.status,
-                    team_id = player.team_id,
-                    person_id = player.person_id,
-                    batting_side = (player.bats == null) ? "" : player.bats.batting_side,
-                    throwing_hand = (player.bats == null) ? "" : player.bats.throwing_hand
-                });
-            }
-
 
             foreach (var evt in teamTransform.schedule.Where(c => c.@event.event_type.Equals("game"))
                 .Where(c => !c.@event.status.Equals("canceled"))

@@ -1,13 +1,9 @@
 ﻿using AutoMapper;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using Stats.Database.Models;
 using Stats.Database.Services;
-using Stats.ExtApi.Models;
 using Stats.ExtApi.Services;
 using System.Text;
 using static Stats.ExtApi.Services.GameChangerService;

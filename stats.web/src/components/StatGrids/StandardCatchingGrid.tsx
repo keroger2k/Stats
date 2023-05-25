@@ -18,16 +18,16 @@ export const StandardCatchingGrid = ({ summary, player_stats, player_names }: Gr
         if (player_stats[player].stats.defense && player_stats[player].stats.defense["GP:C"] !== 0) {
             return (
 
-                <tr className="whiteRow odd">
-                    <td className="playerNameCell invertLinkUnderline strong">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</td>
-                    <td className="statCell">{player_stats[player].stats.defense["IC:C"].toFixed(1)}</td>
-                    <td className="statCell">{player_stats[player].stats.defense["PB:C"]}</td>
-                    <td className="statCell">{player_stats[player].stats.defense["SB:C"]}</td>
-                    <td className="statCell">{`${player_stats[player].stats.defense["SB:C"]}-${player_stats[player].stats.defense["SBATT:C"]}`}</td>
-                    <td className="statCell">{player_stats[player].stats.defense["CS:C"]}</td>
-                    <td className="statCell">{(player_stats[player].stats.defense["CS:C%"] * 100).toFixed(2)}</td>
-                    <td className="statCell">{player_stats[player].stats.defense["PIK:C"]}</td>
-                    <td className="statCell">{player_stats[player].stats.defense["CI:C"]}</td>
+                <tr>
+                    <th scope="row">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</th>
+                    <td>{player_stats[player].stats.defense["IC:C"].toFixed(1)}</td>
+                    <td>{player_stats[player].stats.defense["PB:C"]}</td>
+                    <td>{player_stats[player].stats.defense["SB:C"]}</td>
+                    <td>{`${player_stats[player].stats.defense["SB:C"]}-${player_stats[player].stats.defense["SBATT:C"]}`}</td>
+                    <td>{player_stats[player].stats.defense["CS:C"]}</td>
+                    <td>{(player_stats[player].stats.defense["CS:C%"] * 100).toFixed(2)}</td>
+                    <td>{player_stats[player].stats.defense["PIK:C"]}</td>
+                    <td>{player_stats[player].stats.defense["CI:C"]}</td>
                 </tr>);
         }
     });
@@ -37,34 +37,34 @@ export const StandardCatchingGrid = ({ summary, player_stats, player_names }: Gr
         <>
             <div id="stats_container">
                 <div className="statsPageContainer grid">
-                    <table className="gcTable statTable withGridLines withOutline withHoverHighlighting">
+                    <table className="table table-hover table-border">
                         <thead>
                             <tr>
-                                <th className="playerNameCell invertLinkUnderline strong header headerSortDown">Player</th>
-                                <th className="statCell header">INN</th>
-                                <th className="statCell header">PB</th>
-                                <th className="statCell header">SB</th>
-                                <th className="statCell header">SB-ATT</th>
-                                <th className="statCell header">CS</th>
-                                <th className="statCell header">CS%</th>
-                                <th className="statCell header">PIK</th>
-                                <th className="statCell header">CI</th>
+                                <th scope="col">Player</th>
+                                <th scope="col">INN</th>
+                                <th scope="col">PB</th>
+                                <th scope="col">SB</th>
+                                <th scope="col">SB-ATT</th>
+                                <th scope="col">CS</th>
+                                <th scope="col">CS%</th>
+                                <th scope="col">PIK</th>
+                                <th scope="col">CI</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="table-group-divider">
                             {content}
                         </tbody>
-                        <tfoot>
+                        <tfoot className="table-group-divider">
                             <tr>
-                                <td className="footerTitleCell">Team</td>
-                                <td className="statCell">{summary.defense["IC:C"].toFixed(1)}</td>
-                                <td className="statCell">{summary.defense["PB:C"]}</td>
-                                <td className="statCell">{summary.defense["SB:C"]}</td>
-                                <td className="statCell">{`${summary.defense["SB:C"]}-${summary.defense["SBATT:C"]}`}</td>
-                                <td className="statCell">{summary.defense["CS:C"]}</td>
-                                <td className="statCell">{(summary.defense["CS:C%"] * 100).toFixed(2)}</td>
-                                <td className="statCell">{summary.defense["PIK:C"]}</td>
-                                <td className="statCell">{summary.defense["CI:C"]}</td>
+                                <td>Team</td>
+                                <td>{summary.defense["IC:C"].toFixed(1)}</td>
+                                <td>{summary.defense["PB:C"]}</td>
+                                <td>{summary.defense["SB:C"]}</td>
+                                <td>{`${summary.defense["SB:C"]}-${summary.defense["SBATT:C"]}`}</td>
+                                <td>{summary.defense["CS:C"]}</td>
+                                <td>{(summary.defense["CS:C%"] * 100).toFixed(2)}</td>
+                                <td>{summary.defense["PIK:C"]}</td>
+                                <td>{summary.defense["CI:C"]}</td>
                             </tr>
                         </tfoot>
                     </table>

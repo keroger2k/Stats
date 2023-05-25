@@ -32,40 +32,40 @@ export const AdvancedPitchingGrid = ({ summary, player_stats, player_names }: Gr
     const content = Object.keys(player_stats).map<any>((player) => {
         if (player_stats[player].stats.defense) {
             return (
-                <tr className="whiteRow odd">
-                    <td className="playerNameCell invertLinkUnderline strong">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</td>
-                    <td className="statCell">{formatInningsPitched(player_stats[player].stats.defense.ip)}</td>
-                    <td className="statCell">{player_stats[player].stats.defense.bf}</td>
-                    <td className="statCell">{player_stats[player].stats.defense["P/IP"].toFixed(1)}</td>
-                    <td className="statCell">{player_stats[player].stats.defense["P/BF"].toFixed(3)}</td>
-                    <td className="statCell">{(player_stats[player].stats.defense["<3%"] * 100).toFixed(2)}</td>
-                    <td className="statCell">{player_stats[player].stats.defense.loo}</td>
-                    <td className="statCell">{player_stats[player].stats.defense["1ST2OUT"]}</td>
-                    <td className="statCell">{player_stats[player].stats.defense["123INN"]}</td>
-                    <td className="statCell">{player_stats[player].stats.defense["<13"]}</td>
-                    <td className="statCell">{player_stats[player].stats.defense.fip.toFixed(3)}</td>
-                    <td className="statCell">{(player_stats[player].stats.defense["S%"] * 100).toFixed(2)}</td>
-                    <td className="statCell">{(player_stats[player].stats.defense["FPS%"] * 100).toFixed(2)}</td>
-                    <td className="statCell">{(player_stats[player].stats.defense["FPSO%"] * 100).toFixed(2)}</td>
-                    <td className="statCell">{(player_stats[player].stats.defense["FPSW%"] * 100).toFixed(2)}</td>
-                    <td className="statCell">{(player_stats[player].stats.defense["FPSH%"] * 100).toFixed(2)}</td>
-                    <td className="statCell">{player_stats[player].stats.defense["BB/INN"].toFixed(3).replace(/^0+/, '')}</td>
-                    <td className="statCell">{player_stats[player].stats.defense["0BBINN"]}</td>
-                    <td className="statCell">{player_stats[player].stats.defense.bbs}</td>
-                    <td className="statCell">{player_stats[player].stats.defense.lobb}</td>
-                    <td className="statCell">{player_stats[player].stats.defense.lobbs}</td>
-                    <td className="statCell">{(player_stats[player].stats.defense["SM%"] * 100).toFixed(2)}</td>
-                    <td className="statCell">{player_stats[player].stats.defense["K/BF"].toFixed(3).replace(/^0+/, '')}</td>
-                    <td className="statCell">{player_stats[player].stats.defense["K/BB"].toFixed(3)}</td>
-                    <td className="statCell">{(player_stats[player].stats.defense["WEAK%"] * 100).toFixed(2)}</td>
-                    <td className="statCell">{(player_stats[player].stats.defense["HARD%"] * 100).toFixed(2)}</td>
-                    <td className="statCell">{(player_stats[player].stats.defense["GO/AO"] * 100).toFixed(3)}</td>
-                    <td className="statCell">{player_stats[player].stats.defense.hr}</td>
-                    <td className="statCell">{(player_stats[player].stats.defense["LND%"] * 100).toFixed(2)}</td>
-                    <td className="statCell">{(player_stats[player].stats.defense["FLB%"] * 100).toFixed(3)}</td>
-                    <td className="statCell">{(player_stats[player].stats.defense["GB%"] * 100).toFixed(3)}</td>
-                    <td className="statCell">{player_stats[player].stats.defense.babip.toFixed(3).replace(/^0+/, '')}</td>
-                    <td className="statCell">{player_stats[player].stats.defense["BA/RISP"].toFixed(3).replace(/^0+/, '')}</td>
+                <tr>
+                    <th scope="row">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</th>
+                    <td>{formatInningsPitched(player_stats[player].stats.defense.ip)}</td>
+                    <td>{player_stats[player].stats.defense.bf}</td>
+                    <td>{player_stats[player].stats.defense["P/IP"].toFixed(1)}</td>
+                    <td>{player_stats[player].stats.defense["P/BF"].toFixed(3)}</td>
+                    <td>{(player_stats[player].stats.defense["<3%"] * 100).toFixed(2)}</td>
+                    <td>{player_stats[player].stats.defense.loo}</td>
+                    <td>{player_stats[player].stats.defense["1ST2OUT"]}</td>
+                    <td>{player_stats[player].stats.defense["123INN"]}</td>
+                    <td>{player_stats[player].stats.defense["<13"]}</td>
+                    <td>{player_stats[player].stats.defense.fip.toFixed(3)}</td>
+                    <td>{(player_stats[player].stats.defense["S%"] * 100).toFixed(2)}</td>
+                    <td>{(player_stats[player].stats.defense["FPS%"] * 100).toFixed(2)}</td>
+                    <td>{(player_stats[player].stats.defense["FPSO%"] * 100).toFixed(2)}</td>
+                    <td>{(player_stats[player].stats.defense["FPSW%"] * 100).toFixed(2)}</td>
+                    <td>{(player_stats[player].stats.defense["FPSH%"] * 100).toFixed(2)}</td>
+                    <td>{player_stats[player].stats.defense["BB/INN"].toFixed(3).replace(/^0+/, '')}</td>
+                    <td>{player_stats[player].stats.defense["0BBINN"]}</td>
+                    <td>{player_stats[player].stats.defense.bbs}</td>
+                    <td>{player_stats[player].stats.defense.lobb}</td>
+                    <td>{player_stats[player].stats.defense.lobbs}</td>
+                    <td>{(player_stats[player].stats.defense["SM%"] * 100).toFixed(2)}</td>
+                    <td>{player_stats[player].stats.defense["K/BF"].toFixed(3).replace(/^0+/, '')}</td>
+                    <td>{player_stats[player].stats.defense["K/BB"].toFixed(3)}</td>
+                    <td>{(player_stats[player].stats.defense["WEAK%"] * 100).toFixed(2)}</td>
+                    <td>{(player_stats[player].stats.defense["HARD%"] * 100).toFixed(2)}</td>
+                    <td>{(player_stats[player].stats.defense["GO/AO"] * 100).toFixed(3)}</td>
+                    <td>{player_stats[player].stats.defense.hr}</td>
+                    <td>{(player_stats[player].stats.defense["LND%"] * 100).toFixed(2)}</td>
+                    <td>{(player_stats[player].stats.defense["FLB%"] * 100).toFixed(3)}</td>
+                    <td>{(player_stats[player].stats.defense["GB%"] * 100).toFixed(3)}</td>
+                    <td>{player_stats[player].stats.defense.babip.toFixed(3).replace(/^0+/, '')}</td>
+                    <td>{player_stats[player].stats.defense["BA/RISP"].toFixed(3).replace(/^0+/, '')}</td>
                 </tr>);
         }
         return "";
@@ -76,82 +76,82 @@ export const AdvancedPitchingGrid = ({ summary, player_stats, player_names }: Gr
         <>
             <div id="stats_container">
                 <div className="statsPageContainer grid">
-                    <table className="gcTable statTable withGridLines withOutline withHoverHighlighting">
+                    <table className="table table-hover table-border">
                         <thead>
                             <tr>
-                                <th className="playerNameCell invertLinkUnderline strong header headerSortDown">Player</th>
-                                <th className="statCell header">IP</th>
-                                <th className="statCell header">BF</th>
-                                <th className="statCell header">P/IP</th>
-                                <th className="statCell header">P/BF</th>
-                                <th className="statCell header">3%</th>
-                                <th className="statCell header">LOO</th>
-                                <th className="statCell header">1ST2OUT/K</th>
-                                <th className="statCell header">123INN</th>
-                                <th className="statCell header">13</th>
-                                <th className="statCell header">FIP</th>
-                                <th className="statCell header">S%</th>
-                                <th className="statCell header">FPS%</th>
-                                <th className="statCell header">FPSO%</th>
-                                <th className="statCell header">FPSW%</th>
-                                <th className="statCell header">FPSH%</th>
-                                <th className="statCell header">BB/INN</th>
-                                <th className="statCell header">OBBINN</th>
-                                <th className="statCell header">BBS</th>
-                                <th className="statCell header">LOBB</th>
-                                <th className="statCell header">LOBBS</th>
-                                <th className="statCell header">SM%</th>
-                                <th className="statCell header">K/BF</th>
-                                <th className="statCell header">K/BB</th>
-                                <th className="statCell header">WEAK%</th>
-                                <th className="statCell header">HHB%</th>
-                                <th className="statCell header">GO/AO</th>
-                                <th className="statCell header">HR</th>
-                                <th className="statCell header">LD%</th>
-                                <th className="statCell header">FB%</th>
-                                <th className="statCell header">GB%</th>
-                                <th className="statCell header">BABIP</th>
-                                <th className="statCell header">BARISP</th>
+                                <th scope="col">Player</th>
+                                <th scope="col">IP</th>
+                                <th scope="col">BF</th>
+                                <th scope="col">P/IP</th>
+                                <th scope="col">P/BF</th>
+                                <th scope="col">3%</th>
+                                <th scope="col">LOO</th>
+                                <th scope="col">1ST2OUT/K</th>
+                                <th scope="col">123INN</th>
+                                <th scope="col">13</th>
+                                <th scope="col">FIP</th>
+                                <th scope="col">S%</th>
+                                <th scope="col">FPS%</th>
+                                <th scope="col">FPSO%</th>
+                                <th scope="col">FPSW%</th>
+                                <th scope="col">FPSH%</th>
+                                <th scope="col">BB/INN</th>
+                                <th scope="col">OBBINN</th>
+                                <th scope="col">BBS</th>
+                                <th scope="col">LOBB</th>
+                                <th scope="col">LOBBS</th>
+                                <th scope="col">SM%</th>
+                                <th scope="col">K/BF</th>
+                                <th scope="col">K/BB</th>
+                                <th scope="col">WEAK%</th>
+                                <th scope="col">HHB%</th>
+                                <th scope="col">GO/AO</th>
+                                <th scope="col">HR</th>
+                                <th scope="col">LD%</th>
+                                <th scope="col">FB%</th>
+                                <th scope="col">GB%</th>
+                                <th scope="col">BABIP</th>
+                                <th scope="col">BARISP</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="table-group-divider">
                             {content}
                         </tbody>
-                        <tfoot>
+                        <tfoot className="table-group-divider">
                             <tr>
-                                <td className="footerTitleCell">Team</td>
-                                <td className="statCell">{summary.defense.ip.toFixed(1)}</td>
-                                <td className="statCell">{summary.defense.bf}</td>
-                                <td className="statCell">{summary.defense["P/IP"].toFixed(1)}</td>
-                                <td className="statCell">{summary.defense["P/BF"].toFixed(3)}</td>
-                                <td className="statCell">{(summary.defense["<3%"] * 100).toFixed(2)}</td>
-                                <td className="statCell">{summary.defense.loo}</td>
-                                <td className="statCell">{summary.defense["1ST2OUT"]}</td>
-                                <td className="statCell">{summary.defense["123INN"]}</td>
-                                <td className="statCell">{summary.defense["<13"]}</td>
-                                <td className="statCell">{summary.defense.fip.toFixed(3)}</td>
-                                <td className="statCell">{(summary.defense["S%"] * 100).toFixed(2)}</td>
-                                <td className="statCell">{(summary.defense["FPS%"] * 100).toFixed(2)}</td>
-                                <td className="statCell">{(summary.defense["FPSO%"] * 100).toFixed(2)}</td>
-                                <td className="statCell">{(summary.defense["FPSW%"] * 100).toFixed(2)}</td>
-                                <td className="statCell">{(summary.defense["FPSH%"] * 100).toFixed(2)}</td>
-                                <td className="statCell">{summary.defense["BB/INN"].toFixed(3).replace(/^0+/, '')}</td>
-                                <td className="statCell">{summary.defense["0BBINN"]}</td>
-                                <td className="statCell">{summary.defense.bbs}</td>
-                                <td className="statCell">{summary.defense.lobb}</td>
-                                <td className="statCell">{summary.defense.lobbs}</td>
-                                <td className="statCell">{(summary.defense["SM%"] * 100).toFixed(2)}</td>
-                                <td className="statCell">{summary.defense["K/BF"].toFixed(3).replace(/^0+/, '')}</td>
-                                <td className="statCell">{summary.defense["K/BB"].toFixed(3)}</td>
-                                <td className="statCell">{(summary.defense["WEAK%"] * 100).toFixed(2)}</td>
-                                <td className="statCell">{(summary.defense["HARD%"] * 100).toFixed(2)}</td>
-                                <td className="statCell">{(summary.defense["GO/AO"] * 100).toFixed(3)}</td>
-                                <td className="statCell">{summary.defense.hr}</td>
-                                <td className="statCell">{(summary.defense["LND%"] * 100).toFixed(2)}</td>
-                                <td className="statCell">{(summary.defense["FLB%"] * 100).toFixed(3)}</td>
-                                <td className="statCell">{(summary.defense["GB%"] * 100).toFixed(3)}</td>
-                                <td className="statCell">{summary.defense.babip.toFixed(3).replace(/^0+/, '')}</td>
-                                <td className="statCell">{summary.defense["BA/RISP"].toFixed(3).replace(/^0+/, '')}</td>
+                                <td>Team</td>
+                                <td>{summary.defense.ip.toFixed(1)}</td>
+                                <td>{summary.defense.bf}</td>
+                                <td>{summary.defense["P/IP"].toFixed(1)}</td>
+                                <td>{summary.defense["P/BF"].toFixed(3)}</td>
+                                <td>{(summary.defense["<3%"] * 100).toFixed(2)}</td>
+                                <td>{summary.defense.loo}</td>
+                                <td>{summary.defense["1ST2OUT"]}</td>
+                                <td>{summary.defense["123INN"]}</td>
+                                <td>{summary.defense["<13"]}</td>
+                                <td>{summary.defense.fip.toFixed(3)}</td>
+                                <td>{(summary.defense["S%"] * 100).toFixed(2)}</td>
+                                <td>{(summary.defense["FPS%"] * 100).toFixed(2)}</td>
+                                <td>{(summary.defense["FPSO%"] * 100).toFixed(2)}</td>
+                                <td>{(summary.defense["FPSW%"] * 100).toFixed(2)}</td>
+                                <td>{(summary.defense["FPSH%"] * 100).toFixed(2)}</td>
+                                <td>{summary.defense["BB/INN"].toFixed(3).replace(/^0+/, '')}</td>
+                                <td>{summary.defense["0BBINN"]}</td>
+                                <td>{summary.defense.bbs}</td>
+                                <td>{summary.defense.lobb}</td>
+                                <td>{summary.defense.lobbs}</td>
+                                <td>{(summary.defense["SM%"] * 100).toFixed(2)}</td>
+                                <td>{summary.defense["K/BF"].toFixed(3).replace(/^0+/, '')}</td>
+                                <td>{summary.defense["K/BB"].toFixed(3)}</td>
+                                <td>{(summary.defense["WEAK%"] * 100).toFixed(2)}</td>
+                                <td>{(summary.defense["HARD%"] * 100).toFixed(2)}</td>
+                                <td>{(summary.defense["GO/AO"] * 100).toFixed(3)}</td>
+                                <td>{summary.defense.hr}</td>
+                                <td>{(summary.defense["LND%"] * 100).toFixed(2)}</td>
+                                <td>{(summary.defense["FLB%"] * 100).toFixed(3)}</td>
+                                <td>{(summary.defense["GB%"] * 100).toFixed(3)}</td>
+                                <td>{summary.defense.babip.toFixed(3).replace(/^0+/, '')}</td>
+                                <td>{summary.defense["BA/RISP"].toFixed(3).replace(/^0+/, '')}</td>
                             </tr>
                         </tfoot>
                     </table>

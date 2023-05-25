@@ -29,6 +29,7 @@ namespace Stats.API.Helper
             CreateMap<Stats.ExtApi.Models.StatsData, Stats.Database.Models.TeamTransform.StatsData>().ReverseMap();
             CreateMap<Stats.ExtApi.Models.StatsData.Player, Stats.Database.Models.TeamTransform.StatsData.StatsPlayer>().ReverseMap();
             CreateMap<Stats.ExtApi.Models.StatsData.PlayerStats, Stats.Database.Models.TeamTransform.PlayerStats>().ReverseMap();
+            CreateMap<Stats.ExtApi.Models.TeamPlayer, Stats.Database.Models.TeamTransform.Player>().ReverseMap();
 
             CreateMap<Stats.ExtApi.Models.StatsData.PlayerStats.Defense, Stats.Database.Models.TeamTransform.PlayerStats.Defense>().ReverseMap();
             CreateMap<Stats.ExtApi.Models.StatsData.PlayerStats.Offense, Stats.Database.Models.TeamTransform.PlayerStats.Offense>().ReverseMap();

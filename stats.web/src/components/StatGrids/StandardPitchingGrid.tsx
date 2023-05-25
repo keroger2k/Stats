@@ -32,41 +32,41 @@ export const PitchSmart = ({ summary, player_stats, player_names }: GridProps) =
     const content = Object.keys(player_stats).map<any>((player) => {
         if (player_stats[player].stats.defense) {
             return (
-                <tr className="whiteRow odd">
-                    <td className="playerNameCell invertLinkUnderline strong">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</td>
-                    <td className="statCell">{formatInningsPitched(player_stats[player].stats.defense?.ip)}</td>
-                    <td className="statCell">{player_stats[player].stats.general.gp}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.gs}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.bf}</td>
-                    <td className="statCell">{player_stats[player].stats.defense["#P"]}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.w}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.l}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.sv}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.svo}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.bs}</td>
-                    <td className="statCell">{(player_stats[player].stats.defense["SV%"] * 100).toFixed(1)}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.h}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.r}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.er}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.bb}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.so}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.sol}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.hbp}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.era.toFixed(3)}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.whip.toFixed(3)}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.lob}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.bk}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.pik}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.cs}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.sb}</td>
-                    <td className="statCell">{(player_stats[player].stats.defense["SB%"] * 100).toFixed(3)}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.wp}</td>
-                    <td className="statCell">{player_stats[player].stats.defense?.baa.toFixed(3).replace(/^0+/, '')}</td>
+                <tr>
+                    <th scope="row">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</th>
+                    <td>{formatInningsPitched(player_stats[player].stats.defense?.ip)}</td>
+                    <td>{player_stats[player].stats.general.gp}</td>
+                    <td>{player_stats[player].stats.defense?.gs}</td>
+                    <td>{player_stats[player].stats.defense?.bf}</td>
+                    <td>{player_stats[player].stats.defense["#P"]}</td>
+                    <td>{player_stats[player].stats.defense?.w}</td>
+                    <td>{player_stats[player].stats.defense?.l}</td>
+                    <td>{player_stats[player].stats.defense?.sv}</td>
+                    <td>{player_stats[player].stats.defense?.svo}</td>
+                    <td>{player_stats[player].stats.defense?.bs}</td>
+                    <td>{(player_stats[player].stats.defense["SV%"] * 100).toFixed(1)}</td>
+                    <td>{player_stats[player].stats.defense?.h}</td>
+                    <td>{player_stats[player].stats.defense?.r}</td>
+                    <td>{player_stats[player].stats.defense?.er}</td>
+                    <td>{player_stats[player].stats.defense?.bb}</td>
+                    <td>{player_stats[player].stats.defense?.so}</td>
+                    <td>{player_stats[player].stats.defense?.sol}</td>
+                    <td>{player_stats[player].stats.defense?.hbp}</td>
+                    <td>{player_stats[player].stats.defense?.era.toFixed(3)}</td>
+                    <td>{player_stats[player].stats.defense?.whip.toFixed(3)}</td>
+                    <td>{player_stats[player].stats.defense?.lob}</td>
+                    <td>{player_stats[player].stats.defense?.bk}</td>
+                    <td>{player_stats[player].stats.defense?.pik}</td>
+                    <td>{player_stats[player].stats.defense?.cs}</td>
+                    <td>{player_stats[player].stats.defense?.sb}</td>
+                    <td>{(player_stats[player].stats.defense["SB%"] * 100).toFixed(3)}</td>
+                    <td>{player_stats[player].stats.defense?.wp}</td>
+                    <td>{player_stats[player].stats.defense?.baa.toFixed(3).replace(/^0+/, '')}</td>
                 </tr>);
         } else {
             return (
-                <tr className="whiteRow odd">
-                    <td className="playerNameCell invertLinkUnderline strong">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</td>
+                <tr>
+                    <th scope="row">{`${getPlayer(player)?.first_name} ${getPlayer(player)?.last_name}, #${getPlayer(player)?.number}`}</th>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -105,74 +105,74 @@ export const PitchSmart = ({ summary, player_stats, player_names }: GridProps) =
         <>
             <div id="stats_container">
                 <div className="statsPageContainer grid">
-                    <table className="gcTable statTable withGridLines withOutline withHoverHighlighting">
+                    <table className="table table-hover table-border">
                         <thead>
                             <tr>
-                                <th className="playerNameCell invertLinkUnderline strong header headerSortDown">Player</th>
-                                <th className="statCell header">IP</th>
-                                <th className="statCell header">GP</th>
-                                <th className="statCell header">GS</th>
-                                <th className="statCell header">BF</th>
-                                <th className="statCell header">#P</th>
-                                <th className="statCell header">W</th>
-                                <th className="statCell header">L</th>
-                                <th className="statCell header">SV</th>
-                                <th className="statCell header">SVO</th>
-                                <th className="statCell header">BS</th>
-                                <th className="statCell header">SV%</th>
-                                <th className="statCell header">H</th>
-                                <th className="statCell header">R</th>
-                                <th className="statCell header">ER</th>
-                                <th className="statCell header">BB</th>
-                                <th className="statCell header">SO</th>
-                                <th className="statCell header">K-L</th>
-                                <th className="statCell header">HBP</th>
-                                <th className="statCell header">ERA</th>
-                                <th className="statCell header">WHIP</th>
-                                <th className="statCell header">LOB</th>
-                                <th className="statCell header">BK</th>
-                                <th className="statCell header">PIK</th>
-                                <th className="statCell header">CS</th>
-                                <th className="statCell header">SB</th>
-                                <th className="statCell header">SB%</th>
-                                <th className="statCell header">WP</th>
-                                <th className="statCell header">BAA</th>
+                                <th scope="col">Player</th>
+                                <th scope="col">IP</th>
+                                <th scope="col">GP</th>
+                                <th scope="col">GS</th>
+                                <th scope="col">BF</th>
+                                <th scope="col">#P</th>
+                                <th scope="col">W</th>
+                                <th scope="col">L</th>
+                                <th scope="col">SV</th>
+                                <th scope="col">SVO</th>
+                                <th scope="col">BS</th>
+                                <th scope="col">SV%</th>
+                                <th scope="col">H</th>
+                                <th scope="col">R</th>
+                                <th scope="col">ER</th>
+                                <th scope="col">BB</th>
+                                <th scope="col">SO</th>
+                                <th scope="col">K-L</th>
+                                <th scope="col">HBP</th>
+                                <th scope="col">ERA</th>
+                                <th scope="col">WHIP</th>
+                                <th scope="col">LOB</th>
+                                <th scope="col">BK</th>
+                                <th scope="col">PIK</th>
+                                <th scope="col">CS</th>
+                                <th scope="col">SB</th>
+                                <th scope="col">SB%</th>
+                                <th scope="col">WP</th>
+                                <th scope="col">BAA</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="table-group-divider">
                             {content}
                         </tbody>
-                        <tfoot>
+                        <tfoot className="table-group-divider">
                             <tr>
-                                <td className="footerTitleCell">Team</td>
-                                <td className="statCell">{summary.defense.ip.toFixed(2)}</td>
-                                <td className="statCell">{summary.general.gp}</td>
-                                <td className="statCell">{summary.defense.gs}</td>
-                                <td className="statCell">{summary.defense.bf}</td>
-                                <td className="statCell">{summary.defense["#P"]}</td>
-                                <td className="statCell">{summary.defense.w}</td>
-                                <td className="statCell">{summary.defense.l}</td>
-                                <td className="statCell">{summary.defense.sv}</td>
-                                <td className="statCell">{summary.defense.svo}</td>
-                                <td className="statCell">{summary.defense.bs}</td>
-                                <td className="statCell">{(summary.defense["SV%"] * 100).toFixed(1)}</td>
-                                <td className="statCell">{summary.defense.h}</td>
-                                <td className="statCell">{summary.defense.r}</td>
-                                <td className="statCell">{summary.defense.er}</td>
-                                <td className="statCell">{summary.defense.bb}</td>
-                                <td className="statCell">{summary.defense.so}</td>
-                                <td className="statCell">{summary.defense.sol}</td>
-                                <td className="statCell">{summary.defense.hbp}</td>
-                                <td className="statCell">{summary.defense.era.toFixed(3)}</td>
-                                <td className="statCell">{summary.defense.whip.toFixed(3)}</td>
-                                <td className="statCell">{summary.defense.lob}</td>
-                                <td className="statCell">{summary.defense.bk}</td>
-                                <td className="statCell">{summary.defense.pik}</td>
-                                <td className="statCell">{summary.defense.cs}</td>
-                                <td className="statCell">{summary.defense.sb}</td>
-                                <td className="statCell">{(summary.defense["SB%"] * 100).toFixed(2)}</td>
-                                <td className="statCell">{summary.defense.wp}</td>
-                                <td className="statCell">{summary.defense.baa.toFixed(3).replace(/^0+/, '')}</td>
+                                <td>Team</td>
+                                <td>{summary.defense.ip.toFixed(2)}</td>
+                                <td>{summary.general.gp}</td>
+                                <td>{summary.defense.gs}</td>
+                                <td>{summary.defense.bf}</td>
+                                <td>{summary.defense["#P"]}</td>
+                                <td>{summary.defense.w}</td>
+                                <td>{summary.defense.l}</td>
+                                <td>{summary.defense.sv}</td>
+                                <td>{summary.defense.svo}</td>
+                                <td>{summary.defense.bs}</td>
+                                <td>{(summary.defense["SV%"] * 100).toFixed(1)}</td>
+                                <td>{summary.defense.h}</td>
+                                <td>{summary.defense.r}</td>
+                                <td>{summary.defense.er}</td>
+                                <td>{summary.defense.bb}</td>
+                                <td>{summary.defense.so}</td>
+                                <td>{summary.defense.sol}</td>
+                                <td>{summary.defense.hbp}</td>
+                                <td>{summary.defense.era.toFixed(3)}</td>
+                                <td>{summary.defense.whip.toFixed(3)}</td>
+                                <td>{summary.defense.lob}</td>
+                                <td>{summary.defense.bk}</td>
+                                <td>{summary.defense.pik}</td>
+                                <td>{summary.defense.cs}</td>
+                                <td>{summary.defense.sb}</td>
+                                <td>{(summary.defense["SB%"] * 100).toFixed(2)}</td>
+                                <td>{summary.defense.wp}</td>
+                                <td>{summary.defense.baa.toFixed(3).replace(/^0+/, '')}</td>
                             </tr>
                         </tfoot>
                     </table>

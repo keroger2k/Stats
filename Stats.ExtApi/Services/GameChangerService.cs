@@ -22,6 +22,20 @@ namespace Stats.ExtApi.Services
             var result = JsonSerializer.Deserialize<TeamPlayer>(await GetRequestAsync(url));
             return result!;
         }
+        public async Task<IEnumerable<TeamPlayer>> GetPlayers(string[] players)
+        {
+            var playerList = new List<TeamPlayer>();
+            foreach (var p in players)
+            {
+                var url = string.Format(APIEndpoint.PLAYER_INFO, p);
+                var result = JsonSerializer.Deserialize<TeamPlayer>(await GetRequestAsync(url));
+                if(result != null)
+                {
+                    playerList.Add(result);
+                }
+            }
+            return playerList;
+        }
         public async Task<IEnumerable<PlayerClip>> GetPlayerClipMeta(string teamId, string playerId)
         {
             var url = string.Format(APIEndpoint.PLAYER_CLIP_ASSETS, teamId, playerId);
@@ -174,7 +188,7 @@ namespace Stats.ExtApi.Services
         /// <returns>
         /// <param name="SearchResults"></param>
         /// </returns>
-        public async Task<SearchResults> SearchTeamsAsync(string query, string city = "Bloomington", string state = "", string season = "", string year = "", string sport = "baseball")
+        public async Task<SearchResults> SearchTeamsAsync(string query, string city = "", string state = "", string season = "", string year = "", string sport = "baseball")
         {
             StringBuilder st1 = new StringBuilder();
             if (!string.IsNullOrEmpty(city)) st1.Append($"&city={city}");

@@ -55,13 +55,13 @@ function TeamPitchSmart() {
             var content = team!.players.map((value: Player, index: number) => {
                 return (
                     <tr>
-                        <th scope="row">{value.first_name} {value.last_name}</th>
+                        <th scope="row">{`${value.first_name} ${value.last_name}, #${value.number}`}</th>
                         <td>{formatInningsPitched(team.season_stats.stats_data.players[value.id].stats.defense.ip)}</td>
                         <td>{team.season_stats.stats_data.players[value.id].stats.defense['#P']}</td>
                         <td>{(team.season_stats.stats_data.players[value.id].stats.defense['S%'] * 100).toFixed(2)}</td>
                         <td>{(team.season_stats.stats_data.players[value.id].stats.defense.bf)}</td>
                         <td>{(team.season_stats.stats_data.players[value.id].stats.defense.so)}</td>
-                        <td>{((team.season_stats.stats_data.players[value.id].stats.defense.so) / (team.season_stats.stats_data.players[value.id].stats.defense.bf) * 100).toFixed(2)}</td>
+                        <td>{team.season_stats.stats_data.players[value.id].stats.defense.bf  === 0 ? "0.00" : ((team.season_stats.stats_data.players[value.id].stats.defense.so) / (team.season_stats.stats_data.players[value.id].stats.defense.bf) * 100).toFixed(2) }</td>
                         <td>{data[0][value.id] ? data[0][value.id] : "0"}</td>
                         <td>{data[1][value.id] ? data[1][value.id] : "0"}</td>
                         <td>{data[2][value.id] ? data[2][value.id] : "0"}</td>
@@ -93,7 +93,7 @@ function TeamPitchSmart() {
                                 <thead>
                                     <tr>
                                         <td scope="col">&nbsp;</td>
-                                        <td scope="col" colSpan={5} >Season Stats</td>
+                                        <td scope="col" colSpan={6} >Season Stats</td>
                                         <td scope="col" colSpan={5} >Previous Days</td>
                                         
                                     </tr>

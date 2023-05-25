@@ -48,11 +48,6 @@ function StatsTopGrid({ setGrid, setGridType, grid, gridType }: { setGrid: any, 
                         Stats
                     </h1>
                 </div>
-                <div className="SeasonStatsPage__export-stats">
-                    <a download="" className="ExportStatsButton__export-stats-button" target="_self" >
-                        Export Stats
-                    </a>
-                </div>
             </div>
             <div className="StatsTable__tab-view-grid">
                 <div className="StatsTable__tab-view">
@@ -93,16 +88,6 @@ function StatsTopGrid({ setGrid, setGridType, grid, gridType }: { setGrid: any, 
                             { getButton() }
                         </div>
                     </div>
-                </div>
-                <div className="SeasonStatsPage__filter-stats">
-                    <button type="button" className="TextButton__medium TextButton__text-button" disabled>
-                        <span className="TextButton__iconAndBadge TextButton__iconAndBadge--small">
-                            <FilterIcon></FilterIcon>
-                        </span>
-                        <div className="Text__text Text__left Text__gc-blue Text__small Text__bold">
-                            Filter Stats
-                        </div>
-                    </button>
                 </div>
             </div>
         </>

@@ -19,29 +19,45 @@ function TeamInfo() {
         });
     }, []);
 
+    const content = data?.players.map((player) => {
+        return (
+            <a className="ListRow__container ListRow__listRow ListRow__oneRow" href="">
+                <div className="ListRow__avatar">
+                    <div className="Avatar__container Avatar__grey-background Avatar__small">
+                        <div className="Avatar__centered">
+                            <div className="Avatar__text"><span className="Text__text Text__left Text__white Text__small Text__bold">{`${player.first_name.substring(0, 1)}${player.last_name?.substring(0, 1) }`}</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div className="ListRow__mainContent">{`${player.first_name} ${player.last_name}, #${player.number}`}</div>
+                <div className="ListRow__buttons"></div>
+            </a>
+        );
+    });
+
     return (
 
         <main className="MainContent__mainContentContainer">
             <div className="TeamNavBar__stickyItem StickyItem__stickyItem" data-sticky-name="TeamNavbar" data-sticky="true" >
                 <TeamNavBar {...data!} />
             </div>
-            <div className="Grid__grid Grid__fixed ScheduleListContainer__schedulePageContainer">
-                <div className="Grid__grid-item ScheduleListContainer__scheduleHeader" >
-                    <div className="OldGrid__row OldGrid__vertical-align Title__row ScheduleListContainer__scheduleHeaderRow" role="presentation">
-                        <h1 className="Text__text Text__left Text__off-black Text__base Text__xbold Title__text Text__inline-header">Schedule</h1>
-                        <button type="button" className="Button__large Button__gc-blue Button__filled Button__fixed" data-testid="add-event-button">
-                            <span className="Text__text Text__left Text__white Text__base Text__bold">Update Team Data</span>
-                        </button>
+            <div className="OldGrid__grid OldGrid__centered TeamInfoPage__teamInfoPageContainer">
+                <div className="OldGrid__row OldGrid__vertical-align Title__row" role="presentation">
+                    <h1 className="Text__text Text__left Text__off-black Text__base Text__xbold Title__text Text__inline-header">Team</h1>
+                </div>
+                <div className="OldGrid__row TeamInfoPage__view-selector" role="presentation">
+                    <div data-testid="stats-selector" className="TabViewChooser__selectorContainer">
+                        <span className="Clickable__container" role="button">
+                            <div className="TabViewChooserItem__selectorItem TabViewChooserItem__activeSelectorItem" role="tab">
+                                <span className="Text__text Text__left Text__gc-blue Text__base Text__semibold TabViewChooserItem__tabViewChooserLabelNoWrap">Roster</span>
+                            </div>
+                        </span>
                     </div>
                 </div>
-                <br />
-                <div className="Grid__grid-item" >
-                    <div className="Grid__grid-item" >
-                        <div className="ScheduleSection__section ScheduleListByMonth__eventMonth">
-                            <h1>Team Info</h1>
-                        </div>
-                    </div>
+                <div className="ListRow__listRowContainer">
+                    { content }
                 </div>
+                <span></span>
             </div>
         </main>
 

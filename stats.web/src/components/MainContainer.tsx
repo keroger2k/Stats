@@ -63,11 +63,6 @@ function MainContainer() {
                             <div className="OldGrid__row OldGrid__vertical-align Title__row" role="presentation">
                                 <h1 className="Text__text Text__left Text__off-black Text__base Text__xbold Title__text Text__inline-header" data-testid="teams-title">Teams</h1>
                             </div>
-                            <Link to={`/teams/opponents`}>
-                                <button type="button" className="Button__large Button__gc-blue Button__filled Button__fixed" data-testid="add-event-button">
-                                    <span className="Text__text Text__left Text__white Text__base Text__bold Add_Team">Add Team</span>
-                                </button>
-                            </Link>
                         </div>
                         <div className="TeamsList__teamListContainer">
                             <div className="TeamsList__seasonHeader">

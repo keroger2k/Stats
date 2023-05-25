@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Service from '../services/api';
 import { SearchResult } from '../models/models';
 import BaseballLogoLarge from './SVGImages/BaseballLogoLarge';
 import './Opponents.scss';
+import LoadingSpinner from "./LoadingSpinner/LoadingSpinner"
 
 function OpponentsContainer() {
 
     const [data, setData] = useState<SearchResult[]>([]);
     const [query, setQuery] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
+
 
 
     React.useEffect(() => {
@@ -29,7 +34,11 @@ function OpponentsContainer() {
 
     function importTeam(id: string) {
         const services = new Service();
-        services.importTeam('Teams', id);
+        setIsLoading(true)
+        services.importTeam('Teams', id).then((data) => {
+            setIsLoading(false)
+            navigate("/teams/" + id + "/schedule")
+        });
     }
 
 
@@ -50,7 +59,7 @@ function OpponentsContainer() {
                         <span className="Text__text Text__left Text__cool-grey-dark Text__small Text__regular OpponentListing__details staff">{data[index].staff.join(', ')}</span>
                         <div className="OpponentListing__button">
                             <div>
-                                <a className="Button__button-link" href="/">
+                                <a className="Button__button-link" href="#">
                                     <button type="button" className="Button__small Button__gc-blue Button__stroke Button__fixed" onClick={ () => importTeam(data[index].id) }>Import</button>
                                 </a>
                             </div>
@@ -63,6 +72,7 @@ function OpponentsContainer() {
 
     return (
         <main className="MainContent__mainContentContainer">
+           
             <div className="OpponentsPageDisplay__opponentsPage">
                 <div className="OpponentsPageDisplay__stickyItem StickyItem__stickyItem" data-sticky-name="Opponents" data-sticky="true" >
                     <h1 className="Text__text Text__left Text__off-black Text__xlarge Text__xbold Text__inline-header">Import New Team</h1>
@@ -93,10 +103,8 @@ function OpponentsContainer() {
                         </span>
                     </div>
                 </div>
-                { content }
-               
+                {isLoading ? <LoadingSpinner /> : content}
             </div>
-
         </main>
     );
 }

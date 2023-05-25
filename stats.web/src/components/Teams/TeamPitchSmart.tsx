@@ -56,13 +56,13 @@ function TeamPitchSmart() {
                 return (
                     <tr>
                         <th scope="row">{`${value.first_name} ${value.last_name}, #${value.number}`}</th>
-                        <td>{formatInningsPitched(team.season_stats.stats_data.players[value.id].stats.defense.ip)}</td>
+                        <td className="divider">{formatInningsPitched(team.season_stats.stats_data.players[value.id].stats.defense.ip)}</td>
                         <td>{team.season_stats.stats_data.players[value.id].stats.defense['#P']}</td>
                         <td>{(team.season_stats.stats_data.players[value.id].stats.defense['S%'] * 100).toFixed(2)}</td>
                         <td>{(team.season_stats.stats_data.players[value.id].stats.defense.bf)}</td>
                         <td>{(team.season_stats.stats_data.players[value.id].stats.defense.so)}</td>
                         <td>{team.season_stats.stats_data.players[value.id].stats.defense.bf  === 0 ? "0.00" : ((team.season_stats.stats_data.players[value.id].stats.defense.so) / (team.season_stats.stats_data.players[value.id].stats.defense.bf) * 100).toFixed(2) }</td>
-                        <td>{data[0][value.id] ? data[0][value.id] : "0"}</td>
+                        <td className="divider">{data[0][value.id] ? data[0][value.id] : "0"}</td>
                         <td>{data[1][value.id] ? data[1][value.id] : "0"}</td>
                         <td>{data[2][value.id] ? data[2][value.id] : "0"}</td>
                         <td>{data[3][value.id] ? data[3][value.id] : "0"}</td>
@@ -93,19 +93,19 @@ function TeamPitchSmart() {
                                 <thead>
                                     <tr>
                                         <td scope="col">&nbsp;</td>
-                                        <td scope="col" colSpan={6} >Season Stats</td>
-                                        <td scope="col" colSpan={5} >Previous Days</td>
+                                        <td className="divider" scope="col" colSpan={6} >Season Stats</td>
+                                        <td className="divider" scope="col" colSpan={5} >Previous Days</td>
                                         
                                     </tr>
                                     <tr className="table-group-divider">
                                         <td scope="col">Player</td>
-                                        <td scope="col">IP</td>
+                                        <td className="divider" scope="col">IP</td>
                                         <td scope="col">#P</td>
                                         <td scope="col">S%</td>
                                         <td scope="col">BF</td>
                                         <td scope="col">SO</td>
                                         <td scope="col">K%</td>
-                                        <td scope="col">0</td>
+                                        <td className="divider" scope="col">0</td>
                                         <td scope="col">-1</td>
                                         <td scope="col">-2</td>
                                         <td scope="col">-3</td>

@@ -27550,28 +27550,10 @@ select::-ms-expand {
     box-shadow: none
 }
 
-html, body {
-    background-color: #edf2fa;
-    margin: 0;
-    padding: 0;
-    color: #35373d;
-    font-family: "Open Sans",sans-serif;
-    font-weight: 400;
-    height: 100%;
-    width: 100%
-}
-
-body {
-    -webkit-overflow-scrolling: touch
-}
 
 .app__page-wrapper {
     color: #000;
     height: 100%
-}
-
-form {
-    width: 100%
 }
 
 .app__stickyContainer {

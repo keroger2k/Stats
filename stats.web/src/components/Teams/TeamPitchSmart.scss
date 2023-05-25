@@ -3,6 +3,11 @@
     box-sizing: border-box;
 }
 
+.divider {
+    border-left: 1px solid #333;
+    border-left-width:2px;
+}
+
 th:first-child, td:first-child {
     position: sticky;
     left: 0px;

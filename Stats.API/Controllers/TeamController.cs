@@ -14,10 +14,12 @@ namespace Stats.API.Controllers
     public class TeamsController : BaseController<TeamsController>
     {
         private readonly ExternalAPIService _externalApi;
-        public TeamsController(ILogger<TeamsController> logger, DatabaseService db, IMapper mapper, ExternalAPIService externalApi) 
+        private readonly DataProcessingService _dps;
+        public TeamsController(ILogger<TeamsController> logger, DatabaseService db, IMapper mapper, ExternalAPIService externalApi, DataProcessingService dps) 
             : base(logger, db, mapper)
         {
             _externalApi = externalApi;
+            _dps = dps;
         }
 
         [HttpGet]
@@ -85,7 +87,7 @@ namespace Stats.API.Controllers
         public async Task<ActionResult<TeamTransform>> GetTeamPitchSmart(string id)
         {
             var team = await _externalApi.CheckTeamStatus(id);
-            var results = _db.GetTeamPitchSmart(team);
+            var results = _dps.GetTeamPitchSmart(team);
             return Ok(results);
         }
 

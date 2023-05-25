@@ -60,9 +60,6 @@ namespace Stats.ExtApi.Services
                     data = token.access.data,
                     expires = token.access.expires
                 },
-                //this is wrong, but I'm not getting back a good refresh token with my request.
-                //need to either figure out a way to get a new refresh token, or create a UI input
-                //to put in either a refresh token or access token.
                 refresh = new Stats.Database.Models.AuthorizationToken.Token()
                 {
                     data = token.refresh.data,

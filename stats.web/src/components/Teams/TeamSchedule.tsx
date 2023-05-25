@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from "react-router-dom";
 import Service from '../../services/api';
 import { Link } from 'react-router-dom';
-import { Team, formatWeekdayShort } from '../../models/models';
+import { Team, formatWeekdayShort, formatMonthShort } from '../../models/models';
 import Chevron from '../SVGImages/Chevron';
 import TeamEvent from './TeamEvent';
 import TeamNavBar from '../TeamNavBar/TeamNavBar';
@@ -17,6 +17,10 @@ function TeamSchedule() {
     function getDay(date: string | undefined) {
         var d = new Date(date!);
         return d.getDay();
+    }
+    function getMonth(date: string | undefined) {
+        var d = new Date(date!);
+        return d.getMonth();
     }
 
     function getId() { return id; }
@@ -64,12 +68,12 @@ function TeamSchedule() {
             return (
                 <>
                     <div className="opponent_link">
-                        <Link target="_top" rel="noopener noreferrer" to={`/teams/${getProgenId(teamEvent.pregame_data?.opponent_id)}/schedule`} ><button className="Button__small Button__gc-blue Button__filled Button__fixed">Opponent Page</button></Link>
+                        <Link target="_top" rel="noopener noreferrer" to={`/teams/${getProgenId(teamEvent.pregame_data?.opponent_id)}/schedule`} ><button className="btn btn-primary btn-sm">Opponent Page</button></Link>
                     </div>
                     <Link to={`/teams/${data.id}/schedule/${teamEvent.event.id}`} key={teamEvent.event.id}>
                         <div className="ScheduleListByMonth__dayRow">
                             <div className="ScheduleListByMonth__dayDate">
-                                <div className="Text__text Text__center Text__cool-grey-dark Text__small Text__regular">{formatWeekdayShort(getDay(teamEvent.event.start?.datetime))}</div>
+                                <div className="Text__text Text__center Text__cool-grey-dark Text__small Text__regular">{formatMonthShort(getMonth(teamEvent.event.start?.datetime))}</div>
                                 <div className="Text__text Text__center Text__off-black Text__base Text__xbold ScheduleListByMonth__dateText">{getDate(teamEvent.event.start?.datetime)}</div>
                             </div>
                             <div>
@@ -91,37 +95,7 @@ function TeamSchedule() {
                     </Link>
                 </>
             );
-        } else {
-            return (
-                <>
-                    <Link to={`/teams/${data.id}/schedule/${teamEvent.event.id}`} key={teamEvent.event.id}>
-                        <div className="ScheduleListByMonth__dayRow">
-                            <div className="ScheduleListByMonth__dayDate">
-                                <div className="Text__text Text__center Text__cool-grey-dark Text__small Text__regular">{formatWeekdayShort(getDay(teamEvent.event.start?.datetime))}</div>
-                                <div className="Text__text Text__center Text__off-black Text__base Text__xbold ScheduleListByMonth__dateText">{getDate(teamEvent.event.start?.datetime)}</div>
-                            </div>
-                            <div>
-                                <span className="ScheduleListByMonth__event">
-                                    <div className="ScheduleListByMonth__title">
-                                        <div className="ScheduleListByMonth__eventIndicators"></div>
-                                        <div className="Text__text Text__left Text__off-black Text__base Text__semibold">{teamEvent.event.title}</div>
-                                    </div>
-                                    <div className="Text__text Text__left Text__cool-grey-dark Text__small Text__regular ScheduleListByMonth__location">at {teamEvent.event.location?.address[0]}</div>
-                                    <div className="ScheduleListByMonth__scoreOrTime">
-                                        <TeamEvent isGame={teamEvent.event.event_type === "game"} time={getTime(teamEvent.event.start?.datetime)} score={getScore(teamEvent.event.id)}></TeamEvent>
-                                        <span className="ScheduleListByMonth__chevron">
-                                            <Chevron></Chevron>
-                                        </span>
-                                    </div>
-                                </span>
-                            </div>
-                        </div>
-                    </Link>
-                </>
-            );
-        }
-
-
+        } 
     });
 
 
@@ -133,7 +107,7 @@ function TeamSchedule() {
             <div className="Grid__grid Grid__fixed ScheduleListContainer__schedulePageContainer">
                 <div className="Grid__grid-item ScheduleListContainer__scheduleHeader" >
                     <div className="OldGrid__row OldGrid__vertical-align Title__row ScheduleListContainer__scheduleHeaderRow" role="presentation">
-                        <h1 className="Text__text Text__left Text__off-black Text__base Text__xbold Title__text Text__inline-header">Schedule</h1>
+                        <h1 className="Text__text Text__left Text__off-black Text__base Text__xbold Title__text Text__inline-header">Game Schedule</h1>
                     </div>
                 </div>
                 <br />

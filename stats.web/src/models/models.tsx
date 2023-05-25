@@ -273,8 +273,27 @@ const WEEKDAYS_SHORT = [
     'SAT',
 ];
 
+const MONTH_SHORT = [
+    'JAN',
+    'FEB',
+    'MAR',
+    'APR',
+    'MAY',
+    'JUN',
+    'JUL',
+    'AUG',
+    'SEP',
+    'OCT',
+    'NOV',
+    'DEC',
+];
+
 export function formatWeekdayShort(i: number) {
     return WEEKDAYS_SHORT[i];
+}
+
+export function formatMonthShort(i: number) {
+    return MONTH_SHORT[i];
 }
 
 export type CoreBattingStats = {

@@ -129,8 +129,16 @@ namespace Stats.ExtApi.Services
         public async Task<TeamSeasonStats> GetTeamSeasonStatsAsync(string teamId)
         {
             var url = string.Format(APIEndpoint.TEAM_SEASON_STATS, teamId);
-            var result = JsonSerializer.Deserialize<TeamSeasonStats>(await GetRequestAsync(url));
-            return result!;
+            var response = await GetRequestAsync(url);
+            if (string.IsNullOrEmpty(response))
+            {
+                return null;
+            } 
+            else
+            {
+                var result = JsonSerializer.Deserialize<TeamSeasonStats>(response);
+                return result!;
+            }
         }
 
         /// <summary>
@@ -207,7 +215,7 @@ namespace Stats.ExtApi.Services
         /// <returns>JSON results from external API</returns>
         private async Task<string> GetRequestAsync(string url, int retries = 0)
         {
-            Console.Write($"\nURL:{url}, Retries: {retries}");
+            //Console.Write($"\nURL:{url}, Retries: {retries}");
             _httpClient.DefaultRequestHeaders.Clear();
             var token = await _authorizationService.GetAccessTokenAsync();
             _httpClient.DefaultRequestHeaders.Add("gc-token", token);
@@ -220,7 +228,8 @@ namespace Stats.ExtApi.Services
             else if (response.StatusCode == HttpStatusCode.NotFound)
             {
                 Console.WriteLine("Not Found: Resource not found.");
-                throw new HttpRequestException();
+                //throw new HttpRequestException();
+                return "";
             }
             else
             {

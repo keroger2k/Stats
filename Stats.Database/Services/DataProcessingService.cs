@@ -40,7 +40,7 @@ namespace Stats.Database.Services
                                     pData[player.Key] = pData[player.Key] + player.Value.stats.defense.P;
 
                                 }
-                                else if (result.players.Any(c => c.id == player.Key))
+                                else 
                                 {
                                     pData.Add(player.Key, player.Value.stats.defense.P);
                                 }

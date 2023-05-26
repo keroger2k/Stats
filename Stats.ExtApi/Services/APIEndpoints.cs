@@ -1,4 +1,4 @@
-﻿namespace Stats.ExtApi.Models
+﻿namespace Stats.ExtApi
 {
     public static class APIEndpoint
     {

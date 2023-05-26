@@ -87,7 +87,7 @@ function TeamSchedule() {
                                         <div className="ScheduleListByMonth__eventIndicators"></div>
                                         <div className="Text__text Text__left Text__off-black Text__base Text__semibold">{teamEvent.event.title}</div>
                                     </div>
-                                    <div className="Text__text Text__left Text__cool-grey-dark Text__small Text__regular ScheduleListByMonth__location">at {teamEvent.event.location?.address[0]}</div>
+                                    <div className="Text__text Text__left Text__cool-grey-dark Text__small Text__regular ScheduleListByMonth__location">at {teamEvent.event.location?.address === null ? "" : teamEvent.event.location?.address[0]}</div>
                                     <div className="ScheduleListByMonth__scoreOrTime">
                                         <TeamEvent isGame={teamEvent.event.event_type === "game"} time={getTime(teamEvent.event.start?.datetime)} score={getScore(teamEvent.event.id)}></TeamEvent>
                                         <span className="ScheduleListByMonth__chevron">

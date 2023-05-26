@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Serilog;
 using Stats.API.Helper;
-using Stats.API.Models;
 using Stats.Database.Models;
 using Stats.Database.Services;
-using Stats.ExtApi.Models;
+using Stats.Models;
 
 namespace Stats.API.Controllers
 {
@@ -23,16 +21,16 @@ namespace Stats.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Stats.API.Models.Team>> Get()
+        public async Task<ActionResult<TeamTransform>> Get()
         {
             var team = await _db.GetTeamsAsync();
-            var mapped = _mapper.Map<IEnumerable<Stats.API.Models.Team>>(team);
+            var mapped = _mapper.Map<IEnumerable<TeamTransform>>(team);
             return Ok(mapped);
         }
 
         [HttpPost]
         [Route("{id}")]
-        public async Task<ActionResult<Stats.API.Models.Team>> ImportTeamAsync(string id)
+        public async Task<ActionResult<TeamTransform>> ImportTeamAsync(string id)
         {
             await _externalApi.ImportTeamInfoAsync(id);
             return Ok();
@@ -40,28 +38,28 @@ namespace Stats.API.Controllers
 
         [HttpGet]
         [Route("{id}/players")]
-        public async Task<ActionResult<TeamPlayers>> GetTeamPlayers(string id)
+        public async Task<ActionResult<TeamTransform>> GetTeamPlayers(string id)
         {
             var team = await _externalApi.CheckTeamStatus(id);
-            var mapped = _mapper.Map<TeamPlayers>(team);
+            var mapped = _mapper.Map<TeamTransform>(team);
             return Ok(mapped);
         }
 
         [HttpGet]
         [Route("{id}/season-stats")]
-        public async Task<ActionResult<TeamPlayers>> GetTeamSeasonStats(string id)
+        public async Task<ActionResult<TeamTransform>> GetTeamSeasonStats(string id)
         {
             var team = await _externalApi.CheckTeamStatus(id);
-            var mapped = _mapper.Map<TeamStats>(team);
+            var mapped = _mapper.Map<TeamTransform>(team);
             return Ok(mapped);
         }
 
         [HttpGet]
         [Route("{id}/schedule")]
-        public async Task<ActionResult<Stats.API.Models.TeamSchedule>> GetTeamGameSchedule(string id)
+        public async Task<ActionResult<TeamTransform>> GetTeamGameSchedule(string id)
         {
             var team = await _externalApi.CheckTeamStatus(id);
-            var mapped = _mapper.Map<Stats.API.Models.TeamSchedule>(team);
+            var mapped = _mapper.Map<TeamTransform>(team);
             return Ok(mapped);
         }
 
@@ -75,7 +73,7 @@ namespace Stats.API.Controllers
 
         [HttpGet]
         [Route("{id}/schedule/{eid}")]
-        public async Task<ActionResult<TeamTransform.TeamEvent>> GetTeamEvent(string id, string eid)
+        public async Task<ActionResult<TeamEvent>> GetTeamEvent(string id, string eid)
         {
             var team = await _externalApi.CheckTeamStatus(id);
             var teamEvent = team.completed_games.FirstOrDefault(game => game.event_id == eid);

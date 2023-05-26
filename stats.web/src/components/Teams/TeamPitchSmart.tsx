@@ -1,7 +1,7 @@
 ﻿import React, { useState } from 'react';
 import { useParams } from "react-router-dom";
 import Service from '../../services/api';
-import { Team, Player } from '../../models/models';
+import { Team, Player, formatWeekdayShort } from '../../models/models';
 import './TeamPitchSmart.scss'
 import TeamNavBar from '../TeamNavBar/TeamNavBar';
 
@@ -123,11 +123,11 @@ function TeamPitchSmart() {
                                         <td scope="col">BF</td>
                                         <td scope="col">SO</td>
                                         <td scope="col">K%</td>
-                                        <td className="divider" scope="col">0</td>
-                                        <td scope="col">-1</td>
-                                        <td scope="col">-2</td>
-                                        <td scope="col">-3</td>
-                                        <td scope="col">-4</td>
+                                        <td className="divider" scope="col">{formatWeekdayShort(new Date().getDay())}</td>
+                                        <td scope="col">{formatWeekdayShort(new Date().getDay() - 1)}</td>
+                                        <td scope="col">{formatWeekdayShort(new Date().getDay() - 2)}</td>
+                                        <td scope="col">{formatWeekdayShort(new Date().getDay() - 3)}</td>
+                                        <td scope="col">{formatWeekdayShort(new Date().getDay() - 4)}</td>
                                     </tr>
                                 </thead>
                                 <tbody className="table-group-divider">

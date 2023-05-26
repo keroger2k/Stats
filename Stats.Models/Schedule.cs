@@ -5,7 +5,7 @@
     /// Referenced API Endpoint: "/teams/:teamID/schedule/?fetch_place_details=true"
     /// 
     /// </summary>
-    public class TeamSchedule
+    public class Schedule
     {
         public Event @event { get; set; } = null!;
         public class Event
@@ -62,12 +62,9 @@
             public string meta_seq { get; set; } = null!;
             public DateTime created_at { get; set; }
             public DateTime updated_at { get; set; }
-            public Opponent opponent { get; set; } = null!;
-            public class Opponent
+            public ExtendedOpponent opponent { get; set; } = null!;
+            public class ExtendedOpponent : Opponent
             {
-                public string root_team_id { get; set; } = null!;
-                public string owning_team_id { get; set; } = null!;
-                public string progenitor_team_id { get; set; } = null!;
                 public string meta_seq { get; set; } = null!;
                 public DateTime created_at { get; set; }
                 public DateTime updated_at { get; set; }

@@ -2,7 +2,7 @@
 using Serilog;
 using Stats.Database.Models;
 using Stats.Database.Services;
-using Stats.ExtApi.Models;
+using Stats.Models;
 using Stats.ExtApi.Services;
 
 namespace Stats.API.Helper
@@ -72,11 +72,11 @@ namespace Stats.API.Helper
                 season_name = team.season_name,
                 season_year = team.season_year,
                 team_avatar_image = "",
-                schedule = _mapper.Map<List<TeamTransform.TeamSchedule1>>(teamSchedule.ToList()),
-                completed_game_scores = _mapper.Map<List<TeamTransform.TeamGame>>(scores),
-                season_stats = _mapper.Map<TeamTransform.SeasonStats>(season_stats),
-                opponents = _mapper.Map<List<TeamTransform.TeamOpponent1>>(opponents),
-                players = _mapper.Map<List<TeamTransform.Player>>(players)
+                schedule = teamSchedule.ToList(),
+                completed_game_scores = scores.ToList(),
+                season_stats = season_stats,
+                opponents = opponents.ToList(),
+                players = players.ToList()
             };
 
             foreach (var evt in teamTransform.schedule.Where(c => c.@event.event_type.Equals("game"))
@@ -87,7 +87,7 @@ namespace Stats.API.Helper
                 try
                 {
                     TeamEvent game = await _gameChangerService.GetTeamEventStatsAsync(team.id, evt.@event.id);
-                    teamTransform.completed_games.Add(_mapper.Map<TeamTransform.TeamEvent>(game));
+                    teamTransform.completed_games.Add(game);
                 }
                 catch (Exception)
                 {

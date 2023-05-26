@@ -1,4 +1,4 @@
-﻿using Stats.ExtApi.Models;
+﻿using Stats.Models;
 using System.Net;
 using System.Text;
 using System.Text.Json;
@@ -138,10 +138,10 @@ namespace Stats.ExtApi.Services
         /// </summary>
         /// <param name="teamId"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<TeamSchedule>> GetTeamScheduledEventsAsync(string teamId)
+        public async Task<IEnumerable<Schedule>> GetTeamScheduledEventsAsync(string teamId)
         {
             var url = string.Format(APIEndpoint.TEAM_SCHEDULE, teamId);
-            var result = JsonSerializer.Deserialize<IEnumerable<TeamSchedule>>(await GetRequestAsync(url));
+            var result = JsonSerializer.Deserialize<IEnumerable<Schedule>>(await GetRequestAsync(url));
             return result!;
         }
 

@@ -41,64 +41,64 @@ namespace Stats.CmdApp
         {
             Task.Run(async () =>
             {
-                var interestingId = "df59a93c-d75e-45f6-aa08-83e2150f39c9";
-                var team = await _db.GetTeamAsync(interestingId);
-                //look at team of interests opponents
-                foreach (var item in team.opponents)
-                {
-                    var opp = await _db.GetTeamAsync(item.progenitor_team_id);
-                    //for now check if opponent exists in local database only
-                    if (opp != null)
-                    {
-                        await DoShit(opp, team);
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrEmpty(item.progenitor_team_id))
-                        {
-                            await ImportTeamInfoAsync(item.progenitor_team_id);
-                            var opp1 = await _db.GetTeamAsync(item.progenitor_team_id);
-                            await DoShit(opp1, team);
-
-                        }
-                    }
-
-                }
-
-
-
-                //while (true)
+                //var interestingId = "df59a93c-d75e-45f6-aa08-83e2150f39c9";
+                //var team = await _db.GetTeamAsync(interestingId);
+                ////look at team of interests opponents
+                //foreach (var item in team.opponents)
                 //{
-                //    // Get the user's search text.
-                //    Console.Clear();
-                //    Console.WriteLine("Enter a Team name to search for: ");
-                //    string query = Console.ReadLine() ?? string.Empty;
-                //    int selection = 0;
-                //    // Find all Teams that match the search text.
-                //    var results = await _gameChangerService.SearchTeamsAsync(query, sport: "baseball");
-
-                //    // Display the search results.
-                //    if (results.hits.Count() == 0)
+                //    var opp = await _db.GetTeamAsync(item.progenitor_team_id);
+                //    //for now check if opponent exists in local database only
+                //    if (opp != null)
                 //    {
-                //        Console.WriteLine("No Teams found.");
+                //        await DoShit(opp, team);
                 //    }
                 //    else
                 //    {
-                //        var i = 1;
-                //        Console.Clear();
-                //        foreach (var item in results.hits.Take(5))
+                //        if (!string.IsNullOrEmpty(item.progenitor_team_id))
                 //        {
-                //            var location = item.location == null ? "Unknown" : string.Format($"{item.location.city}, {item.location.state}");
-                //            Console.WriteLine($"{i++}. {item.name}; Sport/Season: {item.sport.ToUpper()}/{item.team_season.season.ToUpper()}, {item.team_season.year}");
-                //            Console.WriteLine($"Number of Players: {item.number_of_players}; Age Group: {item.age_group}; Staff: [ {string.Join(", ", item.staff)} ]\n");
+                //            await ImportTeamInfoAsync(item.progenitor_team_id);
+                //            var opp1 = await _db.GetTeamAsync(item.progenitor_team_id);
+                //            await DoShit(opp1, team);
+
                 //        }
                 //    }
-                //    Console.WriteLine("Which Team do you want to select?:");
-
-                //    if (int.TryParse(Console.ReadLine(), out selection))
-                //        SelectTeam(results.hits.ElementAt(selection - 1));
 
                 //}
+
+
+
+                while (true)
+                {
+                    // Get the user's search text.
+                    Console.Clear();
+                    Console.WriteLine("Enter a Team name to search for: ");
+                    string query = Console.ReadLine() ?? string.Empty;
+                    int selection = 0;
+                    // Find all Teams that match the search text.
+                    var results = await _gameChangerService.SearchTeamsAsync(query, sport: "baseball");
+
+                    // Display the search results.
+                    if (results.hits.Count() == 0)
+                    {
+                        Console.WriteLine("No Teams found.");
+                    }
+                    else
+                    {
+                        var i = 1;
+                        Console.Clear();
+                        foreach (var item in results.hits.Take(5))
+                        {
+                            var location = item.location == null ? "Unknown" : string.Format($"{item.location.city}, {item.location.state}");
+                            Console.WriteLine($"{i++}. {item.name}; Sport/Season: {item.sport.ToUpper()}/{item.team_season.season.ToUpper()}, {item.team_season.year}");
+                            Console.WriteLine($"Number of Players: {item.number_of_players}; Age Group: {item.age_group}; Staff: [ {string.Join(", ", item.staff)} ]\n");
+                        }
+                    }
+                    Console.WriteLine("Which Team do you want to select?:");
+
+                    if (int.TryParse(Console.ReadLine(), out selection))
+                        SelectTeam(results.hits.ElementAt(selection - 1));
+
+                }
 
             }).GetAwaiter().GetResult();
         }
@@ -167,7 +167,29 @@ namespace Stats.CmdApp
             var path = lines.Where(c => c.EndsWith(".ts")).First();
 
             var videoClipPath = new Uri(playlistm3u8Url);
-            var finalPath = playListUrl.Replace("playlist.m3u8", "");
+
+            StringBuilder sb1 = new StringBuilder();
+            sb1.Append($"{videoClipPath.Scheme}://{videoClipPath.Host}");
+
+            for (int i = 0; i < videoClipPath.Segments.Length - 3; i++)
+            {
+                sb1.Append(videoClipPath.Segments[i]);
+            }
+            var relpath = sb1.ToString();
+            var finalPath = path.Replace("../../", relpath.Substring(0, relpath.Length));
+
+            var downloadPath = new Uri(finalPath);
+            StringBuilder sb2 = new StringBuilder();
+            sb2.Append($"{videoClipPath.Scheme}://{videoClipPath.Host}");
+
+            for (int i = 0; i < downloadPath.Segments.Length - 1; i++)
+            {
+                sb2.Append(downloadPath.Segments[i]);
+            }
+
+            finalPath = sb2.ToString();
+            //var videoClipPath = new Uri(playlistm3u8Url);
+            //var finalPath = playListUrl.Replace("playlist.m3u8", "");
 
             var numberOfTSFiles = asset.duration / 10;
 
@@ -268,108 +290,21 @@ namespace Stats.CmdApp
             }
             if (int.TryParse(Console.ReadLine(), out choice))
             {
-                var assets = await _gameChangerService.GetTeamEventVideoAssetsAsync(item.id, games.ElementAt(choice - 1).@event.id);
-                var asset = assets.OrderByDescending(c => c.duration).First();
-                var game = await _gameChangerService.GetTeamEventStatsAsync(item.id, asset.schedule_event_id);
-                var clipmeta = await _gameChangerService.GetPlayerClipMeta(item.id, game.player_stats.players.First().Key);
-                var interestClipForEvent = clipmeta.First(c => c.event_id == asset.schedule_event_id);
-                var playableClip = await _gameChangerService.GetPlayerClipCookie(item.id, interestClipForEvent.clip_metadata_id);
-                var clip = clipmeta.First(c => c.event_id == asset.schedule_event_id);
-                Console.Write($"\nThumbnail: {clip.thumbnail_url}");
-                Console.Write($"\nClip m3u8: {playableClip.url}");
-                Console.Write($"\nKey-Pair-Id: {playableClip.cookies.CloudFrontKeyPairId}");
-                Console.Write($"\nSignature: {playableClip.cookies.CloudFrontSignature}");
-                Console.Write($"\nPolicy: {playableClip.cookies.CloudFrontPolicy}");
-
-                //get m3u8 file
-                var client = new HttpClient();
-                var url = string.Format($"{playableClip.url}?Key-Pair-Id={playableClip.cookies.CloudFrontKeyPairId}&Signature={playableClip.cookies.CloudFrontSignature}&Policy={playableClip.cookies.CloudFrontPolicy}");
-                var response = await client.GetAsync(url);
-                response.EnsureSuccessStatusCode();
-                var responseStream = await response.Content.ReadAsStringAsync();
-
-                string[] lines = responseStream.Split('\n');
-                var path = lines.Where(c => c.EndsWith(".ts")).First();
-
-                var videoClipPath = new Uri(playableClip.url);
-
-                StringBuilder sb1 = new StringBuilder();
-                sb1.Append($"{videoClipPath.Scheme}://{videoClipPath.Host}");
-
-                for (int i = 0; i < videoClipPath.Segments.Length - 2; i++)
-                {
-                    sb1.Append(videoClipPath.Segments[i]);
-                }
-                var relpath = sb1.ToString();
-                var finalPath = path.Replace("../", relpath.Substring(0, relpath.Length));
-
-                var downloadPath = new Uri(finalPath);
-                StringBuilder sb2 = new StringBuilder();
-                sb2.Append($"{videoClipPath.Scheme}://{videoClipPath.Host}");
-
-                for (int i = 0; i < downloadPath.Segments.Length - 1; i++)
-                {
-                    sb2.Append(downloadPath.Segments[i]);
-                }
-                var basePath = sb2.ToString();
-                var numberOfTSFiles = asset.duration / 10;
-
-                Console.WriteLine($"Path: {basePath}");
-                Console.WriteLine($"Duration: {asset.duration}");
-                Console.WriteLine($"# of Files: {numberOfTSFiles}");
-
                 try
                 {
-                    // Create a temp directory to store the downloaded files.
-                    string tempDirectory = Path.GetFullPath("c:\\gc-downloads\\");
-                    for (int i = 0; i < numberOfTSFiles; i++)
+                    var playbackInfo = await _gameChangerService.GetTeamEventVideoAssetsPlaybackAsync(item.id, games.ElementAt(choice - 1).@event.id);
+                    var videoAssets = await _gameChangerService.GetTeamVideoAssetsAsync(item.id);
+
+                    foreach (var vid in playbackInfo.DistinctBy(c => c.url))
                     {
-                        Console.WriteLine($"Downloading: {basePath}{i}.ts?Key-Pair-Id={playableClip.cookies.CloudFrontKeyPairId}&Signature={playableClip.cookies.CloudFrontSignature}&Policy={playableClip.cookies.CloudFrontPolicy}");
-                        // Create a new WebClient object.
-
-                        // Download the file from the URL.
-                        byte[] bytes = await client.GetByteArrayAsync($"{basePath}{i}.ts?Key-Pair-Id={playableClip.cookies.CloudFrontKeyPairId}&Signature={playableClip.cookies.CloudFrontSignature}&Policy={playableClip.cookies.CloudFrontPolicy}");
-
-                        // Save the file to the temp directory.
-                        string fileName = Path.GetFileName($"{basePath}{i}.ts");
-                        File.WriteAllBytes(Path.Combine(tempDirectory, fileName), bytes);
+                        var asset = videoAssets.First(c => c.schedule_event_id == vid.schedule_event_id);
+                        Console.WriteLine($"Downloading: {item.name} has public video of {item.name}:{vid.schedule_event_id}");
+                        await DownloadVideo(vid.url, vid.cookies, asset);
                     }
                 }
                 catch (Exception)
                 {
-
                 }
-
-                // Get the directory to combine the files from.
-                string inputDirectoryPath = @"C:\gc-downloads";
-
-                // Get the name of the output file.
-                string outputFileName = game.event_id;
-
-                string[] inputFilePaths = Directory.GetFiles(inputDirectoryPath);
-                Console.WriteLine("Number of files: {0}.", inputFilePaths.Length);
-
-
-                using (var outputStream = File.Create($"{inputDirectoryPath}\\finished\\{outputFileName}"))
-                {
-                    foreach (var inputFilePath in inputFilePaths.OrderBy(c => Int32.Parse(c.Split('\\')[2].Split('.')[0])))
-                    {
-                        using (var inputStream = File.OpenRead(inputFilePath))
-                        {
-                            inputStream.CopyTo(outputStream);
-                        }
-                        Console.WriteLine("The file {0} has been processed.", inputFilePath);
-                    }
-                }
-
-                string[] tsFiles = Directory.GetFiles(inputDirectoryPath, "*.ts");
-                foreach (string file in tsFiles)
-                {
-                    File.Delete(file);
-                    Console.WriteLine($"Deleted file: {file}");
-                }
-
-                Console.ReadLine();
             }
             Console.ReadLine();
 

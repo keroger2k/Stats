@@ -4,6 +4,7 @@ using Stats.Database.Models;
 using Stats.Database.Services;
 using Stats.Models;
 using Stats.ExtApi.Services;
+using Stats.API.Models;
 
 namespace Stats.API.Helper
 {
@@ -96,5 +97,54 @@ namespace Stats.API.Helper
             }
             await _db.CreateTeamAsync(teamTransform);
         }
+
+        public async Task<OpenOpponentVideos> FindOpenOpponentVideo(string oid, string id)
+        {
+            var opp = await _db.GetTeamAsync(oid);
+            var team = await _db.GetTeamAsync(id);
+            var result = new OpenOpponentVideos();
+            //find interesting team as their opponent
+            var opponentEventWithTeam = opp.opponents.Where(c => c.progenitor_team_id == team.id);
+            foreach (var opponentEvent in opponentEventWithTeam)
+            {
+                //find interesting team on opponents schedule
+                var oppScheduledItem = opp.schedule.Where(c => c.pregame_data != null && c.pregame_data.opponent_id == opponentEvent.root_team_id);
+                if (oppScheduledItem.Any())
+                {
+                    foreach (var evt in oppScheduledItem)
+                    {
+                        //find interest team event in opponents completed games
+                        var theEventFinally = opp.completed_games.FirstOrDefault(c => c.event_id == evt.@event.id);
+                        if (theEventFinally != null)
+                        {
+                            //Console.WriteLine($"Found {opp.name} event with {team.name}: {theEventFinally.event_id}");
+                            //get all the video assets for the opponent
+                            try
+                            {
+                                var playbackInfo = await _gameChangerService.GetTeamEventVideoAssetsPlaybackAsync(opp.id, theEventFinally.event_id);
+                                var videoAssets = await _gameChangerService.GetTeamVideoAssetsAsync(opp.id);
+
+                                foreach (var vid in playbackInfo.DistinctBy(c => c.url))
+                                {
+                                    var asset = videoAssets.First(c => c.schedule_event_id == vid.schedule_event_id);
+                                    Console.WriteLine($"Downloading: {opp.name} has public video of {team.name}:{vid.schedule_event_id}");
+                                    result.videos.Add(new OpenOpponentVideo
+                                    {
+                                        Asset = asset,
+                                        Url = vid.url,
+                                        CloudFrontCookie = vid.cookies
+                                    });
+                                }
+                            }
+                            catch (Exception)
+                            {
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
     }
 }

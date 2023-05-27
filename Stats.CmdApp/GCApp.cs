@@ -50,7 +50,7 @@ namespace Stats.CmdApp
                 //    //for now check if opponent exists in local database only
                 //    if (opp != null)
                 //    {
-                //        await DoShit(opp, team);
+                //        await FindOpenOpponentVideo(opp.id, team.id);
                 //    }
                 //    else
                 //    {
@@ -102,10 +102,10 @@ namespace Stats.CmdApp
 
             }).GetAwaiter().GetResult();
         }
-
-
-        private async Task DoShit(TeamTransform opp, TeamTransform team)
+        private async Task FindOpenOpponentVideo(string oid, string id)
         {
+            var opp = await _db.GetTeamAsync(oid);
+            var team = await _db.GetTeamAsync(id);
             //find interesting team as their opponent
             var opponentEventWithTeam = opp.opponents.Where(c => c.progenitor_team_id == team.id);
             foreach (var opponentEvent in opponentEventWithTeam)
@@ -137,13 +137,11 @@ namespace Stats.CmdApp
                             catch (Exception)
                             {
                             }
-
                         }
                     }
                 }
             }
         }
-
         private async Task DownloadVideo(string url, CloudFrontCookie cookie, VideoAsset asset)
         {
             //get master.m3u8 file
@@ -188,8 +186,6 @@ namespace Stats.CmdApp
             }
 
             finalPath = sb2.ToString();
-            //var videoClipPath = new Uri(playlistm3u8Url);
-            //var finalPath = playListUrl.Replace("playlist.m3u8", "");
 
             var numberOfTSFiles = asset.duration / 10;
 
@@ -243,7 +239,6 @@ namespace Stats.CmdApp
                 Console.WriteLine($"Deleted file: {file}");
             }
         }
-
         private void SelectTeam(SearchResults.SearchItem item)
         {
             int choice = 0;

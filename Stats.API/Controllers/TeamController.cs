@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Stats.API.Helper;
+using Stats.API.Models;
 using Stats.Database.Models;
 using Stats.Database.Services;
 using Stats.Models;
@@ -87,6 +88,14 @@ namespace Stats.API.Controllers
             var team = await _externalApi.CheckTeamStatus(id);
             var results = _dps.GetTeamPitchSmart(team);
             return Ok(results);
+        }
+
+        [HttpGet]
+        [Route("{id}/open-video/")]
+        public async Task<ActionResult<OpenOpponentVideos>> GetOpenVideo(string id, string oid)
+        {
+            var videos = await _externalApi.FindOpenOpponentVideo(oid, id);
+            return Ok(videos);
         }
 
     }

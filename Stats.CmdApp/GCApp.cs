@@ -21,18 +21,21 @@ namespace Stats.CmdApp
         private readonly IMapper _mapper;
         private readonly StatsOut _statsOut;
         private readonly AuthorizationService _auth;
+        private readonly DataProcessingService _dps;
         public GCApp(ILogger<GCApp> logger,
             IConfiguration configuration,
             GameChangerService gameChangerService,
             AuthorizationService auth,
             DatabaseService databaseService,
             StatsOut statsOut,
+            DataProcessingService dps,
             IMapper mapper)
         {
             _configuration = configuration;
             _gameChangerService = gameChangerService;
             _db = databaseService;
             _mapper = mapper;
+            _dps = dps;
             _statsOut = statsOut;
             _auth = auth;
         }
@@ -41,7 +44,10 @@ namespace Stats.CmdApp
         {
             Task.Run(async () =>
             {
-                //var interestingId = "df59a93c-d75e-45f6-aa08-83e2150f39c9";
+                var interestingId = "df59a93c-d75e-45f6-aa08-83e2150f39c9";
+                var imageUrl = await _gameChangerService.GetTeamAvatarAsync(interestingId);
+                await _dps.StoreImageFromUrlAsync(interestingId, imageUrl.full_media_url);
+                Console.WriteLine("here");
                 //var team = await _db.GetTeamAsync(interestingId);
                 ////look at team of interests opponents
                 //foreach (var item in team.opponents)
@@ -67,38 +73,38 @@ namespace Stats.CmdApp
 
 
 
-                while (true)
-                {
-                    // Get the user's search text.
-                    Console.Clear();
-                    Console.WriteLine("Enter a Team name to search for: ");
-                    string query = Console.ReadLine() ?? string.Empty;
-                    int selection = 0;
-                    // Find all Teams that match the search text.
-                    var results = await _gameChangerService.SearchTeamsAsync(query, sport: "baseball");
+                //while (true)
+                //{
+                //    // Get the user's search text.
+                //    Console.Clear();
+                //    Console.WriteLine("Enter a Team name to search for: ");
+                //    string query = Console.ReadLine() ?? string.Empty;
+                //    int selection = 0;
+                //    // Find all Teams that match the search text.
+                //    var results = await _gameChangerService.SearchTeamsAsync(query, sport: "baseball");
 
-                    // Display the search results.
-                    if (results.hits.Count() == 0)
-                    {
-                        Console.WriteLine("No Teams found.");
-                    }
-                    else
-                    {
-                        var i = 1;
-                        Console.Clear();
-                        foreach (var item in results.hits.Take(5))
-                        {
-                            var location = item.location == null ? "Unknown" : string.Format($"{item.location.city}, {item.location.state}");
-                            Console.WriteLine($"{i++}. {item.name}; Sport/Season: {item.sport.ToUpper()}/{item.team_season.season.ToUpper()}, {item.team_season.year}");
-                            Console.WriteLine($"Number of Players: {item.number_of_players}; Age Group: {item.age_group}; Staff: [ {string.Join(", ", item.staff)} ]\n");
-                        }
-                    }
-                    Console.WriteLine("Which Team do you want to select?:");
+                //    // Display the search results.
+                //    if (results.hits.Count() == 0)
+                //    {
+                //        Console.WriteLine("No Teams found.");
+                //    }
+                //    else
+                //    {
+                //        var i = 1;
+                //        Console.Clear();
+                //        foreach (var item in results.hits.Take(5))
+                //        {
+                //            var location = item.location == null ? "Unknown" : string.Format($"{item.location.city}, {item.location.state}");
+                //            Console.WriteLine($"{i++}. {item.name}; Sport/Season: {item.sport.ToUpper()}/{item.team_season.season.ToUpper()}, {item.team_season.year}");
+                //            Console.WriteLine($"Number of Players: {item.number_of_players}; Age Group: {item.age_group}; Staff: [ {string.Join(", ", item.staff)} ]\n");
+                //        }
+                //    }
+                //    Console.WriteLine("Which Team do you want to select?:");
 
-                    if (int.TryParse(Console.ReadLine(), out selection))
-                        SelectTeam(results.hits.ElementAt(selection - 1));
+                //    if (int.TryParse(Console.ReadLine(), out selection))
+                //        SelectTeam(results.hits.ElementAt(selection - 1));
 
-                }
+                //}
 
             }).GetAwaiter().GetResult();
         }
@@ -353,6 +359,9 @@ namespace Stats.CmdApp
                 }
             }
             await _db.CreateTeamAsync(teamTransform);
+
+            var image = await _gameChangerService.GetTeamAvatarAsync(team.id);
+            await _dps.StoreImageFromUrlAsync(team.id, image.full_media_url);
         }
 
         //public async Task SeedDatabase()

@@ -1,17 +1,14 @@
-import BaseballLogo from './SVGImages/BaseballLogo';
-import Chevron from './SVGImages/Chevron';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Service from '../services/api';
-import { Team } from '../models/models';
-import BaseballLogoLarge from './SVGImages/BaseballLogo';
+import { Team, Avatar } from '../models/models';
+import TeamRow from './TeamRow/TeamRow';
 
 import './MainContainer.scss';
 
 function MainContainer() {
     const [data, setData] = useState<Team[]>([]);
     const [dataCopy, setDataCopy] = useState<Team[]>([]);
-
 
     React.useEffect(() => {
         const services = new Service();
@@ -31,28 +28,9 @@ function MainContainer() {
 
     const content = dataCopy.map((team) =>
         <Link to={`/teams/${team.id}/schedule`} key={team.id} >
-            <span className="Clickable__container TeamsList__teamRow TeamsList__enabled" role="button" >
-                <div className="Avatar__container Avatar__white-background Avatar__medium">
-                    <div className="Avatar__centered">
-                        <BaseballLogoLarge></BaseballLogoLarge>
-                    </div>
-
-                </div>
-                <div className="TeamsList__teamName">
-                    <span className="Text__text Text__left Text__off-black Text__base Text__semibold">
-                        {team.name}
-                    </span>
-                </div>
-                <div className="TeamsList__teamGroup">
-                    <div className="TeamsList__chevron">
-                        <Chevron></Chevron>
-                    </div>
-                </div>
-            </span>
+            <TeamRow name={ team.name } id={ team.id }></TeamRow>
         </Link>
     );
-
-
 
     return (
         <main className="MainContent__mainContentContainer">

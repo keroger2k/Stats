@@ -46,6 +46,7 @@ namespace Stats.CmdApp
                     services.AddTransient<GCApp>();
                     services.AddTransient<StatsOut>();
                     services.AddTransient<GameChangerService>();
+                    services.AddScoped<DataProcessingService>();
                     services.AddTransient<AuthorizationService>();
                     services.AddTransient<DatabaseService>();
                     services.AddSingleton(mapper);

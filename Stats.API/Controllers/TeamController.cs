@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using Stats.API.Helper;
 using Stats.API.Models;
 using Stats.Database.Models;
@@ -89,6 +90,25 @@ namespace Stats.API.Controllers
             var results = _dps.GetTeamPitchSmart(team);
             return Ok(results);
         }
+
+        [HttpGet]
+        [Route("{id}/avatar/")]
+        public async Task<FileContentResult> GetAvatar(string id)
+        {
+            var avatarBytes = await _db.GetTeamAvatarImageAsync(id);
+            if(avatarBytes != null)
+            {
+                return File(avatarBytes.ImageBytes, "image/png");
+            } 
+            else
+            {
+                var notfound = await _db.GetTeamAvatarImageAsync("df59a93c-d75e-45f6-aa08-83e2150f39c9");
+                return File(notfound.ImageBytes, "image/png");
+
+            }
+
+        }
+
 
         [HttpGet]
         [Route("{id}/open-video/")]

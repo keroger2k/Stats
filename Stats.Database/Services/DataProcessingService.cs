@@ -1,9 +1,36 @@
-﻿using Stats.Database.Models;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using Stats.Database.Models;
 
 namespace Stats.Database.Services
 {
+    public class AvatarImage
+    {
+        [BsonId]
+        public string Id { get; set; } = string.Empty;
+        public string Url { get; set; } = string.Empty;
+        public byte[] ImageBytes { get; set; } 
+    }
     public class DataProcessingService
     {
+        private readonly DatabaseService _db;
+        public DataProcessingService(DatabaseService db)
+        {
+            _db = db;
+        }
+
+        public async Task StoreImageFromUrlAsync(string id, string imageUrl)
+        {
+            using (var webClient = new HttpClient())
+            {
+                byte[] imageBytes = await webClient.GetByteArrayAsync(imageUrl);
+                var imageBson = new AvatarImage
+                    {
+                        Id = id,
+                        ImageBytes = imageBytes
+                    };
+                await _db.CreateImageAsync(imageBson);
+            }
+        }
         public Dictionary<int, Dictionary<string, int>> GetTeamPitchSmart(TeamTransform team)
         {
             var interestingGames = team.schedule.Where(e => e.@event.event_type == "game")

@@ -2,6 +2,7 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Stats.Database.Models;
+using Stats.Models;
 
 namespace Stats.Database.Services
 {
@@ -22,6 +23,31 @@ namespace Stats.Database.Services
             return db.GetCollection<T>(collection);
         }
 
+        public async Task<AvatarImage> GetTeamAvatarImageAsync(string id)
+        {
+            var imageCollection = ConnectToMongo<AvatarImage>(_statsDatabaseSettings.Value.ImageCollectionName);
+            var avatar = await imageCollection.FindAsync(t => t.Id == id);
+            return avatar.FirstOrDefault();
+        }
+
+        public async Task CreateImageAsync(AvatarImage image)
+        {
+            var imageCollection = ConnectToMongo<AvatarImage>(_statsDatabaseSettings.Value.ImageCollectionName);
+            var existingImage = imageCollection.FindAsync(c => c.Id == image.Id);
+            if (existingImage == null)
+            {
+                await imageCollection.InsertOneAsync(image);
+            }
+            else
+            {
+                await imageCollection.ReplaceOneAsync(
+                filter: new BsonDocument("_id", image.Id),
+                options: new ReplaceOptions { IsUpsert = true },
+                replacement: image
+                );
+            }
+        }
+
         public async Task CreateTeamAsync(TeamTransform team)
         {
             var teamCollection = ConnectToMongo<TeamTransform>(_statsDatabaseSettings.Value.TeamCollectionName);
@@ -40,9 +66,9 @@ namespace Stats.Database.Services
             }
         }
 
-        public async Task CreateTokenAsync(AuthorizationToken token)
+        public async Task CreateTokenAsync(Stats.Database.Models.AuthorizationToken token)
         {
-            var tokenCollection = ConnectToMongo<AuthorizationToken>(_statsDatabaseSettings.Value.TokenCollectionName);
+            var tokenCollection = ConnectToMongo<Stats.Database.Models.AuthorizationToken>(_statsDatabaseSettings.Value.TokenCollectionName);
             var existingToken = tokenCollection.Find(c => true).First();
             token.Id = existingToken.Id;
             await tokenCollection.ReplaceOneAsync(
@@ -74,9 +100,9 @@ namespace Stats.Database.Services
             return existingTeam.FirstOrDefault();
         }
 
-        public async Task<AuthorizationToken> GetTokenAsync()
+        public async Task<Stats.Database.Models.AuthorizationToken> GetTokenAsync()
         {
-            var tokenCollection = ConnectToMongo<AuthorizationToken>(_statsDatabaseSettings.Value.TokenCollectionName);
+            var tokenCollection = ConnectToMongo<Stats.Database.Models.AuthorizationToken>(_statsDatabaseSettings.Value.TokenCollectionName);
             var existingTeam = await tokenCollection.FindAsync(t => true);
             return existingTeam.First();
         }

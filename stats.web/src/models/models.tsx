@@ -34,6 +34,10 @@ export enum Season {
     WINTER = 'winter',
 }
 
+export interface Avatar {
+    [key: string]: string;
+}
+
 export interface VideoClip {
     id: string;
     url: string;

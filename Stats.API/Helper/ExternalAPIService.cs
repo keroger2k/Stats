@@ -12,10 +12,13 @@ namespace Stats.API.Helper
     {
         private readonly GameChangerService _gameChangerService;
         private readonly DatabaseService _db;
+        private readonly DataProcessingService _dps;
         private readonly IMapper _mapper;
-        public ExternalAPIService(GameChangerService gameChangerService, DatabaseService db, IMapper mapper)
+        public ExternalAPIService(GameChangerService gameChangerService, DatabaseService db,
+            DataProcessingService dps, IMapper mapper)
         {
             _gameChangerService = gameChangerService;
+            _dps = dps;
             _mapper = mapper;
             _db = db;
         }
@@ -96,6 +99,9 @@ namespace Stats.API.Helper
                 }
             }
             await _db.CreateTeamAsync(teamTransform);
+
+            var image = await _gameChangerService.GetTeamAvatarAsync(team.id);
+            await _dps.StoreImageFromUrlAsync(team.id, image.full_media_url);
         }
 
         public async Task<OpenOpponentVideos> FindOpenOpponentVideo(string oid, string id)

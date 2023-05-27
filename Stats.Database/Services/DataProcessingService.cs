@@ -20,16 +20,25 @@ namespace Stats.Database.Services
 
         public async Task StoreImageFromUrlAsync(string id, string imageUrl)
         {
-            using (var webClient = new HttpClient())
+            try
             {
-                byte[] imageBytes = await webClient.GetByteArrayAsync(imageUrl);
-                var imageBson = new AvatarImage
+                using (var webClient = new HttpClient())
+                {
+                    byte[] imageBytes = await webClient.GetByteArrayAsync(imageUrl);
+                    var imageBson = new AvatarImage
                     {
                         Id = id,
                         ImageBytes = imageBytes
                     };
-                await _db.CreateImageAsync(imageBson);
+                    await _db.CreateImageAsync(imageBson);
+                }
+
             }
+            catch (Exception)
+            {
+
+            }
+            
         }
         public Dictionary<int, Dictionary<string, int>> GetTeamPitchSmart(TeamTransform team)
         {

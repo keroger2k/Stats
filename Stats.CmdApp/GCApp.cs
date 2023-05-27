@@ -44,10 +44,11 @@ namespace Stats.CmdApp
         {
             Task.Run(async () =>
             {
-                var interestingId = "df59a93c-d75e-45f6-aa08-83e2150f39c9";
-                var imageUrl = await _gameChangerService.GetTeamAvatarAsync(interestingId);
-                await _dps.StoreImageFromUrlAsync(interestingId, imageUrl.full_media_url);
-                Console.WriteLine("here");
+                await SeedDatabase();
+                //var interestingId = "df59a93c-d75e-45f6-aa08-83e2150f39c9";
+                //var imageUrl = await _gameChangerService.GetTeamAvatarAsync(interestingId);
+                //await _dps.StoreImageFromUrlAsync(interestingId, imageUrl.full_media_url);
+                //Console.WriteLine("here");
                 //var team = await _db.GetTeamAsync(interestingId);
                 ////look at team of interests opponents
                 //foreach (var item in team.opponents)
@@ -364,71 +365,71 @@ namespace Stats.CmdApp
             await _dps.StoreImageFromUrlAsync(team.id, image.full_media_url);
         }
 
-        //public async Task SeedDatabase()
-        //{
-        //    var teams = new string[] 
-        //    {
-        //        "c2fcadeb-cfc9-47f9-b8ac-3e0c17e37742",
-        //        "7466ebcf-8420-4630-961e-f06746a226a1",
-        //        "a4653dd8-80b2-4ebc-876f-ecebbc97a001",
-        //        "e6afe779-ae87-40bf-826d-d248258a0d68",
-        //        "c86ff12e-a839-4f05-883b-31e91b14ef93",
-        //        "7649bc8c-b66a-430a-a16b-58b7aef9c872",
-        //        "7306524d-5b98-410b-af8c-0c06630f0204",
-        //        "5b7a2f19-ea29-40cf-8467-41e19a0310da",
-        //        "cdb4d468-87d7-4d19-aa78-37727c72cbd5",
-        //        "d9f812c5-6e73-4408-8d4b-69fd6e301e58",
-        //        "984dd390-5694-490f-97d8-2d93cbb05301",
-        //        "cd9016a6-dabf-4e75-810c-354aa48b9ee4",
-        //        "daf887b4-f5b8-4c00-8c24-1f956ec55ad3",
-        //        "f9dff9fe-e29e-4f64-b02a-be8d7e984bb3",
-        //        "63dc1232-9b1e-4772-8c27-7b7925a7b25e",
-        //        "d2bfcb4e-18fb-4ed6-ab29-90403a48809b",
-        //        "75ff2252-6771-429f-972d-596c40d98fda",
-        //        "2173adeb-7f6d-4a45-b498-888d3bfa7f16",
-        //        "12977b0d-1fae-4e8b-9aba-ba00f1c3a3a1",
-        //        "3df635a5-8d09-44a0-9137-60321c67124f",
-        //        "6a97f1bc-fa4d-4b66-acf1-3ca3d4171fe5",
-        //        "73ff0215-965a-45c3-98f2-1e90d15ee8a4",
-        //        "e925fe96-f341-45a2-ae4c-e5db8bd53389",
-        //        "b45b5903-a763-4ce3-9681-a7febeb0731d",
-        //        "8459bb07-c454-45d3-b7aa-78832c5f145a",
-        //        "a842261f-b6c1-45ab-befc-e236a2668e22",
-        //        "26db0c42-1883-46a9-8b39-2351c23d5529",
-        //        "bce8231e-386a-4f97-b753-730e10c88f42",
-        //        "b05dfbc9-129a-44c9-862c-03cac66144f1",
-        //        "d5f56912-b397-45ce-9890-f5c97ca1206d",
-        //        "c5fd43d3-2e10-414d-b42e-deaa1d82781f",
-        //        "f664936a-2032-4a9c-80c3-6575a29d3a65",
-        //        "8838a528-44f4-469f-b77f-3b0cfa6b4029",
-        //        "1308e833-8a5f-4236-8b60-73db3d66e966",
-        //        "9bea5d79-1ba3-4bf1-a750-adc99706bd37",
-        //        "ef497a84-60ef-4cbb-9765-9eac63109da5",
-        //        "dbcd919a-192d-472b-bd77-d68619fd4f25",
-        //        "d359183b-15b1-4554-aa7c-8ebe0ff9a5da",
-        //        "c8dd2dd6-58b0-414e-b539-10baa73e6227",
-        //        "8457468c-533c-48ad-b0d8-db59efb9ee7f",
-        //        "e0257dc3-7f8f-430b-8cef-8e9394e4fe88",
-        //        "23b492d7-26d3-4829-bdf0-33f5a321cdba",
-        //        "a4c5f921-8e62-4ee8-8e29-805de9ec1922",
-        //        "0a89d7f9-501c-44b1-ad12-925b8f0cfaf6",
-        //        "f82232f0-1f1d-4cc0-887d-7baf7bcb33e0",
-        //        "8f48e05f-9094-48cd-90e1-2700b1aeee73",
-        //        "68f03196-5b1d-4a09-b0ea-e4140664b29d",
-        //        "cd99e119-2548-417f-9945-6f2c655a552f",
-        //        "ee974a66-0cfc-4e72-a817-bdca24e5cd33",
-        //        "df59a93c-d75e-45f6-aa08-83e2150f39c9",
-        //        "266a6104-f25f-409e-81d6-a186d35255a9",
-        //        "09a512d9-0ada-48ef-ae7d-9f7ccc781aae",
-        //        "1f10b345-994c-424f-acc9-9434fd580deb",
-        //        "7c5ba8f2-2bdb-462c-8360-8a5e0efabba6",
-        //        "cafa78dc-a9d4-45bc-ae25-fad4e5233b3b"
-        //    };
+        public async Task SeedDatabase()
+        {
+            var teams = new string[]
+            {
+                "c2fcadeb-cfc9-47f9-b8ac-3e0c17e37742",
+                "7466ebcf-8420-4630-961e-f06746a226a1",
+                "a4653dd8-80b2-4ebc-876f-ecebbc97a001",
+                "e6afe779-ae87-40bf-826d-d248258a0d68",
+                "c86ff12e-a839-4f05-883b-31e91b14ef93",
+                "7649bc8c-b66a-430a-a16b-58b7aef9c872",
+                "7306524d-5b98-410b-af8c-0c06630f0204",
+                "5b7a2f19-ea29-40cf-8467-41e19a0310da",
+                "cdb4d468-87d7-4d19-aa78-37727c72cbd5",
+                "d9f812c5-6e73-4408-8d4b-69fd6e301e58",
+                "984dd390-5694-490f-97d8-2d93cbb05301",
+                "cd9016a6-dabf-4e75-810c-354aa48b9ee4",
+                "daf887b4-f5b8-4c00-8c24-1f956ec55ad3",
+                "f9dff9fe-e29e-4f64-b02a-be8d7e984bb3",
+                "63dc1232-9b1e-4772-8c27-7b7925a7b25e",
+                "d2bfcb4e-18fb-4ed6-ab29-90403a48809b",
+                "75ff2252-6771-429f-972d-596c40d98fda",
+                "2173adeb-7f6d-4a45-b498-888d3bfa7f16",
+                "12977b0d-1fae-4e8b-9aba-ba00f1c3a3a1",
+                "3df635a5-8d09-44a0-9137-60321c67124f",
+                "6a97f1bc-fa4d-4b66-acf1-3ca3d4171fe5",
+                "73ff0215-965a-45c3-98f2-1e90d15ee8a4",
+                "e925fe96-f341-45a2-ae4c-e5db8bd53389",
+                "b45b5903-a763-4ce3-9681-a7febeb0731d",
+                "8459bb07-c454-45d3-b7aa-78832c5f145a",
+                "a842261f-b6c1-45ab-befc-e236a2668e22",
+                "26db0c42-1883-46a9-8b39-2351c23d5529",
+                "bce8231e-386a-4f97-b753-730e10c88f42",
+                "b05dfbc9-129a-44c9-862c-03cac66144f1",
+                "d5f56912-b397-45ce-9890-f5c97ca1206d",
+                "c5fd43d3-2e10-414d-b42e-deaa1d82781f",
+                "f664936a-2032-4a9c-80c3-6575a29d3a65",
+                "8838a528-44f4-469f-b77f-3b0cfa6b4029",
+                "1308e833-8a5f-4236-8b60-73db3d66e966",
+                "9bea5d79-1ba3-4bf1-a750-adc99706bd37",
+                "ef497a84-60ef-4cbb-9765-9eac63109da5",
+                "dbcd919a-192d-472b-bd77-d68619fd4f25",
+                "d359183b-15b1-4554-aa7c-8ebe0ff9a5da",
+                "c8dd2dd6-58b0-414e-b539-10baa73e6227",
+                "8457468c-533c-48ad-b0d8-db59efb9ee7f",
+                "e0257dc3-7f8f-430b-8cef-8e9394e4fe88",
+                "23b492d7-26d3-4829-bdf0-33f5a321cdba",
+                "a4c5f921-8e62-4ee8-8e29-805de9ec1922",
+                "0a89d7f9-501c-44b1-ad12-925b8f0cfaf6",
+                "f82232f0-1f1d-4cc0-887d-7baf7bcb33e0",
+                "8f48e05f-9094-48cd-90e1-2700b1aeee73",
+                "68f03196-5b1d-4a09-b0ea-e4140664b29d",
+                "cd99e119-2548-417f-9945-6f2c655a552f",
+                "ee974a66-0cfc-4e72-a817-bdca24e5cd33",
+                "df59a93c-d75e-45f6-aa08-83e2150f39c9",
+                "266a6104-f25f-409e-81d6-a186d35255a9",
+                "09a512d9-0ada-48ef-ae7d-9f7ccc781aae",
+                "1f10b345-994c-424f-acc9-9434fd580deb",
+                "7c5ba8f2-2bdb-462c-8360-8a5e0efabba6",
+                "cafa78dc-a9d4-45bc-ae25-fad4e5233b3b"
+            };
 
-        //    foreach(var team in teams)
-        //    {
-        //        await ImportTeamInfoAsync(team);
-        //    }
-        //}
+            foreach (var team in teams)
+            {
+                await ImportTeamInfoAsync(team);
+            }
+        }
     }
 }

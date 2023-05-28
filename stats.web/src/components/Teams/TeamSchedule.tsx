@@ -72,6 +72,7 @@ function TeamSchedule() {
         if (teamEvent.pregame_data && getProgenId(teamEvent.pregame_data?.opponent_id) !== null) {
             return (
                 <>
+                    <span key={teamEvent.event.id}>
                     <div className="opponent_link">
                         <Link target="_top" rel="noopener noreferrer" to={`/teams/${getProgenId(teamEvent.pregame_data?.opponent_id)}/schedule`} ><button className="btn btn-primary btn-sm">Opponent Page</button></Link>
                     </div>
@@ -97,7 +98,7 @@ function TeamSchedule() {
                                 </span>
                             </div>
                         </div>
-                    </Link>
+                    </Link></span>
                 </>
             );
         } 

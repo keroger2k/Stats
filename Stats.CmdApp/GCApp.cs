@@ -44,8 +44,9 @@ namespace Stats.CmdApp
         {
             Task.Run(async () =>
             {
-                await SeedDatabase();
-                //var interestingId = "df59a93c-d75e-45f6-aa08-83e2150f39c9";
+                await _dps.StoreImageFromUrlAsync("df59a93c-d75e-45f6-aa08-83e2150f39c9", "https://i.ibb.co/9WwnHd4/not-found-image.png");
+                //await SeedDatabase();
+                //var interestingId = "a4c5f921-8e62-4ee8-8e29-805de9ec1922";
                 //var imageUrl = await _gameChangerService.GetTeamAvatarAsync(interestingId);
                 //await _dps.StoreImageFromUrlAsync(interestingId, imageUrl.full_media_url);
                 //Console.WriteLine("here");
@@ -65,7 +66,7 @@ namespace Stats.CmdApp
                 //        {
                 //            await ImportTeamInfoAsync(item.progenitor_team_id);
                 //            var opp1 = await _db.GetTeamAsync(item.progenitor_team_id);
-                //            await DoShit(opp1, team);
+                //            await FindOpenOpponentVideo(opp1.id, team.id);
 
                 //        }
                 //    }

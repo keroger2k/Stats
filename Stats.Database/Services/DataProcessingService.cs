@@ -20,7 +20,7 @@ namespace Stats.Database.Services
 
         public async Task StoreImageFromUrlAsync(string id, string imageUrl)
         {
-            try
+            if (!string.IsNullOrEmpty(imageUrl))
             {
                 using (var webClient = new HttpClient())
                 {
@@ -32,11 +32,6 @@ namespace Stats.Database.Services
                     };
                     await _db.CreateImageAsync(imageBson);
                 }
-
-            }
-            catch (Exception)
-            {
-
             }
             
         }

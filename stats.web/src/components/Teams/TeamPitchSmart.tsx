@@ -124,10 +124,10 @@ function TeamPitchSmart() {
                                         <td scope="col">SO</td>
                                         <td scope="col">K%</td>
                                         <td className="divider" scope="col">{formatWeekdayShort(new Date().getDay())}</td>
-                                        <td scope="col">{formatWeekdayShort(new Date().getDay() - 1)}</td>
-                                        <td scope="col">{formatWeekdayShort(new Date().getDay() - 2)}</td>
-                                        <td scope="col">{formatWeekdayShort(new Date().getDay() - 3)}</td>
-                                        <td scope="col">{formatWeekdayShort(new Date().getDay() - 4)}</td>
+                                        <td scope="col">{formatWeekdayShort(new Date(new Date().setDate(new Date().getDate() - 1)).getDay())}</td>
+                                        <td scope="col">{formatWeekdayShort(new Date(new Date().setDate(new Date().getDate() - 2)).getDay())}</td>
+                                        <td scope="col">{formatWeekdayShort(new Date(new Date().setDate(new Date().getDate() - 3)).getDay())}</td>
+                                        <td scope="col">{formatWeekdayShort(new Date(new Date().setDate(new Date().getDate() - 4)).getDay())}</td>
                                     </tr>
                                 </thead>
                                 <tbody className="table-group-divider">

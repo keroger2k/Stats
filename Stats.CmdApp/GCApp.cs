@@ -44,7 +44,7 @@ namespace Stats.CmdApp
         {
             Task.Run(async () =>
             {
-                await _dps.StoreImageFromUrlAsync("df59a93c-d75e-45f6-aa08-83e2150f39c9", "https://i.ibb.co/9WwnHd4/not-found-image.png");
+                //await _dps.StoreImageFromUrlAsync("df59a93c-d75e-45f6-aa08-83e2150f39c9", "https://i.ibb.co/9WwnHd4/not-found-image.png");
                 //await SeedDatabase();
                 //var interestingId = "a4c5f921-8e62-4ee8-8e29-805de9ec1922";
                 //var imageUrl = await _gameChangerService.GetTeamAvatarAsync(interestingId);

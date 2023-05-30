@@ -125,7 +125,7 @@ export const PitchSmart = ({ summary, player_stats, player_names }: GridProps) =
                                 <th scope="col">ER</th>
                                 <th scope="col">BB</th>
                                 <th scope="col">SO</th>
-                                <th scope="col">K-L</th>
+                                <th scope="col">K&#8209;L</th>
                                 <th scope="col">HBP</th>
                                 <th scope="col">ERA</th>
                                 <th scope="col">WHIP</th>

@@ -49,39 +49,39 @@ namespace Stats.API.Helper
         private bool TeamNeedsUpdated(TeamTransform result)
         {
             var lastScheduledGame = result.schedule.Last(c => c.@event.event_type == "game" && c.@event.status != "canceled" && c.@event.start.datetime != DateTime.MinValue && c.@event.end.datetime < DateTime.UtcNow);
-            var lastCompletedGame = result.completed_games.Any(c => c.event_id == lastScheduledGame.@event.id);
-            return !lastCompletedGame; 
+            var lastCompletedGame = result.completed_games.Any() && result.completed_games.Any(c => c.event_id == lastScheduledGame.@event.id);
+            return !lastCompletedGame;
         }
 
         public async Task ImportTeamInfoAsync(string id)
         {
+            var teamTransform = new TeamTransform();
             var team = await _gameChangerService.GetTeamAsync(id);
             var teamSchedule = await _gameChangerService.GetTeamScheduledEventsAsync(id);
             var scores = await _gameChangerService.GetTeamGameDataAsync(id);
             var season_stats = await _gameChangerService.GetTeamSeasonStatsAsync(id);
             var opponents = await _gameChangerService.GetTeamOpponentsAsync(id);
-            var players = await _gameChangerService.GetPlayers(season_stats.stats_data.players.Keys.ToArray());
-
-            var teamTransform = new TeamTransform()
+            if (season_stats != null)
             {
-                id = team.id,
-                name = team.name,
-                created_at = team.created_at,
-                updated_at = team.updated_at,
-                sport = team.sport,
-                city = team.city,
-                state = team.state,
-                country = team.country,
-                age_group = team.age_group,
-                season_name = team.season_name,
-                season_year = team.season_year,
-                team_avatar_image = "",
-                schedule = teamSchedule.ToList(),
-                completed_game_scores = scores.ToList(),
-                season_stats = season_stats,
-                opponents = opponents.ToList(),
-                players = players.ToList()
-            };
+                teamTransform.season_stats = season_stats;
+                var players = await _gameChangerService.GetPlayers(season_stats.stats_data.players.Keys.ToArray());
+                teamTransform.players = players.ToList();
+            }
+            teamTransform.id = team.id;
+            teamTransform.name = team.name;
+            teamTransform.created_at = team.created_at;
+            teamTransform.updated_at = team.updated_at;
+            teamTransform.sport = team.sport;
+            teamTransform.city = team.city;
+            teamTransform.state = team.state;
+            teamTransform.country = team.country;
+            teamTransform.age_group = team.age_group;
+            teamTransform.season_name = team.season_name;
+            teamTransform.season_year = team.season_year;
+            teamTransform.team_avatar_image = "";
+            teamTransform.schedule = teamSchedule.ToList();
+            teamTransform.completed_game_scores = scores.ToList();
+            teamTransform.opponents = opponents.ToList();
 
             foreach (var evt in teamTransform.schedule.Where(c => c.@event.event_type.Equals("game"))
                 .Where(c => !c.@event.status.Equals("canceled"))
@@ -99,7 +99,6 @@ namespace Stats.API.Helper
                 }
             }
             await _db.CreateTeamAsync(teamTransform);
-
             var image = await _gameChangerService.GetTeamAvatarAsync(team.id);
             await _dps.StoreImageFromUrlAsync(team.id, image.full_media_url);
         }

@@ -68,6 +68,7 @@ function TeamPitchSmart() {
                             <td>{data[2][value.id] ? data[2][value.id] : "0"}</td>
                             <td>{data[3][value.id] ? data[3][value.id] : "0"}</td>
                             <td>{data[4][value.id] ? data[4][value.id] : "0"}</td>
+                            <td>{data[5][value.id] ? data[5][value.id] : "0"}</td>
                         </tr>
                     );
                 }
@@ -81,6 +82,7 @@ function TeamPitchSmart() {
                         <td className="">0</td>
                         <td className="">0.0</td>
                         <td className="divider">0</td>
+                        <td className="">0</td>
                         <td className="">0</td>
                         <td className="">0</td>
                         <td className="">0</td>
@@ -128,6 +130,7 @@ function TeamPitchSmart() {
                                         <td scope="col">{formatWeekdayShort(new Date(new Date().setDate(new Date().getDate() - 2)).getDay())}</td>
                                         <td scope="col">{formatWeekdayShort(new Date(new Date().setDate(new Date().getDate() - 3)).getDay())}</td>
                                         <td scope="col">{formatWeekdayShort(new Date(new Date().setDate(new Date().getDate() - 4)).getDay())}</td>
+                                        <td scope="col">{formatWeekdayShort(new Date(new Date().setDate(new Date().getDate() - 5)).getDay())}</td>
                                     </tr>
                                 </thead>
                                 <tbody className="table-group-divider">

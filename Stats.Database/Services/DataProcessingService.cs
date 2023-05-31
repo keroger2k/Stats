@@ -53,7 +53,7 @@ namespace Stats.Database.Services
 
             var data = new Dictionary<int, Dictionary<string, int>>();
 
-            for (var i = 0; i < 5; i++)
+            for (var i = 0; i < 6; i++)
             {
                 var pData = new Dictionary<string, int>();
                 var games = interestingGames.Where(c => c.@event.start.datetime.Date == DateTime.Now.ToUniversalTime().AddDays(i * -1).Date);

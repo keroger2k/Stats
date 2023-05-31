@@ -46,7 +46,7 @@ function TeamSchedule() {
 
     function getProgenId(id: string | null | undefined) {
         var team = data?.opponents?.filter((item) => item.root_team_id === id)[0];
-        return team ===  undefined ? null : team?.progenitor_team_id;
+        return team === undefined ? null : team?.progenitor_team_id;
     }
 
 
@@ -73,35 +73,64 @@ function TeamSchedule() {
             return (
                 <>
                     <span key={teamEvent.event.id}>
-                    <div className="opponent_link">
-                        <Link target="_top" rel="noopener noreferrer" to={`/teams/${getProgenId(teamEvent.pregame_data?.opponent_id)}/schedule`} ><button className="btn btn-primary btn-sm">Opponent Page</button></Link>
-                    </div>
-                    <Link to={`/teams/${data.id}/schedule/${teamEvent.event.id}`} key={teamEvent.event.id}>
-                        <div className="ScheduleListByMonth__dayRow">
-                            <div className="ScheduleListByMonth__dayDate">
-                                <div className="Text__text Text__center Text__cool-grey-dark Text__small Text__regular">{formatMonthShort(getMonth(teamEvent.event.start?.datetime))}</div>
-                                <div className="Text__text Text__center Text__off-black Text__base Text__xbold ScheduleListByMonth__dateText">{getDate(teamEvent.event.start?.datetime)}</div>
-                            </div>
-                            <div>
-                                <span className="ScheduleListByMonth__event">
-                                    <div className="ScheduleListByMonth__title">
-                                        <div className="ScheduleListByMonth__eventIndicators"></div>
-                                        <div className="Text__text Text__left Text__off-black Text__base Text__semibold">{teamEvent.event.title}</div>
-                                    </div>
-                                    <div className="Text__text Text__left Text__cool-grey-dark Text__small Text__regular ScheduleListByMonth__location">at {teamEvent.event.location?.address === null ? "" : teamEvent.event.location?.address[0]}</div>
-                                    <div className="ScheduleListByMonth__scoreOrTime">
-                                        <TeamEvent isGame={teamEvent.event.event_type === "game"} time={getTime(teamEvent.event.start?.datetime)} score={getScore(teamEvent.event.id)}></TeamEvent>
-                                        <span className="ScheduleListByMonth__chevron">
-                                            <Chevron></Chevron>
-                                        </span>
-                                    </div>
-                                </span>
-                            </div>
+                        <div className="opponent_link">
+                            <Link target="_top" rel="noopener noreferrer" to={`/teams/${getProgenId(teamEvent.pregame_data?.opponent_id)}/schedule`} ><button className="btn btn-primary btn-sm">Opponent Page</button></Link>
                         </div>
-                    </Link></span>
+                        <Link to={`/teams/${data.id}/schedule/${teamEvent.event.id}`} key={teamEvent.event.id}>
+                            <div className="ScheduleListByMonth__dayRow">
+                                <div className="ScheduleListByMonth__dayDate">
+                                    <div className="Text__text Text__center Text__cool-grey-dark Text__small Text__regular">{formatMonthShort(getMonth(teamEvent.event.start?.datetime))}</div>
+                                    <div className="Text__text Text__center Text__off-black Text__base Text__xbold ScheduleListByMonth__dateText">{getDate(teamEvent.event.start?.datetime)}</div>
+                                </div>
+                                <div>
+                                    <span className="ScheduleListByMonth__event">
+                                        <div className="ScheduleListByMonth__title">
+                                            <div className="ScheduleListByMonth__eventIndicators"></div>
+                                            <div className="Text__text Text__left Text__off-black Text__base Text__semibold">{teamEvent.event.title}</div>
+                                        </div>
+                                        <div className="Text__text Text__left Text__cool-grey-dark Text__small Text__regular ScheduleListByMonth__location">at {teamEvent.event.location?.address === null ? "" : teamEvent.event.location?.address[0]}</div>
+                                        <div className="ScheduleListByMonth__scoreOrTime">
+                                            <TeamEvent isGame={teamEvent.event.event_type === "game"} time={getTime(teamEvent.event.start?.datetime)} score={getScore(teamEvent.event.id)}></TeamEvent>
+                                            <span className="ScheduleListByMonth__chevron">
+                                                <Chevron></Chevron>
+                                            </span>
+                                        </div>
+                                    </span>
+                                </div>
+                            </div>
+                        </Link></span>
                 </>
             );
-        } 
+        } else if (teamEvent.event.event_type === "game") {
+            return (
+                <>
+                    <span key={teamEvent.event.id}>
+                        <Link to={`/teams/${data.id}/schedule/${teamEvent.event.id}`} key={teamEvent.event.id}>
+                            <div className="ScheduleListByMonth__dayRow">
+                                <div className="ScheduleListByMonth__dayDate">
+                                    <div className="Text__text Text__center Text__cool-grey-dark Text__small Text__regular">{formatMonthShort(getMonth(teamEvent.event.start?.datetime))}</div>
+                                    <div className="Text__text Text__center Text__off-black Text__base Text__xbold ScheduleListByMonth__dateText">{getDate(teamEvent.event.start?.datetime)}</div>
+                                </div>
+                                <div>
+                                    <span className="ScheduleListByMonth__event">
+                                        <div className="ScheduleListByMonth__title">
+                                            <div className="ScheduleListByMonth__eventIndicators"></div>
+                                            <div className="Text__text Text__left Text__off-black Text__base Text__semibold">{teamEvent.event.title}</div>
+                                        </div>
+                                        <div className="Text__text Text__left Text__cool-grey-dark Text__small Text__regular ScheduleListByMonth__location">at {teamEvent.event.location?.address === null ? "" : teamEvent.event.location?.address[0]}</div>
+                                        <div className="ScheduleListByMonth__scoreOrTime">
+                                            <TeamEvent isGame={teamEvent.event.event_type === "game"} time={getTime(teamEvent.event.start?.datetime)} score={getScore(teamEvent.event.id)}></TeamEvent>
+                                            <span className="ScheduleListByMonth__chevron">
+                                                <Chevron></Chevron>
+                                            </span>
+                                        </div>
+                                    </span>
+                                </div>
+                            </div>
+                        </Link></span>
+                </>
+            );
+        }
     });
 
 

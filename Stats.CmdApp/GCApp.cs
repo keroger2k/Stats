@@ -9,7 +9,6 @@ using Stats.ExtApi.Services;
 using Stats.Models;
 using System.Text;
 using static Stats.ExtApi.Services.GameChangerService;
-using static Stats.Models.StatsData;
 
 namespace Stats.CmdApp
 {
@@ -44,72 +43,122 @@ namespace Stats.CmdApp
         {
             Task.Run(async () =>
             {
+                await _dps.StoreImageFromUrlAsync("11111111-1111-1111-1111-111111111111", "https://i.ibb.co/9WwnHd4/not-found-image.png");
                 //await _dps.StoreImageFromUrlAsync("df59a93c-d75e-45f6-aa08-83e2150f39c9", "https://i.ibb.co/9WwnHd4/not-found-image.png");
-                //await SeedDatabase();
-                //var interestingId = "a4c5f921-8e62-4ee8-8e29-805de9ec1922";
-                //var imageUrl = await _gameChangerService.GetTeamAvatarAsync(interestingId);
-                //await _dps.StoreImageFromUrlAsync(interestingId, imageUrl.full_media_url);
-                //Console.WriteLine("here");
-                //var team = await _db.GetTeamAsync(interestingId);
-                ////look at team of interests opponents
-                //foreach (var item in team.opponents)
+
+
+                //find direct opponents and our record again them
+                //for example Playing a team that G7 has played directly 
+                //that we will are scheduled to play
+
+                //get a list of our completed games.
+                //look at all our opponents oppoents and see if the team of interest has played them.
+
+                //var sourceTeamId = "c2fcadeb-cfc9-47f9-b8ac-3e0c17e37742";
+                //var sourceTeam = await _db.GetTeamAsync(sourceTeamId);
+
+                //foreach(var completedGame in sourceTeam.completed_games)
                 //{
-                //    var opp = await _db.GetTeamAsync(item.progenitor_team_id);
-                //    //for now check if opponent exists in local database only
-                //    if (opp != null)
+                //    var correspondingEvent = sourceTeam.schedule.First(c => c.@event.id == completedGame.event_id);
+                //    var rootOpponentTeam = sourceTeam.opponents.First(c => c.root_team_id == correspondingEvent.pregame_data.opponent_id);
+                //    var localOpponentRecord = await _db.GetTeamAsync(rootOpponentTeam.progenitor_team_id);
+                //    if(localOpponentRecord == null || _dps.TeamNeedsUpdated(localOpponentRecord))
                 //    {
-                //        await FindOpenOpponentVideo(opp.id, team.id);
+                //        await ImportTeamInfoAsync(rootOpponentTeam.progenitor_team_id);
+                //        localOpponentRecord = await _db.GetTeamAsync(rootOpponentTeam.progenitor_team_id);
                 //    }
-                //    else
-                //    {
-                //        if (!string.IsNullOrEmpty(item.progenitor_team_id))
-                //        {
-                //            await ImportTeamInfoAsync(item.progenitor_team_id);
-                //            var opp1 = await _db.GetTeamAsync(item.progenitor_team_id);
-                //            await FindOpenOpponentVideo(opp1.id, team.id);
-
-                //        }
-                //    }
-
+                //    localOpponentRecord = await _db.GetTeamAsync(rootOpponentTeam.progenitor_team_id);
+                //    var localOpponenetNeedsUpdate = _dps.TeamNeedsUpdated(localOpponentRecord);
+                //    Console.WriteLine($"Id: {rootOpponentTeam.progenitor_team_id} : {rootOpponentTeam.name} : {localOpponenetNeedsUpdate}");
                 //}
 
 
 
-                //while (true)
-                //{
-                //    // Get the user's search text.
-                //    Console.Clear();
-                //    Console.WriteLine("Enter a Team name to search for: ");
-                //    string query = Console.ReadLine() ?? string.Empty;
-                //    int selection = 0;
-                //    // Find all Teams that match the search text.
-                //    var results = await _gameChangerService.SearchTeamsAsync(query, sport: "baseball");
 
-                //    // Display the search results.
-                //    if (results.hits.Count() == 0)
-                //    {
-                //        Console.WriteLine("No Teams found.");
-                //    }
-                //    else
-                //    {
-                //        var i = 1;
-                //        Console.Clear();
-                //        foreach (var item in results.hits.Take(5))
-                //        {
-                //            var location = item.location == null ? "Unknown" : string.Format($"{item.location.city}, {item.location.state}");
-                //            Console.WriteLine($"{i++}. {item.name}; Sport/Season: {item.sport.ToUpper()}/{item.team_season.season.ToUpper()}, {item.team_season.year}");
-                //            Console.WriteLine($"Number of Players: {item.number_of_players}; Age Group: {item.age_group}; Staff: [ {string.Join(", ", item.staff)} ]\n");
-                //        }
-                //    }
-                //    Console.WriteLine("Which Team do you want to select?:");
 
-                //    if (int.TryParse(Console.ReadLine(), out selection))
-                //        SelectTeam(results.hits.ElementAt(selection - 1));
 
-                //}
 
-            }).GetAwaiter().GetResult();
+
+
+                //find opponents opponents and their record against them
+                //for example play a team that g7 has played who has played against a team we've played against
+                //Raptors who we've never played, have played hitman. hitman have played g7. this is the game we are intersted in
+
+
+
+
+
+
+            })
+            .GetAwaiter()
+            .GetResult();
         }
+
+        private async Task DisplayMenu()
+        {
+            while (true)
+            {
+                // Get the user's search text.
+                Console.Clear();
+                Console.WriteLine("Enter a Team name to search for: ");
+                string query = Console.ReadLine() ?? string.Empty;
+                int selection = 0;
+                // Find all Teams that match the search text.
+                var results = await _gameChangerService.SearchTeamsAsync(query, sport: "baseball");
+
+                // Display the search results.
+                if (results.hits.Count() == 0)
+                {
+                    Console.WriteLine("No Teams found.");
+                }
+                else
+                {
+                    var i = 1;
+                    Console.Clear();
+                    foreach (var item in results.hits.Take(5))
+                    {
+                        var location = item.location == null ? "Unknown" : string.Format($"{item.location.city}, {item.location.state}");
+                        Console.WriteLine($"{i++}. {item.name}; Sport/Season: {item.sport.ToUpper()}/{item.team_season.season.ToUpper()}, {item.team_season.year}");
+                        Console.WriteLine($"Number of Players: {item.number_of_players}; Age Group: {item.age_group}; Staff: [ {string.Join(", ", item.staff)} ]\n");
+                    }
+                }
+                Console.WriteLine("Which Team do you want to select?:");
+
+                if (int.TryParse(Console.ReadLine(), out selection))
+                    SelectTeam(results.hits.ElementAt(selection - 1));
+
+            }
+        }
+
+        private async Task DoSomething(string teamId)
+        {
+            var imageUrl = await _gameChangerService.GetTeamAvatarAsync(teamId);
+            await _dps.StoreImageFromUrlAsync(teamId, imageUrl.full_media_url);
+            Console.WriteLine("here");
+            var team = await _db.GetTeamAsync(teamId);
+            //look at team of interests opponents
+            foreach (var item in team.opponents)
+            {
+                var opp = await _db.GetTeamAsync(item.progenitor_team_id);
+                //for now check if opponent exists in local database only
+                if (opp != null)
+                {
+                    await FindOpenOpponentVideo(opp.id, team.id);
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(item.progenitor_team_id))
+                    {
+                        await ImportTeamInfoAsync(item.progenitor_team_id);
+                        var opp1 = await _db.GetTeamAsync(item.progenitor_team_id);
+                        await FindOpenOpponentVideo(opp1.id, team.id);
+
+                    }
+                }
+
+            }
+        }
+
         private async Task FindOpenOpponentVideo(string oid, string id)
         {
             var opp = await _db.GetTeamAsync(oid);
@@ -177,12 +226,13 @@ namespace Stats.CmdApp
             StringBuilder sb1 = new StringBuilder();
             sb1.Append($"{videoClipPath.Scheme}://{videoClipPath.Host}");
 
-            for (int i = 0; i < videoClipPath.Segments.Length - 3; i++)
+            for (int i = 0; i < videoClipPath.Segments.Length - 1; i++)
             {
                 sb1.Append(videoClipPath.Segments[i]);
             }
             var relpath = sb1.ToString();
-            var finalPath = path.Replace("../../", relpath.Substring(0, relpath.Length));
+            //var finalPath = path.Replace("../../", relpath.Substring(0, relpath.Length));
+            var finalPath = relpath + path;
 
             var downloadPath = new Uri(finalPath);
             StringBuilder sb2 = new StringBuilder();

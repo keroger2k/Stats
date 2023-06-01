@@ -17,7 +17,12 @@ namespace Stats.Database.Services
         {
             _db = db;
         }
-
+        public bool TeamNeedsUpdated(TeamTransform result)
+        {
+            var lastScheduledGame = result.schedule.Last(c => c.@event.event_type == "game" && c.@event.status != "canceled" && c.@event.start.datetime != DateTime.MinValue && c.@event.end.datetime < DateTime.UtcNow);
+            var lastCompletedGame = result.completed_games.Any() && result.completed_games.Any(c => c.event_id == lastScheduledGame.@event.id);
+            return !lastCompletedGame;
+        }
         public async Task StoreImageFromUrlAsync(string id, string imageUrl)
         {
             if (!string.IsNullOrEmpty(imageUrl))

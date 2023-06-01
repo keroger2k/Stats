@@ -102,7 +102,7 @@ namespace Stats.API.Controllers
             } 
             else
             {
-                var notfound = await _db.GetTeamAvatarImageAsync("df59a93c-d75e-45f6-aa08-83e2150f39c9");
+                var notfound = await _db.GetTeamAvatarImageAsync("11111111-1111-1111-1111-111111111111");
                 return File(notfound.ImageBytes, "image/png");
 
             }

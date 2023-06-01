@@ -2,11 +2,13 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
+using MongoDB.Driver.GeoJsonObjectModel;
 using Serilog;
 using Stats.Database.Models;
 using Stats.Database.Services;
 using Stats.ExtApi.Services;
 using Stats.Models;
+using System.Runtime.CompilerServices;
 using System.Text;
 using static Stats.ExtApi.Services.GameChangerService;
 
@@ -43,55 +45,97 @@ namespace Stats.CmdApp
         {
             Task.Run(async () =>
             {
-                await _dps.StoreImageFromUrlAsync("11111111-1111-1111-1111-111111111111", "https://i.ibb.co/9WwnHd4/not-found-image.png");
-                //await _dps.StoreImageFromUrlAsync("df59a93c-d75e-45f6-aa08-83e2150f39c9", "https://i.ibb.co/9WwnHd4/not-found-image.png");
+                var sourceTeamId = "c2fcadeb-cfc9-47f9-b8ac-3e0c17e37742"; //pony blue 
+                var interestedId = "ea7d456e-a1c3-436c-98f5-485ff55e104f";
 
+                var opps = await FindOpponentsListRecursive(sourceTeamId, interestedId, new List<string>(), 0, 2);
+                var dopps = opps.Distinct();
+                var localDb = await _db.GetTeamsAsync();
+                var local = dopps.Where(c => localDb.Select(d => d.id).Contains(c));
+                var remote = dopps.Where(c => !localDb.Select(d => d.id).Contains(c));
+                Console.WriteLine($"Found - Local:{local.Count()}, Remote: {remote.Count()}, Total: {local.Count() + remote.Count()}");
+                var sourceTeam = await _db.GetTeamAsync(sourceTeamId);
+                var interestingteam = await _db.GetTeamAsync(interestedId);
 
-                //find direct opponents and our record again them
-                //for example Playing a team that G7 has played directly 
-                //that we will are scheduled to play
-
-                //get a list of our completed games.
-                //look at all our opponents oppoents and see if the team of interest has played them.
-
-                //var sourceTeamId = "c2fcadeb-cfc9-47f9-b8ac-3e0c17e37742";
-                //var sourceTeam = await _db.GetTeamAsync(sourceTeamId);
-
-                //foreach(var completedGame in sourceTeam.completed_games)
+                //foreach (var team in remote)
                 //{
-                //    var correspondingEvent = sourceTeam.schedule.First(c => c.@event.id == completedGame.event_id);
-                //    var rootOpponentTeam = sourceTeam.opponents.First(c => c.root_team_id == correspondingEvent.pregame_data.opponent_id);
-                //    var localOpponentRecord = await _db.GetTeamAsync(rootOpponentTeam.progenitor_team_id);
-                //    if(localOpponentRecord == null || _dps.TeamNeedsUpdated(localOpponentRecord))
-                //    {
-                //        await ImportTeamInfoAsync(rootOpponentTeam.progenitor_team_id);
-                //        localOpponentRecord = await _db.GetTeamAsync(rootOpponentTeam.progenitor_team_id);
-                //    }
-                //    localOpponentRecord = await _db.GetTeamAsync(rootOpponentTeam.progenitor_team_id);
-                //    var localOpponenetNeedsUpdate = _dps.TeamNeedsUpdated(localOpponentRecord);
-                //    Console.WriteLine($"Id: {rootOpponentTeam.progenitor_team_id} : {rootOpponentTeam.name} : {localOpponenetNeedsUpdate}");
+                //    Console.WriteLine($"Importing: {team}");
+                //    await ImportTeamInfoAsync(team);
+                //    var t = await _db.GetTeamAsync(team);
+                //    Console.WriteLine($"Finished: {team} :: {t.name}");
+                //    Thread.Sleep(2000);
                 //}
 
 
 
 
 
+                foreach (var teamId in local.Where(c => c != sourceTeamId))
+                {
+                    var team = await _db.GetTeamAsync(teamId);
+                    //get teams local opponentId for interesting team
+                    var opp = GetProgenitorOpponentIds(team);
+                    if (opp.Contains(interestedId))
+                    {
+                        var localOpponent = team.opponents.FirstOrDefault(c => c.progenitor_team_id == interestedId);
+                        if (localOpponent != null)
+                        {
+                            var sourceTeamIntersect = team.opponents
+                                       .Where(c => sourceTeam.opponents.Select(d => d.progenitor_team_id).Contains(c.progenitor_team_id) || c.progenitor_team_id == interestedId)
+                                       .Where(c => c.progenitor_team_id != null);
 
 
+                            //this team has our interested team listed as an opponent, now have they played.
+                            var scheduledEvents = team.schedule.Where(c => c.pregame_data != null && sourceTeamIntersect.Select(d => d.root_team_id).Contains(c.pregame_data.opponent_id));
+                            //find the completed games.
+                            var games = team.completed_game_scores.Where(c => scheduledEvents.Select(d => d.@event.id).Contains(c.event_id))
+                                .Where(c => c.game_data != null);
 
 
-                //find opponents opponents and their record against them
-                //for example play a team that g7 has played who has played against a team we've played against
-                //Raptors who we've never played, have played hitman. hitman have played g7. this is the game we are intersted in
+                            foreach (var game in games)
+                            {
+                                var sched = scheduledEvents.First(c => c.@event.id == game.event_id);
+                                Console.WriteLine($"{team.name} ({game.game_data.team_score}) - {sched.pregame_data.opponent_name} ({game.game_data.opponent_score})");
 
-
-
-
-
-
+                            }
+                        }
+                    }
+                }
             })
             .GetAwaiter()
             .GetResult();
+        }
+
+
+        private async Task<List<string>> FindOpponentsListRecursive(string sourceTeamId, string interestedId, List<string> opponents, int level, int depth)
+        {
+            opponents.Add(sourceTeamId);
+            if (level < depth)
+            {
+                var sourceTeam = await _db.GetTeamAsync(sourceTeamId);
+                if (sourceTeam != null)
+                {
+                    var currentTeamOpponents = GetProgenitorOpponentIds(sourceTeam);
+                    level++;
+                    foreach (var opp in currentTeamOpponents)
+                    {
+                        await FindOpponentsListRecursive(opp, interestedId, opponents, level, depth);
+                    }
+                    opponents.AddRange(currentTeamOpponents);
+                }
+            }
+            return opponents;
+        }
+
+        private List<string> GetProgenitorOpponentIds(TeamTransform sourceTeam)
+        {
+            var completedEventList = sourceTeam.completed_games.Select(e => e.event_id);
+            var completedOppList = sourceTeam.schedule
+                        .Where(c => completedEventList.Contains(c.@event.id)).Select(c => c.pregame_data.opponent_id).Distinct();
+            return sourceTeam.opponents
+            .Where(c => completedOppList.Contains(c.root_team_id))
+            .Select(c => c.progenitor_team_id)
+            .Where(c => !string.IsNullOrEmpty(c)).ToList();
         }
 
         private async Task DisplayMenu()

@@ -40,7 +40,7 @@ function MainContainer() {
                     <div className="Grid__grid-item" >
                         <div className="TeamsList__teamPageHeader">
                             <div className="OldGrid__row OldGrid__vertical-align Title__row" role="presentation">
-                                <h1 className="Text__text Text__left Text__off-black Text__base Text__xbold Title__text Text__inline-header" data-testid="teams-title">Teams</h1>
+                                <h1 className="Text__text Text__left Text__off-black Text__base Text__xbold Title__text Text__inline-header" data-testid="teams-title">Teams <small className="text-muted small h6">({dataCopy.length})</small></h1>
                             </div>
                         </div>
                         <div className="TeamsList__teamListContainer">

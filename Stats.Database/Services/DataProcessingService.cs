@@ -19,7 +19,8 @@ namespace Stats.Database.Services
         }
         public bool TeamNeedsUpdated(TeamTransform result)
         {
-            var lastScheduledGame = result.schedule.Last(c => c.@event.event_type == "game" && c.@event.status != "canceled" && c.@event.start.datetime != DateTime.MinValue && c.@event.end.datetime < DateTime.UtcNow);
+            // -3 hours is to eliminate returning a game in-progress
+            var lastScheduledGame = result.schedule.Last(c => c.@event.event_type == "game" && c.@event.status != "canceled" && c.@event.start.datetime != DateTime.MinValue && c.@event.end.datetime < DateTime.UtcNow.AddHours(-3));
             var lastCompletedGame = result.completed_games.Any() && result.completed_games.Any(c => c.event_id == lastScheduledGame.@event.id);
             return !lastCompletedGame;
         }

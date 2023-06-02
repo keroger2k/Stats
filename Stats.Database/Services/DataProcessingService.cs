@@ -8,7 +8,7 @@ namespace Stats.Database.Services
         [BsonId]
         public string Id { get; set; } = string.Empty;
         public string Url { get; set; } = string.Empty;
-        public byte[] ImageBytes { get; set; } 
+        public byte[] ImageBytes { get; set; }
     }
     public class DataProcessingService
     {
@@ -20,8 +20,8 @@ namespace Stats.Database.Services
         public bool TeamNeedsUpdated(TeamTransform result)
         {
             // -3 hours is to eliminate returning a game in-progress
-            var lastScheduledGame = result.schedule.Last(c => c.@event.event_type == "game" && c.@event.status != "canceled" && c.@event.start.datetime != DateTime.MinValue && c.@event.end.datetime < DateTime.UtcNow.AddHours(-3));
-            var lastCompletedGame = result.completed_games.Any() && result.completed_games.Any(c => c.event_id == lastScheduledGame.@event.id);
+            var lastScheduledGame = result.schedule.LastOrDefault(c => c.@event.event_type == "game" && c.@event.status != "canceled" && c.@event.start.datetime != DateTime.MinValue && c.@event.end.datetime < DateTime.UtcNow.AddHours(-3));
+            var lastCompletedGame = lastScheduledGame != null && result.completed_games.Any() && result.completed_games.Any(c => c.event_id == lastScheduledGame.@event.id);
             return !lastCompletedGame;
         }
         public async Task StoreImageFromUrlAsync(string id, string imageUrl)
@@ -39,7 +39,7 @@ namespace Stats.Database.Services
                     await _db.CreateImageAsync(imageBson);
                 }
             }
-            
+
         }
         public Dictionary<int, Dictionary<string, int>> GetTeamPitchSmart(TeamTransform team)
         {
@@ -77,7 +77,7 @@ namespace Stats.Database.Services
                                     pData[player.Key] = pData[player.Key] + player.Value.stats.defense.P;
 
                                 }
-                                else 
+                                else
                                 {
                                     pData.Add(player.Key, player.Value.stats.defense.P);
                                 }

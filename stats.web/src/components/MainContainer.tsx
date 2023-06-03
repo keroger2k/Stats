@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Service from '../services/api';
-import { Team, Avatar } from '../models/models';
+import { Team } from '../models/models';
 import TeamRow from './TeamRow/TeamRow';
+import BaseballLogo from './SVGImages/BaseballLogo';
 
 import './MainContainer.scss';
-import BaseballLogo from './SVGImages/BaseballLogo';
+import MagnifyIcon from './SVGImages/Magnify';
+import SearchBox from './SearchBox/SearchBox';
 
 function MainContainer() {
     const [data, setData] = useState<Team[]>([]);
@@ -13,7 +15,7 @@ function MainContainer() {
 
     React.useEffect(() => {
         const services = new Service();
-        services.get('teams').then(data => {
+        services.get('teams').then((data: Team[]) => {
             setData(data);
             setDataCopy(data);
         });
@@ -44,39 +46,19 @@ function MainContainer() {
                     </div>
                     <div className="TeamsList__teamListContainer">
                         <div className="TeamsList__seasonHeader">
-                            <span>
-                                <div className="Grid__grid Grid__fixed">
-                                    <div className="Grid__grid-item custom-grid" >
-                                        <div className="OpponentsPageSearch__opponentSearchContainer">
-                                            <label htmlFor="opponentSearch" className="OpponentsPageSearch__opponentSearch">
-                                                <input
-                                                    onChange={(e) => handleSearch(e.target.value)}
-                                                    type="text" className="TextInput__input" data-testid="OpponentSearchBox" name="opponentName" id="opponentName"
-                                                    placeholder="Find Team in Db" />
-                                            </label>
-                                            <span className="OpponentsPageSearch__opponentSearchIcon">
-                                                <BaseballLogo />
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </span>
+                            <SearchBox setQuery={handleSearch} />
                         </div>
                         <div className="TeamsList__seasonContainer">
-                            <span className="Clickable__container TeamsList__teamRow TeamsList__enabled" role="button" >
+                            <span className="TeamsList__teamRow TeamsList__disabled" >
                                 <div className="Avatar__container Avatar__white-background Avatar__medium">
                                     <div className="Avatar__centered">
+                                        <img src={`${process.env.REACT_APP_API_URL}/teams/11111111-1111-1111-1111-111111111111/avatar`} alt="" className="Image__circle" />
                                     </div>
-
                                 </div>
                                 <div className="TeamsList__teamName">
                                     <span className="Text__text Text__left Text__off-black Text__base Text__semibold">
                                         Teams below are stored locally, to add new ones click "Add Team".
                                     </span>
-                                </div>
-                                <div className="TeamsList__teamGroup">
-                                    <div className="TeamsList__chevron">
-                                    </div>
                                 </div>
                             </span>
                             {content}

@@ -99,7 +99,7 @@ function TeamPitchSmart() {
     if (data) {
         return (
 
-            <main className="MainContent__mainContentContainer">
+            <>
                 <div className="TeamNavBar__stickyItem StickyItem__stickyItem" data-sticky-name="TeamNavbar" data-sticky="true" >
                     <TeamNavBar {...team!} />
                 </div>
@@ -140,11 +140,11 @@ function TeamPitchSmart() {
                         </div>
                     </div>
                 </div>
-            </main>
+            </>
 
         );
     }
-    return (<h1></h1>);
+    return (<h1>&nbsp;</h1>);
 }
 
 export default TeamPitchSmart;

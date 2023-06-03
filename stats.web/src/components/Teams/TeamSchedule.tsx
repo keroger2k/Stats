@@ -135,7 +135,7 @@ function TeamSchedule() {
 
 
     return (
-        <main className="MainContent__mainContentContainer">
+        <>
             <div className="TeamNavBar__stickyItem StickyItem__stickyItem" data-sticky-name="TeamNavbar" data-sticky="true" >
                 <TeamNavBar {...data!} />
             </div>
@@ -154,7 +154,7 @@ function TeamSchedule() {
                     </div>
                 </div>
             </div>
-        </main>
+        </>
     );
 }
 

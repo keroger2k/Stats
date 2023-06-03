@@ -55,7 +55,7 @@ export const StandardBattingGrid = ({ summary, player_stats, player_names }: Gri
         <>
             <div id="stats_container">
                 <div className="statsPageContainer grid">
-                    <table className="table table-hover table-border">
+                    <table className="table table-hover table-border table-responsive">
                         <thead>
                             <tr>
                                 <th scope="col" >Player</th>

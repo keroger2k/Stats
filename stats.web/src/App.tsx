@@ -16,16 +16,18 @@ function App() {
         <>
             <script src="https://vjs.zencdn.net/8.3.0/video.min.js"></script>
             <TopNavbar></TopNavbar>
-            <Routes>
-                <Route path="/" element={<MainContainer />}></Route>
-                <Route path="/teams/:id/schedule" element={<TeamScheduleContainer />}></Route>
-                <Route path="/teams/:id/teamInfo" element={<TeamInfo />}></Route>
-                <Route path="/teams/:id/season-stats" element={<TeamSeasonContainer />}></Route>
-                <Route path="/teams/:id/pitch-smart" element={<TeamPitchSmart />}></Route>
-                <Route path="/teams/:id/schedule/:eventID" element={<EventPage />}></Route>
-                <Route path="/teams/opponents" element={<OpponentsContainer />}></Route>
-                <Route></Route>
-            </Routes>
+            <main className="MainContent__mainContentContainer">
+                <Routes>
+                    <Route path="/" element={<MainContainer />}></Route>
+                    <Route path="/teams/:id/schedule" element={<TeamScheduleContainer />}></Route>
+                    <Route path="/teams/:id/teamInfo" element={<TeamInfo />}></Route>
+                    <Route path="/teams/:id/season-stats" element={<TeamSeasonContainer />}></Route>
+                    <Route path="/teams/:id/pitch-smart" element={<TeamPitchSmart />}></Route>
+                    <Route path="/teams/:id/schedule/:eventID" element={<EventPage />}></Route>
+                    <Route path="/teams/opponents" element={<OpponentsContainer />}></Route>
+                    <Route></Route>
+                </Routes>
+            </main>
 
         </>
     );

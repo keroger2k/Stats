@@ -37,7 +37,7 @@ function TeamInfo() {
 
     return (
 
-        <main className="MainContent__mainContentContainer">
+        <>
             <div className="TeamNavBar__stickyItem StickyItem__stickyItem" data-sticky-name="TeamNavbar" data-sticky="true" >
                 <TeamNavBar {...data!} />
             </div>
@@ -59,7 +59,7 @@ function TeamInfo() {
                 </div>
                 <span></span>
             </div>
-        </main>
+        </>
 
     );
 }

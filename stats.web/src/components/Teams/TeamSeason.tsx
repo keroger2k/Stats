@@ -28,7 +28,7 @@ function TeamSeason() {
     }, []);
 
     function getGrid() {
-        if (data !== undefined) {
+        if (data !== undefined && data.season_stats !== null) {
             if (grid === "Batting" && gridType === "Advanced") {
                 return <AdvancedBattingGrid player_names={data.players} player_stats={data.season_stats.stats_data.players} summary={data.season_stats.stats_data.stats}></AdvancedBattingGrid>;
             } else if (grid === "Pitching" && gridType === "Standard") {
@@ -51,8 +51,7 @@ function TeamSeason() {
     }
 
     return (
-
-        <main className="MainContent__mainContentContainer">
+        <>
             <div className="TeamNavBar__stickyItem StickyItem__stickyItem" data-sticky-name="TeamNavbar" data-sticky="true" >
                 <TeamNavBar {...data!} />
             </div>
@@ -64,8 +63,7 @@ function TeamSeason() {
 
                 {getGrid()}
             </div>
-        </main>
-
+        </>
     );
 }
 

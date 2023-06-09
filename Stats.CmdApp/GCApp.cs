@@ -45,62 +45,64 @@ namespace Stats.CmdApp
         {
             Task.Run(async () =>
             {
-                var sourceTeamId = "c2fcadeb-cfc9-47f9-b8ac-3e0c17e37742"; //pony blue 
-                var interestedId = "ea7d456e-a1c3-436c-98f5-485ff55e104f";
 
-                var opps = await FindOpponentsListRecursive(sourceTeamId, interestedId, new List<string>(), 0, 2);
-                var dopps = opps.Distinct();
-                var localDb = await _db.GetTeamsAsync();
-                var local = dopps.Where(c => localDb.Select(d => d.id).Contains(c));
-                var remote = dopps.Where(c => !localDb.Select(d => d.id).Contains(c));
-                Console.WriteLine($"Found - Local:{local.Count()}, Remote: {remote.Count()}, Total: {local.Count() + remote.Count()}");
-                var sourceTeam = await _db.GetTeamAsync(sourceTeamId);
-                var interestingteam = await _db.GetTeamAsync(interestedId);
+                await DoSomething("c86ff12e-a839-4f05-883b-31e91b14ef93");
+                //var sourceTeamId = "c2fcadeb-cfc9-47f9-b8ac-3e0c17e37742"; //pony blue 
+                //var interestedId = "ea7d456e-a1c3-436c-98f5-485ff55e104f";
 
-                //foreach (var team in remote)
+                //var opps = await FindOpponentsListRecursive(sourceTeamId, interestedId, new List<string>(), 0, 2);
+                //var dopps = opps.Distinct();
+                //var localDb = await _db.GetTeamsAsync();
+                //var local = dopps.Where(c => localDb.Select(d => d.id).Contains(c));
+                //var remote = dopps.Where(c => !localDb.Select(d => d.id).Contains(c));
+                //Console.WriteLine($"Found - Local:{local.Count()}, Remote: {remote.Count()}, Total: {local.Count() + remote.Count()}");
+                //var sourceTeam = await _db.GetTeamAsync(sourceTeamId);
+                //var interestingteam = await _db.GetTeamAsync(interestedId);
+
+                ////foreach (var team in remote)
+                ////{
+                ////    Console.WriteLine($"Importing: {team}");
+                ////    await ImportTeamInfoAsync(team);
+                ////    var t = await _db.GetTeamAsync(team);
+                ////    Console.WriteLine($"Finished: {team} :: {t.name}");
+                ////    Thread.Sleep(2000);
+                ////}
+
+
+
+
+
+                //foreach (var teamId in local.Where(c => c != sourceTeamId))
                 //{
-                //    Console.WriteLine($"Importing: {team}");
-                //    await ImportTeamInfoAsync(team);
-                //    var t = await _db.GetTeamAsync(team);
-                //    Console.WriteLine($"Finished: {team} :: {t.name}");
-                //    Thread.Sleep(2000);
+                //    var team = await _db.GetTeamAsync(teamId);
+                //    //get teams local opponentId for interesting team
+                //    var opp = GetProgenitorOpponentIds(team);
+                //    if (opp.Contains(interestedId))
+                //    {
+                //        var localOpponent = team.opponents.FirstOrDefault(c => c.progenitor_team_id == interestedId);
+                //        if (localOpponent != null)
+                //        {
+                //            var sourceTeamIntersect = team.opponents
+                //                       .Where(c => sourceTeam.opponents.Select(d => d.progenitor_team_id).Contains(c.progenitor_team_id) || c.progenitor_team_id == interestedId)
+                //                       .Where(c => c.progenitor_team_id != null);
+
+
+                //            //this team has our interested team listed as an opponent, now have they played.
+                //            var scheduledEvents = team.schedule.Where(c => c.pregame_data != null && sourceTeamIntersect.Select(d => d.root_team_id).Contains(c.pregame_data.opponent_id));
+                //            //find the completed games.
+                //            var games = team.completed_game_scores.Where(c => scheduledEvents.Select(d => d.@event.id).Contains(c.event_id))
+                //                .Where(c => c.game_data != null);
+
+
+                //            foreach (var game in games)
+                //            {
+                //                var sched = scheduledEvents.First(c => c.@event.id == game.event_id);
+                //                Console.WriteLine($"{team.name} ({game.game_data.team_score}) - {sched.pregame_data.opponent_name} ({game.game_data.opponent_score})");
+
+                //            }
+                //        }
+                //    }
                 //}
-
-
-
-
-
-                foreach (var teamId in local.Where(c => c != sourceTeamId))
-                {
-                    var team = await _db.GetTeamAsync(teamId);
-                    //get teams local opponentId for interesting team
-                    var opp = GetProgenitorOpponentIds(team);
-                    if (opp.Contains(interestedId))
-                    {
-                        var localOpponent = team.opponents.FirstOrDefault(c => c.progenitor_team_id == interestedId);
-                        if (localOpponent != null)
-                        {
-                            var sourceTeamIntersect = team.opponents
-                                       .Where(c => sourceTeam.opponents.Select(d => d.progenitor_team_id).Contains(c.progenitor_team_id) || c.progenitor_team_id == interestedId)
-                                       .Where(c => c.progenitor_team_id != null);
-
-
-                            //this team has our interested team listed as an opponent, now have they played.
-                            var scheduledEvents = team.schedule.Where(c => c.pregame_data != null && sourceTeamIntersect.Select(d => d.root_team_id).Contains(c.pregame_data.opponent_id));
-                            //find the completed games.
-                            var games = team.completed_game_scores.Where(c => scheduledEvents.Select(d => d.@event.id).Contains(c.event_id))
-                                .Where(c => c.game_data != null);
-
-
-                            foreach (var game in games)
-                            {
-                                var sched = scheduledEvents.First(c => c.@event.id == game.event_id);
-                                Console.WriteLine($"{team.name} ({game.game_data.team_score}) - {sched.pregame_data.opponent_name} ({game.game_data.opponent_score})");
-
-                            }
-                        }
-                    }
-                }
             })
             .GetAwaiter()
             .GetResult();

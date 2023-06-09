@@ -1,4 +1,3 @@
-import { } from "react-bootstrap";
 import MagnifyIcon from "../SVGImages/Magnify";
 export interface SearchProps {
     setQuery(arg: string): void;

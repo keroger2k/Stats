@@ -3,11 +3,8 @@ import { Link } from 'react-router-dom';
 import Service from '../services/api';
 import { Team } from '../models/models';
 import TeamRow from './TeamRow/TeamRow';
-import BaseballLogo from './SVGImages/BaseballLogo';
-
-import './MainContainer.scss';
-import MagnifyIcon from './SVGImages/Magnify';
 import SearchBox from './SearchBox/SearchBox';
+import './MainContainer.scss';
 
 function MainContainer() {
     const [data, setData] = useState<Team[]>([]);

@@ -3,10 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import Service from '../services/api';
 import { SearchResult } from '../models/models';
 import BaseballLogoLarge from './SVGImages/BaseballLogoLarge';
-import './Opponents.scss';
 import LoadingSpinner from "./LoadingSpinner/LoadingSpinner"
-import MagnifyIcon from './SVGImages/Magnify';
 import SearchBox from './SearchBox/SearchBox';
+import './Opponents.scss';
 
 function OpponentsContainer() {
 

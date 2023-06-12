@@ -38,6 +38,13 @@ export interface Avatar {
     [key: string]: string;
 }
 
+export interface Video {
+    id: string;
+    schedule_event_id: string;
+    url: string;
+    cookies: { [key: string]: string };
+}
+
 export interface VideoClip {
     id: string;
     url: string;
@@ -99,6 +106,7 @@ export interface Team {
     players: Player[];
     season_stats: SeasonStats;
     opponents: Opponent[];
+    video_assets: VideoAsset[];
 }
 
 export interface Opponent {
@@ -107,6 +115,16 @@ export interface Opponent {
     progenitor_team_id: string;
     name: string;
     is_hidden: boolean;
+}
+
+export interface VideoAsset {
+    id: string;
+    stream_id: string;
+    schedule_event_id: string;
+    created_at: string;
+    ended_at: string;
+    audience_type: string;
+    thumbnail_url: string;
 }
 
 export interface SearchResult {

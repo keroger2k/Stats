@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
+using M3U8Parser;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using Stats.API.Helper;
 using Stats.API.Models;
 using Stats.Database.Models;
 using Stats.Database.Services;
+using Stats.ExtApi.Services;
 using Stats.Models;
+using System.IO;
 
 namespace Stats.API.Controllers
 {
@@ -15,11 +18,13 @@ namespace Stats.API.Controllers
     {
         private readonly ExternalAPIService _externalApi;
         private readonly DataProcessingService _dps;
-        public TeamsController(ILogger<TeamsController> logger, DatabaseService db, IMapper mapper, ExternalAPIService externalApi, DataProcessingService dps) 
+        private readonly CloudFrontService _cfs;
+        public TeamsController(ILogger<TeamsController> logger, DatabaseService db, IMapper mapper, ExternalAPIService externalApi, DataProcessingService dps, CloudFrontService cfs)
             : base(logger, db, mapper)
         {
             _externalApi = externalApi;
             _dps = dps;
+            _cfs = cfs;
         }
 
         [HttpGet]
@@ -74,6 +79,36 @@ namespace Stats.API.Controllers
         }
 
         [HttpGet]
+        [Route("{id}/schedule/{eid}/videos1")]
+        public async Task<ActionResult<IEnumerable<MediaPlaylist>>> GetTeamEventVideos(string id, string eid)
+        {
+            var results = await _externalApi.GetTeamEventVideosPlayback(id, eid);
+            var urls = new List<MediaPlaylist>();
+            foreach (var result in results)
+            {
+                var uri = new Uri(result.url);
+                var noLastSegment = string.Format("{0}://{1}", uri.Scheme, uri.Authority);
+                for (int i = 0; i < uri.Segments.Length - 1; i++)
+                {
+                    noLastSegment += uri.Segments[i];
+                }
+
+                var p = await _cfs.GetPlayListUrl(result);
+                var masterPlaylist = MasterPlaylist.LoadFromText(p);
+                foreach (var stream in masterPlaylist.Streams.Where(c => c.Uri.Contains('/') && (c.Video.Contains("720p") || c.Video
+                .Contains("1080p"))))
+                {
+                    var p1 = await _cfs.GetPlayListFile(result, string.Format($"{noLastSegment}{stream.Uri}"));
+                    var playList = MediaPlaylist.LoadFromText(p1);
+                    urls.Add(playList);
+                }
+
+            }
+            return Ok(urls);
+        }
+
+
+        [HttpGet]
         [Route("{id}/schedule/{eid}")]
         public async Task<ActionResult<TeamEvent>> GetTeamEvent(string id, string eid)
         {
@@ -96,10 +131,10 @@ namespace Stats.API.Controllers
         public async Task<FileContentResult> GetAvatar(string id)
         {
             var avatarBytes = await _db.GetTeamAvatarImageAsync(id);
-            if(avatarBytes != null)
+            if (avatarBytes != null)
             {
                 return File(avatarBytes.ImageBytes, "image/png");
-            } 
+            }
             else
             {
                 var notfound = await _db.GetTeamAvatarImageAsync("11111111-1111-1111-1111-111111111111");

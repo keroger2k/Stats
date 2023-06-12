@@ -24,11 +24,9 @@ export const VideoArchivePage = (props: VideoArchiveProps) => {
         </>
     );
 
-
-
     return (
         <>
-            {content}
+            <h1>here</h1>
         </>
     );
 };

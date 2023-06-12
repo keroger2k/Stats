@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import React, { useState } from 'react';
 import Service from '../../services/api';
-import { Team, Event, GameData, Players, Player, TeamEventData, StatData } from '../../models/models';
+import { Team, Event, GameData, Players, Player, TeamEventData } from '../../models/models';
 import { EventDetails } from "./EventDetails";
 import StandardBattingGrid from '../StatGrids/StandardBattingGrid';
 import AdvancedBattingGrid from '../StatGrids/AdvancedBattingGrid';

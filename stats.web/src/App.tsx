@@ -9,7 +9,7 @@ import TeamInfo from './components/Teams/TeamInfo';
 import EventPage from './components/Events/Event';
 
 import './App.scss';
-import PitchSmart from './components/StatGrids/StandardPitchingGrid';
+import Videos from './components/Events/Videos';
 
 function App() {
     return (
@@ -24,6 +24,7 @@ function App() {
                     <Route path="/teams/:id/season-stats" element={<TeamSeasonContainer />}></Route>
                     <Route path="/teams/:id/pitch-smart" element={<TeamPitchSmart />}></Route>
                     <Route path="/teams/:id/schedule/:eventID" element={<EventPage />}></Route>
+                    <Route path="/teams/:id/schedule/:eventID/videos" element={<Videos />}></Route>
                     <Route path="/teams/opponents" element={<OpponentsContainer />}></Route>
                     <Route></Route>
                 </Routes>

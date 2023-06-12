@@ -45,8 +45,8 @@ namespace Stats.CmdApp
         {
             Task.Run(async () =>
             {
-
-                await DoSomething("c86ff12e-a839-4f05-883b-31e91b14ef93");
+                await DisplayMenu();
+                //await DoSomething("c86ff12e-a839-4f05-883b-31e91b14ef93");
                 //var sourceTeamId = "c2fcadeb-cfc9-47f9-b8ac-3e0c17e37742"; //pony blue 
                 //var interestedId = "ea7d456e-a1c3-436c-98f5-485ff55e104f";
 
@@ -431,6 +431,8 @@ namespace Stats.CmdApp
             var scores = await _gameChangerService.GetTeamGameDataAsync(id);
             var opponents = await _gameChangerService.GetTeamOpponentsAsync(id);
             var season_stats = await _gameChangerService.GetTeamSeasonStatsAsync(id);
+            var videos = await _gameChangerService.GetTeamVideoAssetsAsync(id);
+
             if (season_stats != null)
             {
                 var players = await _gameChangerService.GetPlayers(season_stats.stats_data.players.Keys.ToArray());
@@ -439,6 +441,7 @@ namespace Stats.CmdApp
                 teamTransform.season_stats = season_stats;
                 teamTransform.opponents = opponents.ToList();
                 teamTransform.players = players.ToList();
+                teamTransform.video_assets = videos.ToList();
 
                 foreach (var evt in teamTransform.schedule.Where(c => c.@event.event_type.Equals("game"))
                     .Where(c => !c.@event.status.Equals("canceled"))

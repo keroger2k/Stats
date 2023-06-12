@@ -5,6 +5,7 @@ using Stats.Database.Services;
 using Stats.Models;
 using Stats.ExtApi.Services;
 using Stats.API.Models;
+using M3U8Parser.Attributes;
 
 namespace Stats.API.Helper
 {
@@ -54,6 +55,8 @@ namespace Stats.API.Helper
             var scores = await _gameChangerService.GetTeamGameDataAsync(id);
             var season_stats = await _gameChangerService.GetTeamSeasonStatsAsync(id);
             var opponents = await _gameChangerService.GetTeamOpponentsAsync(id);
+            var videos = await _gameChangerService.GetTeamVideoAssetsAsync(id);
+
             if (season_stats != null)
             {
                 teamTransform.season_stats = season_stats;
@@ -75,6 +78,7 @@ namespace Stats.API.Helper
             teamTransform.schedule = teamSchedule.ToList();
             teamTransform.completed_game_scores = scores.ToList();
             teamTransform.opponents = opponents.ToList();
+            teamTransform.video_assets = videos.ToList();
 
             foreach (var evt in teamTransform.schedule.Where(c => c.@event.event_type.Equals("game"))
                 .Where(c => !c.@event.status.Equals("canceled"))

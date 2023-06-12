@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Amazon.Runtime.Internal.Endpoints.StandardLibrary;
+using AutoMapper;
 using M3U8Parser;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
@@ -9,6 +10,8 @@ using Stats.Database.Services;
 using Stats.ExtApi.Services;
 using Stats.Models;
 using System.IO;
+using System.Net.Http;
+using System.Text;
 
 namespace Stats.API.Controllers
 {
@@ -105,6 +108,86 @@ namespace Stats.API.Controllers
 
             }
             return Ok(urls);
+        }
+
+        [HttpGet]
+        [Route("{id}/schedule/{eid}/videos/{vid}/playlist.m3u8")]
+        public async Task<FileContentResult> GetTeamEventVideo(string id, string eid, string vid)
+        {
+            var results = await _externalApi.GetTeamEventVideosPlayback(id, eid);
+            var urls = new List<MediaPlaylist>();
+            var result = results.FirstOrDefault(c => c.id == vid);
+            if (result != null)
+            {
+                var uri = new Uri(result.url);
+                var noLastSegment = string.Format("{0}://{1}", uri.Scheme, uri.Authority);
+                for (int i = 0; i < uri.Segments.Length - 1; i++)
+                {
+                    noLastSegment += uri.Segments[i];
+                }
+
+                var p = await _cfs.GetPlayListUrl(result);
+                var masterPlaylist = MasterPlaylist.LoadFromText(p);
+                foreach (var stream in masterPlaylist.Streams.Where(c => c.Video.Contains("720p") || c.Video
+                .Contains("1080p")))
+                {
+                    var contentType = "text/xml";
+                    var content = await _cfs.GetPlayListFile(result, string.Format($"{noLastSegment}{stream.Uri}"));
+                    var bytes = Encoding.UTF8.GetBytes(content);
+                    var result1 = new FileContentResult(bytes, contentType);
+                    result1.FileDownloadName = "playlist.m3u8";
+                    return result1;
+                }
+            }
+            return new FileContentResult(Encoding.UTF8.GetBytes(""), "");
+        }
+
+        [HttpGet]
+        [Route("{id}/schedule/{eid}/videos/{vid}/{clipId}")]
+        public async Task<FileContentResult> GetTeamEventVideoClip(string id, string eid, string vid, string clipId)
+        {
+            var results = await _externalApi.GetTeamEventVideosPlayback(id, eid);
+            var urls = new List<MediaPlaylist>();
+            var result = results.FirstOrDefault(c => c.id == vid);
+            
+            if (result != null)
+            {
+                var uri = new Uri(result.url);
+                var noLastSegment = string.Format("{0}://{1}", uri.Scheme, uri.Authority);
+                for (int i = 0; i < uri.Segments.Length - 1; i++)
+                {
+                    noLastSegment += uri.Segments[i];
+                }
+
+                var p = await _cfs.GetPlayListUrl(result);
+                var masterPlaylist = MasterPlaylist.LoadFromText(p);
+                foreach (var stream in masterPlaylist.Streams.Where(c => c.Video.Contains("720p") || c.Video
+                .Contains("1080p")))
+                {
+                    var p1 = await _cfs.GetPlayListFile(result, string.Format($"{noLastSegment}{stream.Uri}"));
+                    var playList = MediaPlaylist.LoadFromText(p1);
+                    var uri1 = new Uri(noLastSegment);
+                    var noLastSegment1 = string.Format("{0}://{1}", uri1.Scheme, uri1.Authority);
+                    var relativeUri = playList.MediaSegments.First().Segments.First().Uri;
+                    var blah = relativeUri.Split('/');
+                    var rc = blah.Count(c => c.Contains(".."));
+                    for (int i = 0; i < uri1.Segments.Length - rc; i++)
+                    {
+                        noLastSegment1 += uri1.Segments[i];
+                    }
+
+                    var head = blah.Skip(rc).Take(blah.Length - (rc+1));
+                    var temp = string.Join("/", head);
+
+
+                    var test = string.Format($"{noLastSegment1}{stream.Uri.Split('/')[0]}/{clipId}?Key-Pair-Id={result.cookies.CloudFrontKeyPairId}&Signature={result.cookies.CloudFrontSignature}&Policy={result.cookies.CloudFrontPolicy}");
+
+                    var _httpClient = new HttpClient();
+                    var response = await _httpClient.GetAsync(test);
+                    return new FileContentResult(await response.Content.ReadAsByteArrayAsync(), "application/octet-stream");
+                }
+            }
+            return new FileContentResult(Encoding.UTF8.GetBytes(""), "text/xml");
         }
 
 

@@ -1,8 +1,11 @@
 import { useParams } from "react-router-dom";
 import React, { useState } from 'react';
 import Service from '../../services/api';
-import { Team, Event, GameData, TeamEventData, Video, VideoAsset } from '../../models/models';
+import { Link } from 'react-router-dom';
+import { Team, Event, GameData, TeamEventData, VideoAsset } from '../../models/models';
 import { EventDetails } from "./EventDetails";
+import VideoJS from '../VideoJS'
+
 
 
 function Videos() {
@@ -10,12 +13,7 @@ function Videos() {
     const [team, setTeam] = useState<Team>();
     const [event, setEvent] = useState<Event>();
     const [teamEvent, setTeamEvent] = useState<TeamEventData>();
-    const [gameData, setGameData] = useState<GameData | null>(null);
-
-    function getUrl(video: Video) {
-        var url = `${video.url}?Key-Pair-Id=${video.cookies["CloudFront-Key-Pair-Id"]}&Signature=${video.cookies["CloudFront-Signature"]}&Policy=${video.cookies["CloudFront-Policy"]}`;
-        return url;
-    }
+    const [gameData, setGameData] = useState<GameData>();
 
     React.useEffect(() => {
         const services = new Service();
@@ -32,28 +30,59 @@ function Videos() {
     }, []);
 
 
-    const content = team?.video_assets.filter((vid: VideoAsset) => vid.schedule_event_id === eventID).map((video) => {
+    const content = team?.video_assets.filter((video: VideoAsset) => video.schedule_event_id === eventID).map((video: VideoAsset) => {
+        const videoJsOptions = {
+            controls: true,
+            poster: video.thumbnail_url,
+            sources: [{
+                src: `${process.env.REACT_APP_API_URL}/Teams/${team?.id}/schedule/${eventID}/videos/${video.id}/playlist.m3u8`,
+                type: 'application/x-mpegURL',
+
+            }]
+        };
+
+        const handlePlayerReady = () => {
+
+        };
+
+
         return (
-            <li>
-                <br/>
-                <img height="180" width="270" alt="" src={video.thumbnail_url} />
-            </li>
+            <>
+                <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
+            </>
         );
     });
 
-    if (teamEvent !== undefined && team !== undefined) {
+    if (team !== undefined) {
         return (
             <>
                 <EventDetails event={event!} team={team} gameData={gameData!} />
-                <ul>
-                    {content}
-                </ul>
+                <div className="EventNavBar__eventNavBar" data-testid="event-navbar">
+                    <div className="TabNavBar__tabItems">
+                        <Link to={`/teams/${team.id}/schedule/${eventID}`} key={eventID}>
+                            <a data-testid="event-nav-bar-game-stats" href="">
+                                <div className="TabNavBarItem__tabNavBarItem " role="tab"><span className="Text__text Text__left Text__gc-blue Text__base Text__bold TabNavBarItem__tabNavBarLabel">Game Stats</span></div>
+                                <div className=""></div>
+                            </a>
+                        </Link>
+                        <Link to={`/teams/${team.id}/schedule/${eventID}/videos`} key={eventID}>
+                            <a data-testid="event-nav-bar-video-archive" href="">
+                                <div className="TabNavBarItem__tabNavBarItem TabNavBarItem__activeTabNavBarItem" role="tab"><span className="Text__text Text__left Text__cool-grey-dark Text__base Text__semibold TabNavBarItem__tabNavBarLabel">Videos</span></div>
+                                <div className="TabNavBarItem__activeTabItemUnderline"></div>
+                            </a>
+                        </Link>
+                    </div>
+                </div>
+                <br />
+                {content}
             </>
         );
+    } else {
+        return (
+            <h1>&nbsp;</h1>
+        );
+
     }
-    return (
-        <h1> </h1>
-    );
 }
 
 export default Videos;

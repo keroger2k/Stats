@@ -120,6 +120,7 @@ export interface Opponent {
 export interface VideoAsset {
     id: string;
     stream_id: string;
+    duration: number;
     schedule_event_id: string;
     created_at: string;
     ended_at: string;

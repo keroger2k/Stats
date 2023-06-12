@@ -14,7 +14,6 @@ import Videos from './components/Events/Videos';
 function App() {
     return (
         <>
-            <script src="https://vjs.zencdn.net/8.3.0/video.min.js"></script>
             <TopNavbar></TopNavbar>
             <main className="MainContent__mainContentContainer">
                 <Routes>

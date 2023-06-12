@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import React, { useState } from 'react';
 import Service from '../../services/api';
+import { Link } from 'react-router-dom';
 import { Team, Event, GameData, Players, Player, TeamEventData } from '../../models/models';
 import { EventDetails } from "./EventDetails";
 import StandardBattingGrid from '../StatGrids/StandardBattingGrid';
@@ -74,6 +75,27 @@ function EventPage() {
         return (
             <>
                 <EventDetails event={event!} team={team} gameData={gameData!} />
+
+                <div className="EventNavBar__eventNavBar" data-testid="event-navbar">
+                    <div className="TabNavBar__tabItems">
+                        <Link to={`/teams/${team.id}/schedule/${eventID}`} key={eventID}>
+                            <a data-testid="event-nav-bar-game-stats" href="">
+                                <div className="TabNavBarItem__tabNavBarItem TabNavBarItem__activeTabNavBarItem" role="tab"><span className="Text__text Text__left Text__gc-blue Text__base Text__bold TabNavBarItem__tabNavBarLabel">Game Stats</span></div>
+                                <div className="TabNavBarItem__activeTabItemUnderline"></div>
+
+                            </a>
+                        </Link>
+                        <Link to={`/teams/${team.id}/schedule/${eventID}/videos`} key={eventID}>
+                            <a data-testid="event-nav-bar-video-archive" href="">
+                                <div className="TabNavBarItem__tabNavBarItem " role="tab"><span className="Text__text Text__left Text__cool-grey-dark Text__base Text__semibold TabNavBarItem__tabNavBarLabel">Videos</span></div>
+                                <div className=""></div>
+                            </a>
+                        </Link>
+                    </div>
+                </div>
+                <br />
+
+
                 <div className="OldGrid__grid OldGrid__centered SeasonStatsPage__statsPageContainer">
                     <div data-testid="stats-view-chooser" className="TabViewChooser__container GameStatsDisplay__teamTabContainer">
                         <span className="Clickable__container" role="button" data-testid="ourTeamTab">

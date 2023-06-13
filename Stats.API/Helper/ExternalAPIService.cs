@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using M3U8Parser;
-using M3U8Parser.ExtXType;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using Stats.API.Models;
@@ -8,9 +7,7 @@ using Stats.Database.Models;
 using Stats.Database.Services;
 using Stats.ExtApi.Services;
 using Stats.Models;
-using System.IO;
 using System.Text;
-using static Stats.ExtApi.Services.GameChangerService.SearchResults;
 
 namespace Stats.API.Helper
 {

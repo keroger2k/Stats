@@ -48,7 +48,30 @@ function Videos() {
 
         return (
             <>
-                <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
+                <div className="Grid__grid Grid__fixed VideoArchiveDisplay__videoArchiveContainer">
+                    <div className="Grid__grid-item" >
+                        <div data-testid="primaryVideoContainer">
+                            <div className="PrimaryVideo__primaryVideo">
+                                <div data-testid="video-wrapper">
+                                    <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
+                                </div>
+                            </div>
+                            <div className="PrimaryVideo__details">
+                                <div className="Text__text Text__left Text__off-black Text__large Text__bold PrimaryVideo__title">{event?.pregame_data?.opponent_name}</div>
+                                <div className="Text__text Text__left Text__off-black Text__base Text__regular PrimaryVideo__subtitle">{event?.event.start?.datetime }</div>
+                                <span className="PrimaryVideo__deleteBtnContainer">
+                                    <span className="ConfirmationPopup__button-container">
+                                        <div className="Popover__popoverContent"></div>
+                                        <div>
+
+                                        </div>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </>
         );
     });

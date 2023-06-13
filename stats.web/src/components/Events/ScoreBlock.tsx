@@ -34,7 +34,7 @@ export const ScoreBlock = ({ hide, event, team, gameData }: { hide: boolean; eve
                 <div className="EventHeaderFinal__awayTeamInfo EventHeaderCommon__teamNameAndAvatarContainer EventHeaderCommon__awayTeamNameAndAvatarContainer">
                     <div className="Avatar__container Avatar__white-background Avatar__medium">
                         <div className="Avatar__centered">
-                            <BaseballLogoLarge />
+                            <img src={`${process.env.REACT_APP_API_URL}/teams/${event.pregame_data?.opponent_id}/avatar`} alt="" className="Image__circle" />
                         </div>
                     </div>
                     <span className="Text__text Text__left Text__white Text__medium Text__xbold EventHeaderCommon__teamName" data-testid="away-team-name">{event.pregame_data?.opponent_name}</span>
@@ -42,7 +42,7 @@ export const ScoreBlock = ({ hide, event, team, gameData }: { hide: boolean; eve
                 <div className="EventHeaderFinal__homeTeamInfo EventHeaderCommon__teamNameAndAvatarContainer EventHeaderCommon__homeTeamNameAndAvatarContainer">
                     <div className="Avatar__container Avatar__white-background Avatar__medium">
                         <div className="Avatar__centered">
-                            <BaseballLogoLarge />
+                            <img src={`${process.env.REACT_APP_API_URL}/teams/${team.id}/avatar`} alt="" className="Image__circle" />
                         </div>
                     </div>
                     <span className="Text__text Text__left Text__white Text__medium Text__xbold EventHeaderCommon__teamName" data-testid="away-team-name">{team.name}</span>

@@ -1,11 +1,16 @@
 ﻿using AutoMapper;
+using M3U8Parser;
+using M3U8Parser.ExtXType;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using Stats.API.Models;
 using Stats.Database.Models;
 using Stats.Database.Services;
-using Stats.Models;
 using Stats.ExtApi.Services;
-using Stats.API.Models;
-using M3U8Parser.Attributes;
+using Stats.Models;
+using System.IO;
+using System.Text;
+using static Stats.ExtApi.Services.GameChangerService.SearchResults;
 
 namespace Stats.API.Helper
 {
@@ -15,19 +20,108 @@ namespace Stats.API.Helper
         private readonly DatabaseService _db;
         private readonly DataProcessingService _dps;
         private readonly IMapper _mapper;
+        private readonly CloudFrontService _cfs;
+        private readonly HttpClient _httpClient;
+
+        public readonly static string[] ACCEPTABLE_RESOLUTIONS = { "480p30", "720p30", "1080p", "480p60", "720p60" };
+
+
         public ExternalAPIService(GameChangerService gameChangerService, DatabaseService db,
-            DataProcessingService dps, IMapper mapper)
+            DataProcessingService dps, IMapper mapper, CloudFrontService cfs, HttpClient httpClient)
         {
             _gameChangerService = gameChangerService;
             _dps = dps;
             _mapper = mapper;
             _db = db;
+            _cfs = cfs;
+            _httpClient = httpClient;
         }
 
         public async Task<IEnumerable<VideoPlayback>> GetTeamEventVideos(string teamId, string eventId)
         {
             var results = await _gameChangerService.GetTeamEventVideoAssetsPlaybackAsync(teamId, eventId);
             return results;
+        }
+
+        public async Task<FileContentResult> GetTeamEventVideoPlayList(string id, string eid, string vid)
+        {
+            var results = await GetTeamEventVideosPlayback(id, eid);
+            var result = results.FirstOrDefault(c => c.id == vid);
+            if (result != null)
+            {
+                var noLastSegment = new System.Uri(new System.Uri(result.url), ".");
+
+                var p = await _cfs.GetPlayListUrl(result);
+                var masterPlaylist = MasterPlaylist.LoadFromText(p);
+                var bestPlayListPath = masterPlaylist.Streams.FirstOrDefault(c => ACCEPTABLE_RESOLUTIONS.Contains(c.Video));
+
+                if (bestPlayListPath != null)
+                {
+                    var content = await _cfs.GetPlayListFile(result, string.Format($"{noLastSegment.AbsoluteUri}{bestPlayListPath.Uri}"));
+                    var playList = M3U8Parser.MediaPlaylist.LoadFromText(content);
+                    var search1 = playList.MediaSegments[0].Segments[0].Uri.Split('/');
+                    var search2 = search1.Take(search1.Length - 1);
+
+                    //var searchString = string.Join('/', search2);
+
+                    //string[] lines = content.Split('\n');
+                    //for (int i = 0; i < lines.Length; i++)
+                    //{
+                    //    if (lines[i].Contains(searchString))
+                    //    {
+                    //        lines[i] = lines[i].Replace(searchString, string.Empty);
+                    //    }
+                    //}
+
+                    //string output = string.Join('\n', lines);
+
+                    var bytes = Encoding.UTF8.GetBytes(content);
+                    var result1 = new FileContentResult(bytes, "text/xml");
+                    result1.FileDownloadName = "playlist.m3u8";
+                    return result1;
+                }
+                else
+                {
+                    return new FileContentResult(Encoding.UTF8.GetBytes(""), "");
+                }
+            }
+            else
+            {
+                return new FileContentResult(Encoding.UTF8.GetBytes(""), "");
+            }
+        }
+
+        public async Task<FileContentResult> GetTeamEventVideoClip(string id, string eid, string vid, string clipId)
+        {
+            var results = await GetTeamEventVideosPlayback(id, eid);
+            var result = results.FirstOrDefault(c => c.id == vid);
+
+            if (result != null)
+            {
+                var noLastSegment = new Uri(new System.Uri(result.url), ".");
+                var p = await _cfs.GetPlayListUrl(result);
+                var masterPlaylist = MasterPlaylist.LoadFromText(p);
+                var bestPlayListPath = masterPlaylist.Streams.FirstOrDefault(c => ACCEPTABLE_RESOLUTIONS.Contains(c.Video));
+
+                if (bestPlayListPath != null)
+                {
+                    var content = await _cfs.GetPlayListFile(result, string.Format($"{noLastSegment.AbsoluteUri}{bestPlayListPath.Uri}"));
+                    var playList = M3U8Parser.MediaPlaylist.LoadFromText(content);
+                    var playListUri = new Uri(noLastSegment, playList.MediaSegments[0].Segments[0].Uri);
+                    var playListUriNoLastSegment = new Uri(playListUri, ".");
+                    var test = string.Format($"{playListUriNoLastSegment.AbsoluteUri}{bestPlayListPath.Video}/{clipId}?Key-Pair-Id={result.cookies.CloudFrontKeyPairId}&Signature={result.cookies.CloudFrontSignature}&Policy={result.cookies.CloudFrontPolicy}");
+                    var response = await _httpClient.GetAsync(test);
+                    return new FileContentResult(await response.Content.ReadAsByteArrayAsync(), "application/octet-stream");
+                }
+                else
+                {
+                    return new FileContentResult(Encoding.UTF8.GetBytes(""), "application/octet-stream");
+                }
+            }
+            else
+            {
+                return new FileContentResult(Encoding.UTF8.GetBytes(""), "application/octet-stream");
+            }
         }
 
         public async Task<IEnumerable<VideoPlayback>> GetTeamEventVideosPlayback(string teamId, string eventId)

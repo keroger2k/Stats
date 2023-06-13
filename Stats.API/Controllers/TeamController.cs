@@ -128,8 +128,8 @@ namespace Stats.API.Controllers
 
                 var p = await _cfs.GetPlayListUrl(result);
                 var masterPlaylist = MasterPlaylist.LoadFromText(p);
-                foreach (var stream in masterPlaylist.Streams.Where(c => c.Video.Contains("720p") || c.Video
-                .Contains("1080p")))
+                foreach (var stream in masterPlaylist.Streams.Where(c => 
+                new[] { "480p30", "720p30", "1080p30", "480p60", "720p60", "1080p60" }.Contains(c.Video)))
                 {
                     var contentType = "text/xml";
                     var content = await _cfs.GetPlayListFile(result, string.Format($"{noLastSegment}{stream.Uri}"));
@@ -138,8 +138,12 @@ namespace Stats.API.Controllers
                     result1.FileDownloadName = "playlist.m3u8";
                     return result1;
                 }
+                return new FileContentResult(Encoding.UTF8.GetBytes(""), "");
             }
-            return new FileContentResult(Encoding.UTF8.GetBytes(""), "");
+            else
+            {
+                return new FileContentResult(Encoding.UTF8.GetBytes(""), "");
+            }
         }
 
         [HttpGet]
@@ -149,7 +153,7 @@ namespace Stats.API.Controllers
             var results = await _externalApi.GetTeamEventVideosPlayback(id, eid);
             var urls = new List<MediaPlaylist>();
             var result = results.FirstOrDefault(c => c.id == vid);
-            
+
             if (result != null)
             {
                 var uri = new Uri(result.url);
@@ -161,8 +165,8 @@ namespace Stats.API.Controllers
 
                 var p = await _cfs.GetPlayListUrl(result);
                 var masterPlaylist = MasterPlaylist.LoadFromText(p);
-                foreach (var stream in masterPlaylist.Streams.Where(c => c.Video.Contains("720p") || c.Video
-                .Contains("1080p")))
+                foreach (var stream in masterPlaylist.Streams.Where(c =>
+                new[] { "480p30", "720p30", "1080p30", "480p60", "720p60", "1080p60" }.Contains(c.Video)))
                 {
                     var p1 = await _cfs.GetPlayListFile(result, string.Format($"{noLastSegment}{stream.Uri}"));
                     var playList = MediaPlaylist.LoadFromText(p1);
@@ -176,7 +180,7 @@ namespace Stats.API.Controllers
                         noLastSegment1 += uri1.Segments[i];
                     }
 
-                    var head = blah.Skip(rc).Take(blah.Length - (rc+1));
+                    var head = blah.Skip(rc).Take(blah.Length - (rc + 1));
                     var temp = string.Join("/", head);
 
 

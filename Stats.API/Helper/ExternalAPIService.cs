@@ -42,6 +42,7 @@ namespace Stats.API.Helper
 
         public async Task<FileContentResult> GetTeamEventVideoPlayList(string id, string eid, string vid)
         {
+            
             var results = await GetTeamEventVideosPlayback(id, eid);
             var result = results.FirstOrDefault(c => c.id == vid);
             if (result != null)
@@ -55,27 +56,11 @@ namespace Stats.API.Helper
                 if (bestPlayListPath != null)
                 {
                     var content = await _cfs.GetPlayListFile(result, string.Format($"{noLastSegment.AbsoluteUri}{bestPlayListPath.Uri}"));
-                    var playList = M3U8Parser.MediaPlaylist.LoadFromText(content);
-                    var search1 = playList.MediaSegments[0].Segments[0].Uri.Split('/');
-                    var search2 = search1.Take(search1.Length - 1);
-
-                    //var searchString = string.Join('/', search2);
-
-                    //string[] lines = content.Split('\n');
-                    //for (int i = 0; i < lines.Length; i++)
-                    //{
-                    //    if (lines[i].Contains(searchString))
-                    //    {
-                    //        lines[i] = lines[i].Replace(searchString, string.Empty);
-                    //    }
-                    //}
-
-                    //string output = string.Join('\n', lines);
-
+                    var playList = MediaPlaylist.LoadFromText(content);
                     var bytes = Encoding.UTF8.GetBytes(content);
-                    var result1 = new FileContentResult(bytes, "text/xml");
-                    result1.FileDownloadName = "playlist.m3u8";
-                    return result1;
+                    var playListFile = new FileContentResult(bytes, "text/xml");
+                    playListFile.FileDownloadName = "playlist.m3u8";
+                    return playListFile;
                 }
                 else
                 {
@@ -103,7 +88,7 @@ namespace Stats.API.Helper
                 if (bestPlayListPath != null)
                 {
                     var content = await _cfs.GetPlayListFile(result, string.Format($"{noLastSegment.AbsoluteUri}{bestPlayListPath.Uri}"));
-                    var playList = M3U8Parser.MediaPlaylist.LoadFromText(content);
+                    var playList = MediaPlaylist.LoadFromText(content);
                     var playListUri = new Uri(noLastSegment, playList.MediaSegments[0].Segments[0].Uri);
                     var playListUriNoLastSegment = new Uri(playListUri, ".");
                     var test = string.Format($"{playListUriNoLastSegment.AbsoluteUri}{bestPlayListPath.Video}/{clipId}?Key-Pair-Id={result.cookies.CloudFrontKeyPairId}&Signature={result.cookies.CloudFrontSignature}&Policy={result.cookies.CloudFrontPolicy}");

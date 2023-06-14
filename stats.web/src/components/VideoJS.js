@@ -1,3 +1,4 @@
+import { defaultFormatUtc } from 'moment';
 import React from 'react';
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
@@ -6,6 +7,16 @@ export const VideoJS = (props: any) => {
     const videoRef = React.useRef(null);
     const playerRef = React.useRef(null);
     const { options, onReady } = props;
+    const [ player1, setPlayer1 ] = React.useState();
+
+    function goForwardOneFrame() {
+        player1.currentTime(player1.currentTime() + (1 / 30)); // Adjust the frame rate if necessary
+    }
+
+    // Go one frame backward
+    function goBackwardOneFrame() {
+        player1.currentTime(player1.currentTime() - (1 / 30)); // Adjust the frame rate if necessary
+    }
 
     React.useEffect(() => {
 
@@ -20,7 +31,10 @@ export const VideoJS = (props: any) => {
             const player = playerRef.current = videojs(videoElement, options, () => {
                 videojs.log('player is ready');
                 onReady && onReady(player);
+                setPlayer1(player);
             });
+
+            
 
             // You could update an existing player in the `else` block here
             // on prop change, for example:
@@ -47,6 +61,8 @@ export const VideoJS = (props: any) => {
     return (
         <div data-vjs-player>
             <div ref={videoRef} />
+            <button onClick={ goBackwardOneFrame }>{`<<`}</button>
+            <button onClick={ goForwardOneFrame }>{`>>`}</button>
         </div>
     );
 }

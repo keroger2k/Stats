@@ -11,6 +11,7 @@
     "@types/react": "^18.2.6",
     "@types/react-dom": "^18.2.2",
     "bootstrap": "^5.2.3",
+    "bootstrap-icons": "^1.10.5",
     "env-cmd": "^10.1.0",
     "moment": "^2.29.4",
     "react": "^18.2.0",

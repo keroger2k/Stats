@@ -2,12 +2,13 @@ import { defaultFormatUtc } from 'moment';
 import React from 'react';
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 export const VideoJS = (props: any) => {
     const videoRef = React.useRef(null);
     const playerRef = React.useRef(null);
     const { options, onReady } = props;
-    const [ player1, setPlayer1 ] = React.useState();
+    const [player1, setPlayer1] = React.useState();
 
     function goForwardOneFrame() {
         player1.currentTime(player1.currentTime() + (1 / 30)); // Adjust the frame rate if necessary
@@ -34,7 +35,22 @@ export const VideoJS = (props: any) => {
                 setPlayer1(player);
             });
 
-            
+            // Adding button to the control bar
+            var rewindButton = player.controlBar.addChild('button', {}, 2);
+            var rewindButtonDom = rewindButton.el();
+            rewindButtonDom.innerHTML = '<i class="bi bi-rewind"></i>';
+            rewindButtonDom.onclick = function () {
+                player.currentTime(player.currentTime() - (1 / 30)); // Adjust the frame rate if necessary
+            }
+
+            // Adding button to the control bar
+            var fastForwardButton = player.controlBar.addChild('button', {}, 3);
+            var fastForwardButtonDom = fastForwardButton.el();
+            fastForwardButtonDom.innerHTML = '<i class="bi bi-fast-forward"></i>';
+            fastForwardButtonDom.onclick = function () {
+                player.currentTime(player.currentTime() + (1 / 30)); // Adjust the frame rate if necessary
+            }
+
 
             // You could update an existing player in the `else` block here
             // on prop change, for example:
@@ -61,20 +77,6 @@ export const VideoJS = (props: any) => {
     return (
         <div data-vjs-player>
             <div ref={videoRef} />
-            <div className="d-flex justify-content-center">
-                <button className="btn btn-secondary" onClick={goBackwardOneFrame}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-rewind" viewBox="0 0 16 16">
-                        <path d="M9.196 8 15 4.633v6.734L9.196 8Zm-.792-.696a.802.802 0 0 0 0 1.392l6.363 3.692c.52.302 1.233-.043 1.233-.696V4.308c0-.653-.713-.998-1.233-.696L8.404 7.304Z" />
-                        <path d="M1.196 8 7 4.633v6.734L1.196 8Zm-.792-.696a.802.802 0 0 0 0 1.392l6.363 3.692c.52.302 1.233-.043 1.233-.696V4.308c0-.653-.713-.998-1.233-.696L.404 7.304Z" />
-                    </svg>
-                </button>&nbsp;
-                <button className="btn btn-secondary" onClick={goForwardOneFrame}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fast-forward" viewBox="0 0 16 16">
-                        <path d="M6.804 8 1 4.633v6.734L6.804 8Zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692Z" />
-                        <path d="M14.804 8 9 4.633v6.734L14.804 8Zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C8.713 12.69 8 12.345 8 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692Z" />
-                    </svg>
-                </button>
-            </div>
         </div>
     );
 }

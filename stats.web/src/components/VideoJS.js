@@ -38,7 +38,7 @@ export const VideoJS = (props: any) => {
             // Adding button to the control bar
             var rewindButton = player.controlBar.addChild('button', {}, 2);
             var rewindButtonDom = rewindButton.el();
-            rewindButtonDom.innerHTML = '<i class="bi bi-rewind"></i>';
+            rewindButtonDom.innerHTML = '<i class="bi bi-rewind-fill"></i>';
             rewindButtonDom.onclick = function () {
                 player.currentTime(player.currentTime() - (1 / 30)); // Adjust the frame rate if necessary
             }
@@ -46,7 +46,7 @@ export const VideoJS = (props: any) => {
             // Adding button to the control bar
             var fastForwardButton = player.controlBar.addChild('button', {}, 3);
             var fastForwardButtonDom = fastForwardButton.el();
-            fastForwardButtonDom.innerHTML = '<i class="bi bi-fast-forward"></i>';
+            fastForwardButtonDom.innerHTML = '<i class="bi bi-fast-forward-fill"></i>';
             fastForwardButtonDom.onclick = function () {
                 player.currentTime(player.currentTime() + (1 / 30)); // Adjust the frame rate if necessary
             }

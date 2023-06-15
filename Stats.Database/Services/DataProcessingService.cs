@@ -46,6 +46,7 @@ namespace Stats.Database.Services
             var interestingGames = team.schedule.Where(e => e.@event.event_type == "game")
                 .Where(e => e.@event.start.datetime < DateTime.UtcNow && e.@event.start.datetime > DateTime.Today.AddDays(-5))
                 .ToList();
+
             var result = new TeamTransform
             {
                 id = team.id,
@@ -62,7 +63,7 @@ namespace Stats.Database.Services
             for (var i = 0; i < 6; i++)
             {
                 var pData = new Dictionary<string, int>();
-                var games = interestingGames.Where(c => c.@event.start.datetime.Date == DateTime.Now.ToUniversalTime().AddDays(i * -1).Date);
+                var games = interestingGames.Where(c => c.@event.start.datetime.AddHours(-5).Date == DateTime.Now.ToUniversalTime().AddDays(i * -1).Date);
                 foreach (var game in games)
                 {
                     var gameData = result.completed_games.FirstOrDefault(c => c.event_id == game.@event.id);

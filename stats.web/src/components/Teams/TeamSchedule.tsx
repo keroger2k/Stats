@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from "react-router-dom";
 import Service from '../../services/api';
 import { Link } from 'react-router-dom';
-import { Team, formatWeekdayShort, formatMonthShort } from '../../models/models';
+import { Team, formatWeekdayShort, formatMonthShort, VideoAsset } from '../../models/models';
 import Chevron from '../SVGImages/Chevron';
 import TeamEvent from './TeamEvent';
 import TeamNavBar from '../TeamNavBar/TeamNavBar';
@@ -49,6 +49,13 @@ function TeamSchedule() {
         return team === undefined ? null : team?.progenitor_team_id;
     }
 
+    function hasVideoAsset(id: string) {
+        var asset = data?.video_assets.filter((value: VideoAsset, index: number) => {
+            return value.schedule_event_id === id && value.audience_type === "players_family_fans";
+        });
+        return asset !== undefined && asset?.length > 0;
+    }
+
 
     function importTeam(id: string | undefined) {
         const services = new Service();
@@ -69,42 +76,25 @@ function TeamSchedule() {
     }, []);
 
     const content = data?.schedule?.map((teamEvent) => {
-        if (teamEvent.pregame_data && getProgenId(teamEvent.pregame_data?.opponent_id) !== null) {
+        if (teamEvent.event.event_type === "game") {
+            let opponentButton;
+            let videoButton;
+            if (teamEvent.pregame_data && getProgenId(teamEvent.pregame_data?.opponent_id) !== null) {
+                opponentButton = (<div className="opponent_link">
+                    <Link target="_top" rel="noopener noreferrer" to={`/teams/${getProgenId(teamEvent.pregame_data?.opponent_id)}/schedule`} ><button className="btn btn-primary btn-sm">Opponent Page</button></Link>
+                </div>);
+            }
+            if (hasVideoAsset(teamEvent.event.id)) {
+                videoButton = (<div className="opponent_link">
+                    <Link target="_top" rel="noopener noreferrer" to={`/teams/${data.id}/schedule/${teamEvent.event.id}/videos`} ><button className="btn btn-success btn-sm">Video</button></Link>
+                </div>);
+            }
+
             return (
                 <>
                     <span key={teamEvent.event.id}>
-                        <div className="opponent_link">
-                            <Link target="_top" rel="noopener noreferrer" to={`/teams/${getProgenId(teamEvent.pregame_data?.opponent_id)}/schedule`} ><button className="btn btn-primary btn-sm">Opponent Page</button></Link>
-                        </div>
-                        <Link to={`/teams/${data.id}/schedule/${teamEvent.event.id}`} key={teamEvent.event.id}>
-                            <div className="ScheduleListByMonth__dayRow">
-                                <div className="ScheduleListByMonth__dayDate">
-                                    <div className="Text__text Text__center Text__cool-grey-dark Text__small Text__regular">{formatMonthShort(getMonth(teamEvent.event.start?.datetime))}</div>
-                                    <div className="Text__text Text__center Text__off-black Text__base Text__xbold ScheduleListByMonth__dateText">{getDate(teamEvent.event.start?.datetime)}</div>
-                                </div>
-                                <div>
-                                    <span className="ScheduleListByMonth__event">
-                                        <div className="ScheduleListByMonth__title">
-                                            <div className="ScheduleListByMonth__eventIndicators"></div>
-                                            <div className="Text__text Text__left Text__off-black Text__base Text__semibold">{teamEvent.event.title}</div>
-                                        </div>
-                                        <div className="Text__text Text__left Text__cool-grey-dark Text__small Text__regular ScheduleListByMonth__location">at {teamEvent.event.location?.address === null ? "" : teamEvent.event.location?.address[0]}</div>
-                                        <div className="ScheduleListByMonth__scoreOrTime">
-                                            <TeamEvent isGame={teamEvent.event.event_type === "game"} time={getTime(teamEvent.event.start?.datetime)} score={getScore(teamEvent.event.id)}></TeamEvent>
-                                            <span className="ScheduleListByMonth__chevron">
-                                                <Chevron></Chevron>
-                                            </span>
-                                        </div>
-                                    </span>
-                                </div>
-                            </div>
-                        </Link></span>
-                </>
-            );
-        } else if (teamEvent.event.event_type === "game") {
-            return (
-                <>
-                    <span key={teamEvent.event.id}>
+                        {opponentButton}
+                        {videoButton}
                         <Link to={`/teams/${data.id}/schedule/${teamEvent.event.id}`} key={teamEvent.event.id}>
                             <div className="ScheduleListByMonth__dayRow">
                                 <div className="ScheduleListByMonth__dayDate">

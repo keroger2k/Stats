@@ -196,7 +196,7 @@ namespace Stats.ExtApi.Services
         /// <returns>
         /// <param name="SearchResults"></param>
         /// </returns>
-        public async Task<SearchResults> SearchTeamsAsync(string query, string city = "", string state = "", string season = "", string year = "", string sport = "baseball")
+        public async Task<SearchResults> SearchTeamsAsync(string query, string city = "", string state = "", string season = "", string year = "", string sport = "")
         {
             StringBuilder st1 = new StringBuilder();
             if (!string.IsNullOrEmpty(city)) st1.Append($"&city={city}");

@@ -15,13 +15,24 @@ function OpponentsContainer() {
     const navigate = useNavigate();
 
     React.useEffect(() => {
-        const services = new Service();
         if (query) {
-            services.getSearchHits('Search', query).then(data => {
+            const services = new Service();
+            var e = document.getElementById("sports") as HTMLSelectElement;
+            services.getSearchHits('Search', query, "&sport="+ e.value).then(data => {
                 setData(data);
             });
         }
     }, [query]);
+
+    function handleChange() {
+        if (query) {
+            const services = new Service();
+            var e = document.getElementById("sports") as HTMLSelectElement;
+            services.getSearchHits('Search', query, "&sport=" + e.value).then(data => {
+                setData(data);
+            });
+        }
+    }
 
     function getAvatarImage(item: SearchResult) {
         if (item.avatar_url !== null) {
@@ -73,8 +84,21 @@ function OpponentsContainer() {
                 <h1 className="Text__text Text__left Text__off-black Text__xlarge Text__xbold Text__inline-header">Import New Team</h1>
                 <div className="OpponentsPageSearch__searchContainer">
                     <div className="Text__text Text__left Text__off-black Text__medium Text__bold OpponentsPageSearch__searchBarTitle">Add New Team</div>
-                    <SearchBox setQuery={setQuery} />
+                    <div className="container">
+                        <div className="row">
+                            <div className="col">
+                                <SearchBox setQuery={setQuery} />
+                            </div>
+                            <div className="col">
+                                <select name="spors" id="sports" className="form-select" onChange={handleChange}>
+                                    <option value="baseball">Baseball</option>
+                                    <option value="softball">Softball</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
             {isLoading ? <LoadingSpinner /> : content}
         </div>

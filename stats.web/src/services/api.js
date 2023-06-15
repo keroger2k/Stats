@@ -65,10 +65,10 @@ class Service {
         return this.request(url, method).then(res => res.json());
     }
 
-    getSearchHits(url, query) {
+    getSearchHits(url, query, filters) {
         const method = "GET";
         if (query) {
-            url = `${url}?query=${query}&include_avatar=true`;
+            url = `${url}?query=${query}&include_avatar=true${filters}`;
         }
         return this.request(url, method).then(res => res.json());
     }

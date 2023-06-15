@@ -63,6 +63,7 @@ namespace Stats.Database.Services
             for (var i = 0; i < 6; i++)
             {
                 var pData = new Dictionary<string, int>();
+                // -5 hours is crap; Should be based on team timezone offset from utc. Not sure how to do that.
                 var games = interestingGames.Where(c => c.@event.start.datetime.AddHours(-5).Date == DateTime.Now.ToUniversalTime().AddDays(i * -1).Date);
                 foreach (var game in games)
                 {
